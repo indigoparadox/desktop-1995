@@ -140,17 +140,24 @@ html, body {
 }
 
 .window-properties-tabs ul {
-    margin: 0;
+    position: relative;
+    margin: 0 0 -3px 0;
     padding: 0;
+    z-index: 20;
 }
 
 .window-properties-tab-tab {
-    border-bottom: none;
+    border-bottom: 1px solid #fff8ff;
     border-radius: 3px 3px 0 0;
     display: inline-block;
+    position: relative;
     margin: 0;
     padding: 0;
     list-style-type: none;
+}
+
+.window-properties-tabs > ul > li.ui-tabs-active {
+    border-bottom: none;
 }
 
 .window-properties-tab-tab a {
@@ -166,6 +173,8 @@ html, body {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    position: relative;
+    z-index: 10;
 }
 
 .window-properties-tab-pane {
@@ -180,7 +189,7 @@ html, body {
 }
 
 .window-properties-buttons button {
-    
+
 }
 
 /* Controls */
@@ -219,7 +228,8 @@ html, body {
 }
 
 .input-text-wrapper input:focus,
-.window-command-wrapper textarea:focus {
+.window-command-wrapper textarea:focus,
+.window-properties-tab-tab a:focus {
     outline: none;
 }
 
