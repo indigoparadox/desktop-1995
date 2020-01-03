@@ -1,13 +1,13 @@
 
 function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0 ) {
     
-    var winOuter = $('<div class="window-outer window-active chiseled-outer"></div>');
+    var winOuter = $('<div class="window-outer window-active"></div>');
     if( null != id ) {
         winOuter.attr( 'id', id );
     }
     $('#desktop').append( winOuter );
 
-    var winInner = $('<div class="window-inner chiseled-inner"><form class="window-form"></form></div>');
+    var winInner = $('<div class="window-inner"><form class="window-form"></form></div>');
     $(winOuter).append( winInner );
     winOuter.draggable( {'handle': '.titlebar'} );
     if( resizable ) {
@@ -123,23 +123,28 @@ function desktopSelectIcon( container, icon ) {
 
 function desktopPopupMenu( container, items, x, y ) {
         
-    var menuOuter = $('<div class="menu-outer chiseled-outer"></div>');
+    var menuOuter = $('<div class="menu-outer"></div>');
     $('#desktop').append( menuOuter );
     menuOuter.css( 'left', x.toString() + 'px' );
     menuOuter.css( 'top', y.toString() + 'px' );
 
-    var menuInner = $('<div class="menu-inner chiseled-inner"></div>');
+    var menuInner = $('<div class="menu-inner"></div>');
     menuOuter.append( menuInner );
 
     for( var i = 0 ; items.length > i ; i++ ) {
-        var menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
-        menuCallback = items[i].callback;
+        var menuItem = null;
+        if( 'divider' in items[i] && items[i].divider ) {
+            menuItem = $('<hr />');
+        } else {
+            menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
+            menuCallback = items[i].callback;
+            menuItem.click( function( e ) {
+                menuCallback( menuItem );
+                desktopCloseMenu( container, menuOuter );
+                e.preventDefault();
+            } );
+        }
         menuInner.append( menuItem );
-        menuItem.click( function( e ) {
-            menuCallback( menuItem );
-            desktopCloseMenu( container, menuOuter );
-            e.preventDefault();
-        } );
     }
 
     return menuOuter;
