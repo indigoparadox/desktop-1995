@@ -7,13 +7,27 @@ html, body {
     height: 100%;
 }
 
-.window-outer {
+.chiseled-outer {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid #bfbfbf;
     border-left: 1px solid #bfbfbf;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
     background-color: #bfbfbf;
+
+}
+
+.chiseled-inner {
+    /* Use border and positioning to simulate shadow effect. */
+    border-top: 1px solid #fff8ff;
+    border-left: 1px solid #fff8ff;
+    border-right: 1px solid #7f787f;
+    border-bottom: 1px solid #7f787f;
+    position: relative;
+    padding: 1px;
+}
+
+.window-outer {
     position: relative;
     display: inline-block;
     margin: 0;
@@ -22,15 +36,6 @@ html, body {
 }
 
 .window-inner {
-    /* Use border and positioning to simulate shadow effect. */
-    border-top: 1px solid #fff8ff;
-    border-left: 1px solid #fff8ff;
-    border-right: 1px solid #7f787f;
-    border-bottom: 1px solid #7f787f;
-    position: relative;
-    padding: 1px;
-
-    /* Arbitrary. */
     min-width: 200px;
     min-height: 100px;
 }
@@ -158,4 +163,35 @@ html, body {
 .desktop-icon-selected .desktop-icon-overlay {
     /* background: #00007f;
     opacity: 0.3; */
+}
+
+.menu-outer {
+    position: absolute;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    z-index: 20;
+}
+
+.menu-inner {
+    position: relative;
+    padding: 1px;
+
+    /* Arbitrary. */
+    min-width: 200px;
+    min-height: 100px;
+}
+
+.menu-item {
+    color: black;
+    font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
+    font-size: 12px; /* Rare text sizing in pixels for accuracy. */
+    text-decoration: none;
+    display: block;
+    padding: 3px 2px;
+}
+
+.menu-item:hover {
+    background-color: #00007f;
+    color: white;
 }

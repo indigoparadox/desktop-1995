@@ -1,13 +1,13 @@
 
 function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0 ) {
     
-    var winOuter = $('<div class="window-outer window-active"></div>');
+    var winOuter = $('<div class="window-outer window-active chiseled-outer"></div>');
     if( null != id ) {
         winOuter.attr( 'id', id );
     }
     $('#desktop').append( winOuter );
 
-    var winInner = $('<div class="window-inner"><form class="window-form"></form></div>');
+    var winInner = $('<div class="window-inner chiseled-inner"><form class="window-form"></form></div>');
     $(winOuter).append( winInner );
     winOuter.draggable( {'handle': '.titlebar'} );
     if( resizable ) {
@@ -64,6 +64,7 @@ function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container
         ') right ' + imgX.toString() + 'px bottom ' + imgY.toString() + 'px';
     icoImg.css( 'background', bgURL );
     iconWrapper.data( 'icon-bg', bgURL ); /* Save for later. */
+    iconWrapper.hide(); /* Hide until loaded. */
 
     /* Setup a clipping mask to limit the highlight overlay. */
     var spritesheetImg = new Image();
@@ -77,6 +78,8 @@ function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container
         icoImg.css( '-webkit-mask-image', 'url(' + staticPath + imgPath + ')' );
         icoImg.css( '-webkit-mask-position-x', (spritesheetWidth - (imgX - icoWidth)).toString() + 'px' );
         icoImg.css( '-webkit-mask-position-y', (spritesheetHeight - (imgY - icoHeight)).toString() + 'px' );
+
+        iconWrapper.show();
     };
     spritesheetImg.src = staticPath + imgPath;
     
@@ -118,10 +121,40 @@ function desktopSelectIcon( container, icon ) {
         $(icon).data( 'icon-bg' ) );
 }
 
+function desktopPopupMenu( container, items, x, y ) {
+        
+    var menuOuter = $('<div class="menu-outer chiseled-outer"></div>');
+    $('#desktop').append( menuOuter );
+    menuOuter.css( 'left', x.toString() + 'px' );
+    menuOuter.css( 'top', y.toString() + 'px' );
+
+    var menuInner = $('<div class="menu-inner chiseled-inner"></div>');
+    menuOuter.append( menuInner );
+
+    for( var i = 0 ; items.length > i ; i++ ) {
+        var menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
+        menuCallback = items[i].callback;
+        menuInner.append( menuItem );
+        menuItem.click( function( e ) {
+            menuCallback( menuItem );
+            desktopCloseMenu( container, menuOuter );
+            e.preventDefault();
+        } );
+    }
+
+    return menuOuter;
+}
+
+function desktopCloseMenu( container, menu ) {
+    if( null != menu ) {
+        menu.remove();
+    } else {
+        /* Close all menus in this container. */
+        $(container).children( '.menu-outer' ).each( function( idx, menuIter ) {
+            desktopCloseMenu( container, menuIter );
+        } );
+    }
+}
+
 $(document).ready( function() {
-    $('#desktop').mousedown( function( e ) {
-        if( !$(e.target).hasClass( 'desktop-icon-overlay' ) ) {
-            desktopSelectIcon( '#desktop', null );
-        }
-    } );
 } );
