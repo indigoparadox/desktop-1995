@@ -145,19 +145,26 @@ html, body {
     height: 32px;
 }
 
+.desktop-icon-text-center {
+    display: table;
+    margin: 0 auto;
+    padding: 0;
+}
+
 .desktop-icon-text {
     color: white;
     font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
     font-size: 12px; /* Rare text sizing in pixels for accuracy. */
-    line-height: 18px;
+    line-height: 12px;
     text-align: center;
-    margin-top: 3px;
+    display: inline-block;
+    margin: 5px 0 0 0;
 }
 
 .desktop-icon-selected .desktop-icon-text {
     background-color: #00007f;
     border: 1px dotted white;
-    margin-top: 2px;
+    margin: 4px 0 0 0;
 }
 
 .desktop-icon-selected .desktop-icon-overlay {

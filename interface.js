@@ -83,7 +83,7 @@ function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container
     };
     spritesheetImg.src = staticPath + imgPath;
     
-    var iconText = $('<div class="desktop-icon-text">' + text + '</div>');
+    var iconText = $('<div class="desktop-icon-text-center"><div class="desktop-icon-text">' + text + '</div></div>');
     iconWrapper.append( iconText );
 
     $(container).append( iconWrapper );
