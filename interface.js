@@ -1,9 +1,12 @@
 
-function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0 ) {
+function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0, show=true ) {
     
     var winOuter = $('<div class="window-outer window-active"></div>');
     if( null != id ) {
         winOuter.attr( 'id', id );
+    }
+    if( !show ) {
+        winOuter.css( 'display', 'none' );
     }
     $('#desktop').append( winOuter );
 
@@ -31,6 +34,23 @@ function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0 ) 
     } );
 
     return winOuter;
+}
+
+function openFolderWindow( caption, id=null, icoImg=null, x=0, y=0 ) {
+    var winHandle = openWindow( caption, id, true, icoImg, x, y, false );
+    
+    winHandle.addClass( 'window-folder' );
+
+    var container = $('<div class="window-folder-container container"></div>');
+    
+    var wrapper = $('<div class="window-folder-wrapper"></div>');
+    wrapper.append( container );
+
+    winHandle.find( '.window-form' ).append( wrapper );
+
+    winHandle.show();
+
+    return winHandle;
 }
 
 function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
@@ -87,7 +107,7 @@ function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container
     iconWrapper.append( iconText );
 
     $(container).append( iconWrapper );
-    $(iconWrapper).draggable( {'handle': '.desktop-icon-overlay' } );
+    $(iconWrapper).draggable( {'handle': '.desktop-icon-overlay'/* , 'containment': container */ } );
 
     /* Setup action handlers. */
     $(iconWrapper).mousedown( function() {

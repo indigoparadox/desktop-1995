@@ -31,25 +31,34 @@ html, body {
 /* Windows */
 
 .window-outer {
-    position: relative;
-    display: inline-block;
+    position: absolute;
+    display: inline-flex;
     margin: 0;
     padding: 0;
     z-index: 20;
 }
 
 .window-inner {
+    display: flex;
+    flex-direction: column;
     min-width: 200px;
     min-height: 100px;
+}
+
+.window-outer .ui-resizable-se {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 16px;
+    height: 16px;
 }
 
 .titlebar {
     /* Flex so that title text can grow. */
     display: flex;
     position: relative;
-    margin: 0;
+    margin: 0 0 1px 0;
     padding: 0;
-    width: 100%;
     height: 18px;
 }
 
@@ -92,11 +101,16 @@ html, body {
 
 .window-form {
     position: relative;
+    flex-grow: 1;
+    padding-bottom: 4px; /* Compensate for 100% height. */
 }
 
 /* Controls */
 
-.input-text-wrapper, .input-textarea-wrapper, .input-select-wrapper {
+.input-text-wrapper,
+.input-textarea-wrapper,
+.input-select-wrapper,
+.window-folder-wrapper {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid #7f787f;
     border-left: 1px solid #7f787f;
@@ -106,7 +120,8 @@ html, body {
 
 .input-text-wrapper input,
 .input-textarea-wrapper textarea,
-.input-textarea-wrapper select {
+.input-textarea-wrapper select,
+.window-folder-container {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid black;
     border-left: 1px solid black;
@@ -154,6 +169,7 @@ html, body {
 
 .desktop-icon-img {
     display: block;
+    margin: 0 auto;
     width: 32px;
     height: 32px;
 }
@@ -174,6 +190,10 @@ html, body {
     margin: 5px 0 0 0;
 }
 
+.window-folder-container .desktop-icon-text {
+    color: black;
+}
+
 .desktop-icon-selected .desktop-icon-text {
     background-color: #00007f;
     border: 1px dotted white;
@@ -183,6 +203,22 @@ html, body {
 .desktop-icon-selected .desktop-icon-overlay {
     /* background: #00007f;
     opacity: 0.3; */
+}
+
+.window-folder .window-inner {
+}
+
+.window-folder-wrapper {
+    position: relative;
+    padding: 0 0 2px 0;
+    height: 100%;
+}
+
+.window-folder-container {
+    background-color: white;
+    position: relative;
+    height: 100%;
+    overflow: scroll;
 }
 
 /* Menus */
