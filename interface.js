@@ -1,5 +1,45 @@
 
-function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0, menu=null, show=true ) {
+/* Internal Utility Functions */
+
+function _menuPopulate( container, menu, items, followMouse=true ) {
+    /* Iterate the list of menu items and append them to the provided menu. */
+    for( var i = 0 ; items.length > i ; i++ ) {
+        var menuItem = null;
+        if( 'divider' in items[i] && items[i].divider ) {
+            menuItem = $('<hr />');
+        } else {
+            menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
+            if( 'callback' in items[i] ) {
+                var menuCallback = items[i].callback;
+                menuItem.click( function( e ) {
+                    menuCallback( menuItem );
+                    menuClose( container );
+                    e.preventDefault();
+                } );
+            } else if( 'children' in items[i] ) {
+                var menuChildren = items[i].children;
+                menuItem.click( function( e ) {
+                    var x = menuItem.offset().left - $(container).offset().left;
+                    var y = menuItem.offset().top - $(container).offset().top + menuItem.height();
+
+                    /* Context menus follow mouse, not element. */
+                    if( followMouse ) {
+                        x = e.pageX;
+                        y = e.pageY;
+                    }
+
+                    menuPopup( container, menuChildren, x, y );
+                    e.preventDefault();
+                } );
+            }
+        }
+        menu.append( menuItem );
+    }
+}
+
+/* Public Functions */
+
+function windowOpen( caption, id=null, resizable=false, icoImg=null, x=0, y=0, menu=null, show=true ) {
     
     var winOuter = $('<div class="window-outer window-active"></div>');
     if( null != id ) {
@@ -21,7 +61,7 @@ function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0, m
     if( null != menu ) {
         var menuBar = $('<div class="menubar"></div>');
         $(winInner).prepend( menuBar );
-        menuPopulate( winOuter, menuBar, menu, false );
+        _menuPopulate( winOuter, menuBar, menu, false );
     }
 
     var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + caption + '</h1></div>');
@@ -43,7 +83,7 @@ function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0, m
     return winOuter;
 }
 
-function openFolderWindow( caption, id=null, icoImg=null, x=0, y=0, menu=null ) {
+function windowOpenFolder( caption, id=null, icoImg=null, x=0, y=0, menu=null ) {
 
     if( null == menu ) {
         menu = [
@@ -55,7 +95,7 @@ function openFolderWindow( caption, id=null, icoImg=null, x=0, y=0, menu=null ) 
         ];
     }
 
-    var winHandle = openWindow( caption, id, true, icoImg, x, y, menu, false );
+    var winHandle = windowOpen( caption, id, true, icoImg, x, y, menu, false );
     
     winHandle.addClass( 'window-folder' );
 
@@ -88,7 +128,7 @@ function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
     }
 }
 
-function openCommandWindow( caption, id=null, icoImg=null, x=0, y=0, menu=null ) {
+function windowOpenCommand( caption, id=null, icoImg=null, x=0, y=0, menu=null ) {
 
     if( null == menu ) {
         menu = [
@@ -100,7 +140,7 @@ function openCommandWindow( caption, id=null, icoImg=null, x=0, y=0, menu=null )
         ];
     }
 
-    var winHandle = openWindow( caption, id, true, icoImg, x, y, menu, false );
+    var winHandle = windowOpen( caption, id, true, icoImg, x, y, menu, false );
     
     winHandle.addClass( 'window-command' );
 
@@ -187,41 +227,6 @@ function desktopSelectIcon( container, icon ) {
         $(icon).data( 'icon-bg' ) );
 }
 
-function menuPopulate( container, menu, items, followMouse=true ) {
-    for( var i = 0 ; items.length > i ; i++ ) {
-        var menuItem = null;
-        if( 'divider' in items[i] && items[i].divider ) {
-            menuItem = $('<hr />');
-        } else {
-            menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
-            if( 'callback' in items[i] ) {
-                var menuCallback = items[i].callback;
-                menuItem.click( function( e ) {
-                    menuCallback( menuItem );
-                    menuClose( container );
-                    e.preventDefault();
-                } );
-            } else if( 'children' in items[i] ) {
-                var menuChildren = items[i].children;
-                menuItem.click( function( e ) {
-                    var x = menuItem.offset().left - $(container).offset().left;
-                    var y = menuItem.offset().top - $(container).offset().top + menuItem.height();
-
-                    /* Context menus follow mouse, not element. */
-                    if( followMouse ) {
-                        x = e.pageX;
-                        y = e.pageY;
-                    }
-
-                    menuPopup( container, menuChildren, x, y );
-                    e.preventDefault();
-                } );
-            }
-        }
-        menu.append( menuItem );
-    }
-}
-
 function menuPopup( container, items, x, y ) {
         
     var menuOuter = $('<div class="menu-outer"></div>');
@@ -232,7 +237,7 @@ function menuPopup( container, items, x, y ) {
     var menuInner = $('<div class="menu-inner"></div>');
     menuOuter.append( menuInner );
 
-    menuPopulate( container, menuInner, items );
+    _menuPopulate( container, menuInner, items );
     
     return menuOuter;
 }
