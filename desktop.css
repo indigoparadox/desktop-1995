@@ -279,6 +279,7 @@ html, body {
 
 .menubar .menu-item {
     display: table;
+    padding: 3px;
 }
 
 .menu-item-icon {

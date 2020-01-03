@@ -204,8 +204,8 @@ function menuPopulate( container, menu, items, followMouse=true ) {
             } else if( 'children' in items[i] ) {
                 var menuChildren = items[i].children;
                 menuItem.click( function( e ) {
-                    var x = menuItem.offset().left;
-                    var y = menuItem.offset().top + menuItem.height();
+                    var x = menuItem.offset().left - $(container).offset().left;
+                    var y = menuItem.offset().top - $(container).offset().top + menuItem.height();
 
                     /* Context menus follow mouse, not element. */
                     if( followMouse ) {
@@ -225,7 +225,7 @@ function menuPopulate( container, menu, items, followMouse=true ) {
 function menuPopup( container, items, x, y ) {
         
     var menuOuter = $('<div class="menu-outer"></div>');
-    $('#desktop').append( menuOuter );
+    $(container).append( menuOuter );
     menuOuter.css( 'left', x.toString() + 'px' );
     menuOuter.css( 'top', y.toString() + 'px' );
 
