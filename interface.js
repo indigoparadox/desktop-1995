@@ -39,7 +39,7 @@ function _menuPopulate( container, menu, items, followMouse=true ) {
 
 /* Public Functions */
 
-function windowOpen( caption, id=null, resizable=false, icoImg=null, x=0, y=0, menu=null, show=true ) {
+function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true ) {
     
     var winOuter = $('<div class="window-outer window-active"></div>');
     if( null != id ) {
@@ -55,8 +55,10 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, x=0, y=0, m
     winOuter.draggable( {'handle': '.titlebar'} );
     if( resizable ) {
         winInner.resizable();
-        winInner.css( 'height', '100px' ); /* Workaround for weird sizing bug. */
     }
+
+    winInner.css( 'width', w.toString() + 'px' );
+    winInner.css( 'height', h.toString() + 'px' );
 
     if( null != menu ) {
         var menuBar = $('<div class="menubar"></div>');
@@ -71,7 +73,7 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, x=0, y=0, m
     var icon = $('<div class="titlebar-icon"></div>');
     $(titlebar).prepend( icon );
     icon.css( 'background', 'url(' + staticPath + icoImg + 
-        ') right ' + x.toString() + 'px bottom ' + y.toString() + 'px' );
+        ') right ' + icoX.toString() + 'px bottom ' + icoY.toString() + 'px' );
 
     /* Add the window close button. */
     var btnClose = $('<button class="titlebar-close">X</button>');
@@ -83,7 +85,7 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, x=0, y=0, m
     return winOuter;
 }
 
-function windowOpenFolder( caption, id=null, icoImg=null, x=0, y=0, menu=null ) {
+function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200 ) {
 
     if( null == menu ) {
         menu = [
@@ -95,7 +97,7 @@ function windowOpenFolder( caption, id=null, icoImg=null, x=0, y=0, menu=null ) 
         ];
     }
 
-    var winHandle = windowOpen( caption, id, true, icoImg, x, y, menu, false );
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
     
     winHandle.addClass( 'window-folder' );
 
@@ -128,7 +130,7 @@ function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
     }
 }
 
-function windowOpenCommand( caption, id=null, icoImg=null, x=0, y=0, menu=null ) {
+function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=0, y=0, w=480, h=260 ) {
 
     if( null == menu ) {
         menu = [
@@ -140,7 +142,7 @@ function windowOpenCommand( caption, id=null, icoImg=null, x=0, y=0, menu=null )
         ];
     }
 
-    var winHandle = windowOpen( caption, id, true, icoImg, x, y, menu, false );
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
     
     winHandle.addClass( 'window-command' );
 
@@ -154,6 +156,42 @@ function windowOpenCommand( caption, id=null, icoImg=null, x=0, y=0, menu=null )
     winHandle.show();
 
     return winHandle;
+}
+
+function windowOpenProperties( caption, id=null, icoImg=null, icoX=0, icoY=0, x=0, y=0 ) {
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, null, x, y, 408, 446, false );
+    
+    winHandle.addClass( 'window-properties' );
+    
+    /*
+    var tabsWrapper = $('<div class="window-properties-tabs-wrapper"></div>');
+    winHandle.find( '.window-form' ).append( tabsWrapper );*/
+
+    var tabs = $('<div class="window-properties-tabs"><ul></ul></div>');
+    winHandle.find( '.window-form' ).append( tabs );
+
+    var buttons = $('<div class="window-properties-buttons"></div>');
+    winHandle.find( '.window-form' ).append( buttons );
+
+    var btnOK = $('<button class="button-ok">OK</button>');
+    buttons.append( btnOK );
+
+    winHandle.show();
+
+    return winHandle;
+}
+
+function windowPropertiesAddTab( winHandle, caption, id ) {
+    var tabWrapper = $('<div class="window-properties-tab-wrapper" id="' + id + '"></div>');
+    $(winHandle).find( '.window-properties-tabs' ).append( tabWrapper );
+
+    var tabPane = $('<div class="window-properties-tab-pane"></div>');
+    tabWrapper.append( tabPane );
+
+    var tab = '<li class="window-properties-tab-tab"><a href="#' + id + '">' + caption + '</a></li>';
+    var tabs = $(winHandle).find( '.window-properties-tabs > ul' ).append( tab );
+
+    return tabPane;
 }
 
 function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container='#desktop' ) {

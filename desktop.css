@@ -9,7 +9,10 @@ html, body {
 
 /* Common Effects */
 
-.window-outer, .menu-outer {
+.window-outer,
+.menu-outer,
+.window-properties-tab-wrapper,
+.window-properties-tab-tab {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid #bfbfbf;
     border-left: 1px solid #bfbfbf;
@@ -18,7 +21,10 @@ html, body {
     background-color: #bfbfbf;
 }
 
-.window-inner, .menu-inner {
+.window-inner,
+.menu-inner,
+.window-properties-tab-pane,
+.window-properties-tab-tab a {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid #fff8ff;
     border-left: 1px solid #fff8ff;
@@ -99,12 +105,8 @@ html, body {
     padding: 0;
 }
 
-.window-command .window-inner {
-    min-width: 481px;
-    min-height: 241px;
-}
-
 .window-form {
+    font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
     position: relative;
     flex-grow: 1;
     padding-bottom: 4px; /* Compensate for 100% height. */
@@ -126,6 +128,59 @@ html, body {
     position: relative;
     height: 100%;
     width: 100%;
+}
+
+.window-properties-tabs {
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    margin: 8px;
+    width: 390px;
+    height: 380px;
+}
+
+.window-properties-tabs ul {
+    margin: 0;
+    padding: 0;
+}
+
+.window-properties-tab-tab {
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.window-properties-tab-tab a {
+    color: black;
+    text-decoration: none;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+    display: block;
+    padding: 3px 7px;
+}
+
+.window-properties-tab-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.window-properties-tab-pane {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.window-properties-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+.window-properties-buttons button {
+    
 }
 
 /* Controls */
