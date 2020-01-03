@@ -1,5 +1,5 @@
 
-function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0, show=true ) {
+function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0, menu=null, show=true ) {
     
     var winOuter = $('<div class="window-outer window-active"></div>');
     if( null != id ) {
@@ -15,6 +15,13 @@ function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0, s
     winOuter.draggable( {'handle': '.titlebar'} );
     if( resizable ) {
         winInner.resizable();
+        winInner.css( 'height', '100px' ); /* Workaround for weird sizing bug. */
+    }
+
+    if( null != menu ) {
+        var menuBar = $('<div class="menubar"></div>');
+        $(winInner).prepend( menuBar );
+        menuPopulate( winOuter, menuBar, menu, false );
     }
 
     var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + caption + '</h1></div>');
@@ -36,8 +43,19 @@ function openWindow( caption, id=null, resizable=false, icoImg=null, x=0, y=0, s
     return winOuter;
 }
 
-function openFolderWindow( caption, id=null, icoImg=null, x=0, y=0 ) {
-    var winHandle = openWindow( caption, id, true, icoImg, x, y, false );
+function openFolderWindow( caption, id=null, icoImg=null, x=0, y=0, menu=null ) {
+
+    if( null == menu ) {
+        menu = [
+            {'text': 'File', 'children': [
+                {'text': 'Close', 'callback': function( m ) {
+                    winHandle.remove();
+                }}
+            ]}
+        ];
+    }
+
+    var winHandle = openWindow( caption, id, true, icoImg, x, y, menu, false );
     
     winHandle.addClass( 'window-folder' );
 
@@ -68,6 +86,34 @@ function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
     if( 'auto' != y ) {
         $(wrapper).css( 'top', y );
     }
+}
+
+function openCommandWindow( caption, id=null, icoImg=null, x=0, y=0, menu=null ) {
+
+    if( null == menu ) {
+        menu = [
+            {'text': 'File', 'children': [
+                {'text': 'Close', 'callback': function( m ) {
+                    winHandle.remove();
+                }}
+            ]}
+        ];
+    }
+
+    var winHandle = openWindow( caption, id, true, icoImg, x, y, menu, false );
+    
+    winHandle.addClass( 'window-command' );
+
+    var container = $('<textarea class="window-command-prompt"></textarea>');
+    
+    var wrapper = $('<div class="window-command-wrapper"></div>');
+    wrapper.append( container );
+
+    winHandle.find( '.window-form' ).append( wrapper );
+
+    winHandle.show();
+
+    return winHandle;
 }
 
 function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container='#desktop' ) {
@@ -141,7 +187,42 @@ function desktopSelectIcon( container, icon ) {
         $(icon).data( 'icon-bg' ) );
 }
 
-function desktopPopupMenu( container, items, x, y ) {
+function menuPopulate( container, menu, items, followMouse=true ) {
+    for( var i = 0 ; items.length > i ; i++ ) {
+        var menuItem = null;
+        if( 'divider' in items[i] && items[i].divider ) {
+            menuItem = $('<hr />');
+        } else {
+            menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
+            if( 'callback' in items[i] ) {
+                var menuCallback = items[i].callback;
+                menuItem.click( function( e ) {
+                    menuCallback( menuItem );
+                    menuClose( container );
+                    e.preventDefault();
+                } );
+            } else if( 'children' in items[i] ) {
+                var menuChildren = items[i].children;
+                menuItem.click( function( e ) {
+                    var x = menuItem.offset().left;
+                    var y = menuItem.offset().top + menuItem.height();
+
+                    /* Context menus follow mouse, not element. */
+                    if( followMouse ) {
+                        x = e.pageX;
+                        y = e.pageY;
+                    }
+
+                    menuPopup( container, menuChildren, x, y );
+                    e.preventDefault();
+                } );
+            }
+        }
+        menu.append( menuItem );
+    }
+}
+
+function menuPopup( container, items, x, y ) {
         
     var menuOuter = $('<div class="menu-outer"></div>');
     $('#desktop').append( menuOuter );
@@ -151,32 +232,18 @@ function desktopPopupMenu( container, items, x, y ) {
     var menuInner = $('<div class="menu-inner"></div>');
     menuOuter.append( menuInner );
 
-    for( var i = 0 ; items.length > i ; i++ ) {
-        var menuItem = null;
-        if( 'divider' in items[i] && items[i].divider ) {
-            menuItem = $('<hr />');
-        } else {
-            menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
-            menuCallback = items[i].callback;
-            menuItem.click( function( e ) {
-                menuCallback( menuItem );
-                desktopCloseMenu( container, menuOuter );
-                e.preventDefault();
-            } );
-        }
-        menuInner.append( menuItem );
-    }
-
+    menuPopulate( container, menuInner, items );
+    
     return menuOuter;
 }
 
-function desktopCloseMenu( container, menu ) {
+function menuClose( container, menu ) {
     if( null != menu ) {
         menu.remove();
     } else {
         /* Close all menus in this container. */
         $(container).children( '.menu-outer' ).each( function( idx, menuIter ) {
-            desktopCloseMenu( container, menuIter );
+            menuClose( container, menuIter );
         } );
     }
 }

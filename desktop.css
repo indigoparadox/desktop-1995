@@ -42,7 +42,7 @@ html, body {
     display: flex;
     flex-direction: column;
     min-width: 200px;
-    min-height: 100px;
+    min-height: 121px;
 }
 
 .window-outer .ui-resizable-se {
@@ -99,10 +99,33 @@ html, body {
     padding: 0;
 }
 
+.window-command .window-inner {
+    min-width: 481px;
+    min-height: 241px;
+}
+
 .window-form {
     position: relative;
     flex-grow: 1;
     padding-bottom: 4px; /* Compensate for 100% height. */
+}
+
+.window-command .window-form {
+    padding-bottom: 8px;
+}
+
+.window-command-wrapper {
+    position: relative;
+    padding: 0 6px 6px 0;
+    height: 100%;
+}
+
+.window-command-prompt {
+    background-color: black;
+    color: #a0a0a0;
+    position: relative;
+    height: 100%;
+    width: 100%;
 }
 
 /* Controls */
@@ -110,6 +133,7 @@ html, body {
 .input-text-wrapper,
 .input-textarea-wrapper,
 .input-select-wrapper,
+.window-command-wrapper,
 .window-folder-wrapper {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid #7f787f;
@@ -121,6 +145,7 @@ html, body {
 .input-text-wrapper input,
 .input-textarea-wrapper textarea,
 .input-textarea-wrapper select,
+.window-command-prompt,
 .window-folder-container {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid black;
@@ -138,7 +163,8 @@ html, body {
     padding: 1px 2px;
 }
 
-.input-text-wrapper input:focus {
+.input-text-wrapper input:focus,
+.window-command-wrapper textarea:focus {
     outline: none;
 }
 
@@ -221,6 +247,10 @@ html, body {
     overflow: scroll;
 }
 
+.window-command {
+    
+}
+
 /* Menus */
 
 .menu-outer {
@@ -245,6 +275,10 @@ html, body {
     display: block;
     padding: 3px 18px;
     margin: 0 1px;
+}
+
+.menubar .menu-item {
+    display: table;
 }
 
 .menu-item-icon {
