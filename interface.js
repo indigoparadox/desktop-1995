@@ -39,35 +39,44 @@ function _menuPopulate( container, menu, items, followMouse=true ) {
 
 /* Public Functions */
 
+function windowActivate( container, winHandle ) {
+    $(container).children( '.window' ).each( function( idx, winIter ) {
+        $(winIter).removeClass( 'window-active' );
+    } );
+
+    if( null != winHandle ) {
+        $(winHandle).addClass( 'window-active' );
+    }
+}
+
 function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true ) {
     
-    var winOuter = $('<div class="window-outer window-active"></div>');
+    var window = $('<div class="window"><form class="window-form"></form></div>');
     if( null != id ) {
-        winOuter.attr( 'id', id );
+        window.attr( 'id', id );
     }
     if( !show ) {
-        winOuter.css( 'display', 'none' );
+        window.css( 'display', 'none' );
     }
-    $('#desktop').append( winOuter );
+    $('#desktop').append( window );
 
-    var winInner = $('<div class="window-inner"><form class="window-form"></form></div>');
-    $(winOuter).append( winInner );
-    winOuter.draggable( {'handle': '.titlebar'} );
+    window.draggable( {'handle': '.titlebar'} );
     if( resizable ) {
-        winInner.resizable();
+        //window.resizable();
+        window.addClass( 'window-resizable' );
     }
 
-    winInner.css( 'width', w.toString() + 'px' );
-    winInner.css( 'height', h.toString() + 'px' );
+    window.css( 'width', w.toString() + 'px' );
+    window.css( 'height', h.toString() + 'px' );
 
     if( null != menu ) {
         var menuBar = $('<div class="menubar"></div>');
-        $(winInner).prepend( menuBar );
-        _menuPopulate( winOuter, menuBar, menu, false );
+        $(window).prepend( menuBar );
+        _menuPopulate( window, menuBar, menu, false );
     }
 
     var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + caption + '</h1></div>');
-    $(winInner).prepend( titlebar );
+    $(window).prepend( titlebar );
 
     /* Add the window icon. */
     var icon = $('<div class="titlebar-icon"></div>');
@@ -79,10 +88,14 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     var btnClose = $('<button class="titlebar-close">X</button>');
     $(titlebar).append( btnClose );
     $(btnClose).click( function() {
-        $(winOuter).remove();
+        $(window).remove();
     } );
 
-    return winOuter;
+    $(window).mousedown( function( e ) {
+        windowActivate( '#desktop', $(e.target).parents( '.window' ) );
+    } );
+
+    return window;
 }
 
 function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200 ) {
@@ -102,11 +115,7 @@ function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=n
     winHandle.addClass( 'window-folder' );
 
     var container = $('<div class="window-folder-container container"></div>');
-    
-    var wrapper = $('<div class="window-folder-wrapper"></div>');
-    wrapper.append( container );
-
-    winHandle.find( '.window-form' ).append( wrapper );
+    winHandle.find( '.window-form' ).append( container );
 
     winHandle.show();
 
@@ -116,17 +125,15 @@ function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=n
 function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
 
     /* Create a wrapper for the 3D chisel effect. */
-    var wrapper = $('<div class="input-text-wrapper"></div>');
-    var input = $('<input type="text" value="' + value + '" />');
-    $(win).find( '.window-form' ).append( wrapper );
-    $(wrapper).append( input );
-
+    var input = $('<input class="input-text" type="text" value="' + value + '" />');
+    $(win).find( '.window-form' ).append( input );
+    
     if( 'auto' != x ) {
-        $(wrapper).css( 'left', x );
+        $(input).css( 'left', x );
     }
 
     if( 'auto' != y ) {
-        $(wrapper).css( 'top', y );
+        $(input).css( 'top', y );
     }
 }
 
@@ -146,12 +153,8 @@ function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=
     
     winHandle.addClass( 'window-command' );
 
-    var container = $('<textarea class="window-command-prompt"></textarea>');
-    
-    var wrapper = $('<div class="window-command-wrapper"></div>');
-    wrapper.append( container );
-
-    winHandle.find( '.window-form' ).append( wrapper );
+    var prompt = $('<textarea class="window-command-prompt"></textarea>');
+    winHandle.find( '.window-form' ).append( prompt );
 
     winHandle.show();
 
@@ -266,18 +269,15 @@ function desktopSelectIcon( container, icon ) {
 }
 
 function menuPopup( container, items, x, y ) {
-        
-    var menuOuter = $('<div class="menu-outer"></div>');
-    $(container).append( menuOuter );
-    menuOuter.css( 'left', x.toString() + 'px' );
-    menuOuter.css( 'top', y.toString() + 'px' );
 
-    var menuInner = $('<div class="menu-inner"></div>');
-    menuOuter.append( menuInner );
+    var menu = $('<div class="menu-inner"></div>');
+    $(container).append( menu );
+    menu.css( 'left', x.toString() + 'px' );
+    menu.css( 'top', y.toString() + 'px' );
 
-    _menuPopulate( container, menuInner, items );
+    _menuPopulate( container, menu, items );
     
-    return menuOuter;
+    return menu;
 }
 
 function menuClose( container, menu ) {
