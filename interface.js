@@ -87,7 +87,7 @@ function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container
     $(iconWrapper).draggable( {'handle': '.desktop-icon-overlay' } );
 
     /* Setup action handlers. */
-    $(iconWrapper).click( function() {
+    $(iconWrapper).mousedown( function() {
         desktopSelectIcon( container, this );
     } );
     $(iconWrapper).dblclick( callback );
@@ -105,6 +105,11 @@ function desktopSelectIcon( container, icon ) {
             'background', $(iterIcon).data( 'icon-bg' ) );
     } );
 
+    if( null == icon ) {
+        /* No icon to select, do just leave it at that. */
+        return;
+    }
+
     /* Select this icon. */
     $(icon).addClass( 'desktop-icon-selected' );
     console.log( 'linear-gradient(to bottom, rgba(0, 0, 127, 0.3), rgba(0, 0, 127, 0.3)),' + $(icon).data( 'icon-bg' ) );
@@ -114,7 +119,9 @@ function desktopSelectIcon( container, icon ) {
 }
 
 $(document).ready( function() {
-    $('#desktop').click( function() {
-        //$('#desktop .desktop-icon').removeClass( 'desktop-icon-selected' );
+    $('#desktop').mousedown( function( e ) {
+        if( !$(e.target).hasClass( 'desktop-icon-overlay' ) ) {
+            desktopSelectIcon( '#desktop', null );
+        }
     } );
 } );

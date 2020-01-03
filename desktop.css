@@ -146,6 +146,13 @@ html, body {
     font-size: 12px; /* Rare text sizing in pixels for accuracy. */
     line-height: 18px;
     text-align: center;
+    margin-top: 3px;
+}
+
+.desktop-icon-selected .desktop-icon-text {
+    background-color: #00007f;
+    border: 1px dotted white;
+    margin-top: 2px;
 }
 
 .desktop-icon-selected .desktop-icon-overlay {
