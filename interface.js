@@ -51,32 +51,33 @@ function windowActivate( container, winHandle ) {
 
 function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true ) {
     
-    var window = $('<div class="window"><form class="window-form"></form></div>');
+    var winHandle = $('<div class="window"><form class="window-form"></form></div>');
     if( null != id ) {
-        window.attr( 'id', id );
+        winHandle.attr( 'id', id );
     }
     if( !show ) {
-        window.css( 'display', 'none' );
+        winHandle.css( 'display', 'none' );
     }
-    $('#desktop').append( window );
+    $('#desktop').append( winHandle );
 
-    window.draggable( {'handle': '.titlebar'} );
+    winHandle.draggable( {'handle': '.titlebar'} );
     if( resizable ) {
-        //window.resizable();
-        window.addClass( 'window-resizable' );
+        //winHandle.resizable();
+        winHandle.addClass( 'window-resizable' );
     }
 
-    window.css( 'width', w.toString() + 'px' );
-    window.css( 'height', h.toString() + 'px' );
+    winHandle.css( 'width', w.toString() + 'px' );
+    winHandle.css( 'height', h.toString() + 'px' );
 
     if( null != menu ) {
         var menuBar = $('<div class="menubar"></div>');
-        $(window).prepend( menuBar );
-        _menuPopulate( window, menuBar, menu, false );
+        winHandle.prepend( menuBar );
+        winHandle.addClass( 'window-menubar' );
+        _menuPopulate( winHandle, menuBar, menu, false );
     }
 
     var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + caption + '</h1></div>');
-    $(window).prepend( titlebar );
+    $(winHandle).prepend( titlebar );
 
     /* Add the window icon. */
     var icon = $('<div class="titlebar-icon"></div>');
@@ -88,14 +89,14 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     var btnClose = $('<button class="titlebar-close">X</button>');
     $(titlebar).append( btnClose );
     $(btnClose).click( function() {
-        $(window).remove();
+        $(winHandle).remove();
     } );
 
-    $(window).mousedown( function( e ) {
-        windowActivate( '#desktop', $(e.target).parents( '.window' ) );
+    $(winHandle).mousedown( function( e ) {
+        windowActivate( '#desktop', $(e.target).parents( '.winHandle' ) );
     } );
 
-    return window;
+    return winHandle;
 }
 
 function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200 ) {
@@ -153,7 +154,7 @@ function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=
     
     winHandle.addClass( 'window-command' );
 
-    var prompt = $('<textarea class="window-command-prompt"></textarea>');
+    var prompt = $('<textarea class="window-command-prompt input-textarea"></textarea>');
     winHandle.find( '.window-form' ).append( prompt );
 
     winHandle.show();
@@ -270,7 +271,7 @@ function desktopSelectIcon( container, icon ) {
 
 function menuPopup( container, items, x, y ) {
 
-    var menu = $('<div class="menu-inner"></div>');
+    var menu = $('<div class="menu"></div>');
     $(container).append( menu );
     menu.css( 'left', x.toString() + 'px' );
     menu.css( 'top', y.toString() + 'px' );
@@ -285,7 +286,7 @@ function menuClose( container, menu ) {
         menu.remove();
     } else {
         /* Close all menus in this container. */
-        $(container).children( '.menu-outer' ).each( function( idx, menuIter ) {
+        $(container).children( '.menu' ).each( function( idx, menuIter ) {
             menuClose( container, menuIter );
         } );
     }

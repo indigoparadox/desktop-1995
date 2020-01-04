@@ -10,15 +10,13 @@ html, body {
 /* Common Effects */
 
 .window:before,
-.menu:before,
-.window-properties-tab-pane:before,
-.window-properties-tab-tab a:before {
+.menu:before {
     content: " ";
     position: absolute;
-    left: -2px;
     top: -2px;
     right: -2px;
     bottom: -2px;
+    left: -2px;
     border-top: 1px solid #bfbfbf;
     border-left: 1px solid #bfbfbf;
     border-right: 1px solid black;
@@ -27,9 +25,7 @@ html, body {
 }
 
 .window,
-.menu,
-.window-properties-tab-pane,
-.window-properties-tab-tab a {
+.menu {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid #fff8ff;
     border-left: 1px solid #fff8ff;
@@ -131,12 +127,6 @@ html, body {
     padding-bottom: 7px;
 }
 
-/* .window-command-wrapper {
-    position: relative;
-    padding: 0 6px 6px 0;
-    height: 100%;
-} */
-
 .window-command-prompt {
     background-color: black;
     color: #a0a0a0;
@@ -146,6 +136,39 @@ html, body {
     bottom: 1px;
     left: 1px;
     resize: none;
+}
+
+.window-menubar .window-form {
+    top: 43px;
+}
+
+
+/* Tab panes have a slightly different chiseled pattern. */
+.window-properties-tab-pane:before,
+.window-properties-tab-tab a:before {
+    content: " ";
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-top: 1px solid #fff8ff;
+    border-left: 1px solid #fff8ff;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    z-index: -1;
+}
+
+.window-properties-tab-pane,
+.window-properties-tab-tab a {
+    /* Use border and positioning to simulate shadow effect. */
+    border-top: 1px solid #dfd8df;
+    border-left: 1px solid #dfd8df;
+    border-right: 1px solid #7f787f;
+    border-bottom: 1px solid #7f787f;
+    background-color: #bfbfbf;
+    position: relative;
+    padding: 1px;
 }
 
 .window-properties-tabs {
@@ -172,15 +195,6 @@ html, body {
     list-style-type: none;
 }
 
-.window-properties-tabs > ul > li.ui-tabs-active a:before {
-    border-bottom: 2px solid #bfbfbf;
-}
-
-.window-properties-tabs > ul > li.ui-tabs-active {
-    border-bottom: none;
-    margin: 0 0 -1px 0;
-}
-
 .window-properties-tab-tab a:before {
     border-bottom: none;
     border-radius: 3px 3px 0 0;
@@ -188,11 +202,24 @@ html, body {
 
 .window-properties-tab-tab a {
     color: black;
+    line-height: 10px;
     text-decoration: none;
-    border-bottom: none;
+    border-bottom: 1px solid white;
     border-radius: 3px 3px 0 0;
     display: block;
+    margin: 0 1px 0 2px;
     padding: 3px 7px;
+}
+
+.window-properties-tabs > ul > li.ui-tabs-active a:before {
+    border-bottom: 2px solid #bfbfbf;
+}
+
+.window-properties-tabs > ul > li.ui-tabs-active a {
+    line-height: 14px;
+    border-bottom: none;
+    margin: 0 0 -1px 0;
+    padding: 3px 9px;
 }
 
 .window-properties-tab-wrapper {
@@ -348,6 +375,12 @@ html, body {
     display: block;
     padding: 3px 18px;
     margin: 0 1px;
+}
+
+.menubar {
+    position: absolute;
+    left: 1px;
+    top: 21px;
 }
 
 .menubar .menu-item {
