@@ -1,6 +1,35 @@
 
 /* Internal Utility Functions */
 
+/* This wrapper function limits the scope of the onClick handler closure, so
+ * that the callback set for the last assigned menu item in a loop isn't
+ * also inadvertantly assigned to all previous menu items handled in that loop
+ * due to the changing value of i in the loop control.
+ */
+function _menuAssignItemCallback( container, item, callback ) {
+    item.click( function( e ) {
+        callback( item );
+        menuClose( container );
+        e.preventDefault();
+    } );
+}
+
+function _menuAssignItemChildren( container, item, children, followMouse ) {
+    item.click( function( e ) {
+        var x = item.offset().left - $(container).offset().left;
+        var y = item.offset().top - $(container).offset().top + item.height();
+
+        /* Context menus follow mouse, not element. */
+        if( followMouse ) {
+            x = e.pageX;
+            y = e.pageY;
+        }
+
+        menuPopup( container, children, x, y );
+        e.preventDefault();
+    } );
+}
+
 function _menuPopulate( container, menu, items, followMouse=true ) {
     /* Iterate the list of menu items and append them to the provided menu. */
     for( var i = 0 ; items.length > i ; i++ ) {
@@ -10,30 +39,49 @@ function _menuPopulate( container, menu, items, followMouse=true ) {
         } else {
             menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
             if( 'callback' in items[i] ) {
-                var menuCallback = items[i].callback;
-                menuItem.click( function( e ) {
-                    menuCallback( menuItem );
-                    menuClose( container );
-                    e.preventDefault();
-                } );
+                _menuAssignItemCallback( container, menuItem, items[i].callback );
             } else if( 'children' in items[i] ) {
-                var menuChildren = items[i].children;
-                menuItem.click( function( e ) {
-                    var x = menuItem.offset().left - $(container).offset().left;
-                    var y = menuItem.offset().top - $(container).offset().top + menuItem.height();
-
-                    /* Context menus follow mouse, not element. */
-                    if( followMouse ) {
-                        x = e.pageX;
-                        y = e.pageY;
-                    }
-
-                    menuPopup( container, menuChildren, x, y );
-                    e.preventDefault();
-                } );
+                _menuAssignItemChildren( 
+                    container, menuItem, items[i].children, followMouse );
             }
         }
         menu.append( menuItem );
+    }
+}
+
+function _menuAddWindowMenu( winHandle, element, leftClick=false ) {
+    var popupHandler = function( e ) {
+        var menu = [
+            {'text': 'Restore', 'callback': function( m ) {
+
+            }},
+            {'text': 'Move', 'callback': function( m ) {
+                
+            }},
+            {'text': 'Size', 'callback': function( m ) {
+                
+            }},
+            {'text': 'Minimize', 'callback': function( m ) {
+                
+            }},
+            {'text': 'Maximize', 'callback': function( m ) {
+                
+            }},
+            {'text': 'Close', 'callback': function( m ) {
+                winHandle.remove();
+            }}
+        ];
+
+        menuClose( winHandle, null );
+        menuPopup( winHandle, menu,
+            e.pageX - winHandle.offset().left,
+            e.pageY - winHandle.offset().top );
+    };
+
+    if( leftClick ) {
+        $(element).click( popupHandler );
+    } else {
+        $(element).contextmenu( popupHandler );
     }
 }
 
@@ -69,6 +117,11 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     winHandle.css( 'width', w.toString() + 'px' );
     winHandle.css( 'height', h.toString() + 'px' );
 
+    /* Close any menus opened by clicking in parent elements. */
+    /* winHandle.click( function( e ) {
+        menuClose( winHandle, null );
+    } ); */
+
     if( null != menu ) {
         var menuBar = $('<div class="menubar"></div>');
         winHandle.prepend( menuBar );
@@ -79,11 +132,19 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + caption + '</h1></div>');
     $(winHandle).prepend( titlebar );
 
+    _menuAddWindowMenu( winHandle, titlebar, false );
+    titlebar.children( '.titlebar-text' ).click( function( e ) {
+        /* Plain clicks on the titlebar close all menus. */
+        menuClose( winHandle, null );
+    } );
+
     /* Add the window icon. */
     var icon = $('<div class="titlebar-icon"></div>');
     $(titlebar).prepend( icon );
     icon.css( 'background', 'url(' + staticPath + icoImg + 
         ') right ' + icoX.toString() + 'px bottom ' + icoY.toString() + 'px' );
+
+    _menuAddWindowMenu( winHandle, icon, true );
 
     /* Add the window close button. */
     var btnClose = $('<button class="titlebar-close">x</button>');
@@ -339,7 +400,7 @@ function menuClose( container, menu ) {
         menu.remove();
     } else {
         /* Close all menus in this container. */
-        $(container).children( '.menu' ).each( function( idx, menuIter ) {
+        $(container).find( '.menu' ).each( function( idx, menuIter ) {
             menuClose( container, menuIter );
         } );
     }

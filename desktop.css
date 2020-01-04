@@ -1,6 +1,8 @@
 
 html, body {
     background-color: #00787f;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
     margin: 0;
     padding: 0;
     width: 100%;
