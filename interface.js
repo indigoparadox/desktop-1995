@@ -37,30 +37,6 @@ function _menuPopulate( container, menu, items, followMouse=true ) {
     }
 }
 
-function _windowOpenText( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=0, y=0, w=480, h=260 ) {
-
-    /*
-    if( null == menu ) {
-        menu = [
-            {'text': 'File', 'children': [
-                {'text': 'Close', 'callback': function( m ) {
-                    winHandle.remove();
-                }}
-            ]}
-        ];
-    }
-    */
-
-    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
-    
-    winHandle.addClass( 'window-text' );
-
-    var prompt = $('<textarea class="input-textarea"></textarea>');
-    winHandle.find( '.window-form' ).append( prompt );
-
-    return winHandle;
-}
-
 /* Public Functions */
 
 function windowActivate( container, winHandle ) {
@@ -110,7 +86,7 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
         ') right ' + icoX.toString() + 'px bottom ' + icoY.toString() + 'px' );
 
     /* Add the window close button. */
-    var btnClose = $('<button class="titlebar-close">X</button>');
+    var btnClose = $('<button class="titlebar-close">x</button>');
     $(titlebar).append( btnClose );
     $(btnClose).click( function() {
         $(winHandle).remove();
@@ -151,7 +127,7 @@ function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
 
     /* Create a wrapper for the 3D chisel effect. */
     var input = $('<input class="input-text" type="text" value="' + value + '" />');
-    $(win).find( '.window-form' ).append( input );
+    $(win).children( '.window-form' ).append( input );
     
     if( 'auto' != x ) {
         $(input).css( 'left', x );
@@ -164,10 +140,70 @@ function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
 
 function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=0, y=0, w=480, h=260 ) {
 
-    var winHandle = _windowOpenText( caption, id, icoImg, icoX, icoY, menu, x, y, w, h );
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
+
+    var cmd = $('<div class="input-prompt"><div class="backbuffer"></div><div class="input-line-caret"><span class="input-line"></span><div class="input-caret"></div></div></div>');
+
+    var cmdInput = $('<input type="text" class="input-textarea" />');
+
+    winHandle.children( '.window-form' ).append( cmd );
+    winHandle.children( '.window-form' ).append( cmdInput );
+
+    $(cmd).click( function() {
+        $(cmdInput).focus();
+    } );
+
+    /* Suppress form submission. */
+    $(cmdInput).keypress( function( e ) {
+        if( 13 == e.keyCode ) {
+            /* Don't submit form on enter. */
+            e.preventDefault();
+        }
+    } );
+
+    /* Handle line input. */
+    $(cmdInput).keyup( function( e ) {
+        if( 13 == e.keyCode ) {
+            /* Enter was pressed. */
+
+            $(this).val( '' ); /* Clear virtual input. */
+            
+            /* Put the old line in the backbuffer. */
+            var line = $(cmd)
+                .children( '.input-line-caret' )
+                .children( '.input-line' )
+                .remove();
+            $(cmd).children( '.backbuffer' ).append( line );
+            $(cmd).children( '.backbuffer' ).append( '<br />' );
+
+            /* TODO: Process line input. */
+
+            /* Create a new input line. */
+            $(cmd).children( '.input-line-caret' )
+                .prepend( '<span class="input-line"></span>' );
+
+            e.preventDefault();
+        } else {
+            $(cmd)
+                .children( '.input-line-caret' )
+                .children( '.input-line' )
+                .text( $(this).val() );
+        }
+    } );
 
     winHandle.addClass( 'window-command' );
     winHandle.show();
+
+    return winHandle;
+}
+
+function windowOpenNotepad() {
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
+    
+    winHandle.addClass( 'window-notepad' );
+
+    var prompt = $('<textarea class="input-textarea"></textarea>');
+    winHandle.children( '.window-form' ).append( prompt );
 
     return winHandle;
 }
@@ -182,13 +218,22 @@ function windowOpenProperties( caption, id=null, icoImg=null, icoX=0, icoY=0, x=
     winHandle.find( '.window-form' ).append( tabsWrapper );*/
 
     var tabs = $('<div class="window-properties-tabs"><ul></ul></div>');
-    winHandle.find( '.window-form' ).append( tabs );
+    winHandle.children( '.window-form' ).append( tabs );
 
     var buttons = $('<div class="window-properties-buttons"></div>');
-    winHandle.find( '.window-form' ).append( buttons );
+    winHandle.children( '.window-form' ).append( buttons );
+
+    var btnCancel = $('<button class="button-cancel">Cancel</button>');
+    buttons.append( btnCancel );
+    $(btnCancel).click( function( e ) {
+        e.preventDefault();
+    } );
 
     var btnOK = $('<button class="button-ok">OK</button>');
     buttons.append( btnOK );
+    $(btnOK).click( function( e ) {
+        e.preventDefault();
+    } );
 
     winHandle.show();
 

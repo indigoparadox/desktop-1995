@@ -36,6 +36,24 @@ html, body {
     padding: 1px;
 }
 
+button:focus {
+    outline: none;
+}
+
+button:active:before {
+    border-top: 1px solid #dfd8df;
+    border-left: 1px solid #dfd8df;
+    border-right: 1px solid #7f787f;
+    border-bottom: 1px solid #7f787f;
+}
+
+button:active {
+    border-top: 1px solid #fff8ff;
+    border-left: 1px solid #fff8ff;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
 /* Windows */
 
 .window {
@@ -107,7 +125,9 @@ html, body {
     color: white;
 }
 
-.titlebar-close {
+.titlebar button {
+    font-weight: bold;
+    line-height: 8px;
     width: 14px;
     height: 14px;
     margin: 2px;
@@ -123,22 +143,52 @@ html, body {
     left: 1px;
 }
 
-.window-command .window-form {
+.window-notepad .window-form {
     padding: 1px 7px 7px 0;
 }
 
-.window-text .input-textarea {
+.window-notepad .input-textarea {
     position: relative;
     width: 100%;
     height: 100%;
     resize: none;
 }
 
-.window-command .input-textarea {
+.window-command .window-form {
+    padding: 1px 7px 7px 0;
+}
+
+.window-command .input-prompt {
     background-color: black;
     color: #a0a0a0;
     font-family: fixedsys, 'Courier New', Courier, monospace;
+    font-size: 12px;
     font-weight: bold;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    bottom: 2px;
+    left: 2px;
+    padding: 1px 0;
+}
+
+.window-command .input-prompt span {
+    float: left;
+    padding-left: 3px;
+    white-space: pre;
+}
+
+.window-command .input-caret {
+    float: left;
+    width: 5px;
+    height: 14px;
+    background-color: #a0a0a0;    
+}
+
+.window-command .input-textarea {
+    width: 0;
+    height: 0;
+    opacity: 0;
 }
 
 .window-menubar .window-form {
@@ -146,6 +196,7 @@ html, body {
 }
 
 /* Tab panes have a slightly different chiseled pattern. */
+button:before,
 .window-properties-tab-pane:before,
 .window-properties-tab-tab a:before {
     content: " ";
@@ -161,6 +212,7 @@ html, body {
     z-index: -1;
 }
 
+button,
 .window-properties-tab-pane,
 .window-properties-tab-tab a {
     /* Use border and positioning to simulate shadow effect. */
@@ -233,12 +285,14 @@ html, body {
 }
 
 .window-properties-buttons {
-    display: flex;
-    flex-direction: row;
+    width: 100%;
 }
 
 .window-properties-buttons button {
-
+    margin-right: 8px;
+    width: 70px;
+    height: 20px;
+    float: right;
 }
 
 /* Controls */
@@ -246,7 +300,7 @@ html, body {
 .input-text:before,
 .input-textarea:before,
 .input-select:before,
-.window-command-prompt:before,
+.input-prompt:before,
 .window-folder-container:before {
     /* Use border and positioning to simulate shadow effect. */
     content: " ";
@@ -265,7 +319,7 @@ html, body {
 .input-text,
 .input-textarea,
 .input-select,
-.window-command-prompt,
+.input-prompt,
 .window-folder-container {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid black;
