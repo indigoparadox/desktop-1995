@@ -124,24 +124,26 @@ html, body {
 }
 
 .window-command .window-form {
-    padding-bottom: 7px;
+    padding: 1px 7px 7px 0;
 }
 
-.window-command-prompt {
+.window-text .input-textarea {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    resize: none;
+}
+
+.window-command .input-textarea {
     background-color: black;
     color: #a0a0a0;
-    position: absolute;
-    top: 1px;
-    right: 1px;
-    bottom: 1px;
-    left: 1px;
-    resize: none;
+    font-family: fixedsys, 'Courier New', Courier, monospace;
+    font-weight: bold;
 }
 
 .window-menubar .window-form {
     top: 43px;
 }
-
 
 /* Tab panes have a slightly different chiseled pattern. */
 .window-properties-tab-pane:before,
@@ -222,18 +224,12 @@ html, body {
     padding: 3px 9px;
 }
 
-.window-properties-tab-wrapper {
+.window-properties-tab-pane {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     position: relative;
     z-index: 10;
-}
-
-.window-properties-tab-pane {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
 }
 
 .window-properties-buttons {

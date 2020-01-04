@@ -37,6 +37,30 @@ function _menuPopulate( container, menu, items, followMouse=true ) {
     }
 }
 
+function _windowOpenText( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=0, y=0, w=480, h=260 ) {
+
+    /*
+    if( null == menu ) {
+        menu = [
+            {'text': 'File', 'children': [
+                {'text': 'Close', 'callback': function( m ) {
+                    winHandle.remove();
+                }}
+            ]}
+        ];
+    }
+    */
+
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
+    
+    winHandle.addClass( 'window-text' );
+
+    var prompt = $('<textarea class="input-textarea"></textarea>');
+    winHandle.find( '.window-form' ).append( prompt );
+
+    return winHandle;
+}
+
 /* Public Functions */
 
 function windowActivate( container, winHandle ) {
@@ -140,23 +164,9 @@ function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
 
 function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=0, y=0, w=480, h=260 ) {
 
-    if( null == menu ) {
-        menu = [
-            {'text': 'File', 'children': [
-                {'text': 'Close', 'callback': function( m ) {
-                    winHandle.remove();
-                }}
-            ]}
-        ];
-    }
+    var winHandle = _windowOpenText( caption, id, icoImg, icoX, icoY, menu, x, y, w, h );
 
-    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
-    
     winHandle.addClass( 'window-command' );
-
-    var prompt = $('<textarea class="window-command-prompt input-textarea"></textarea>');
-    winHandle.find( '.window-form' ).append( prompt );
-
     winHandle.show();
 
     return winHandle;
@@ -186,11 +196,9 @@ function windowOpenProperties( caption, id=null, icoImg=null, icoX=0, icoY=0, x=
 }
 
 function windowPropertiesAddTab( winHandle, caption, id ) {
-    var tabWrapper = $('<div class="window-properties-tab-wrapper" id="' + id + '"></div>');
-    $(winHandle).find( '.window-properties-tabs' ).append( tabWrapper );
-
-    var tabPane = $('<div class="window-properties-tab-pane"></div>');
-    tabWrapper.append( tabPane );
+    
+    var tabPane = $('<div class="window-properties-tab-pane" id="' + id + '"></div>');
+    $(winHandle).find( '.window-properties-tabs' ).append( tabPane );
 
     var tab = '<li class="window-properties-tab-tab"><a href="#' + id + '">' + caption + '</a></li>';
     var tabs = $(winHandle).find( '.window-properties-tabs > ul' ).append( tab );
