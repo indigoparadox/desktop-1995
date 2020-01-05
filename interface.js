@@ -156,12 +156,16 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     } );
 
     /* Add the window icon. */
-    var icon = $('<div class="titlebar-icon"></div>');
-    $(titlebar).prepend( icon );
-    icon.css( 'background', 'url(' + staticPath + icoImg + 
-        ') right ' + icoX.toString() + 'px bottom ' + icoY.toString() + 'px' );
+    if( null != icoImg ) {
+        var icon = $('<div class="titlebar-icon"></div>');
+        $(titlebar).prepend( icon );
+        icon.css( 'background', 'url(' + staticPath + icoImg + 
+            ') right ' + icoX.toString() + 'px bottom ' + icoY.toString() + 'px' );
 
-    _menuAddWindowMenu( winHandle, icon, true );
+        _menuAddWindowMenu( winHandle, icon, true );
+    } else {
+        titlebar.addClass( 'titlebar-no-icon' );
+    }
 
     /* Add the window close button. */
     var btnClose = $('<button class="titlebar-close">x</button>');
@@ -302,8 +306,8 @@ function windowOpenNotepad() {
     return winHandle;
 }
 
-function windowOpenProperties( caption, id=null, icoImg=null, icoX=0, icoY=0, x=0, y=0 ) {
-    var winHandle = windowOpen( caption, id, false, icoImg, icoX, icoY, null, x, y, 408, 446, false );
+function windowOpenProperties( caption, id=null, x=0, y=0 ) {
+    var winHandle = windowOpen( caption, id, false, null, 0, 0, null, x, y, 408, 446, false );
     
     winHandle.addClass( 'window-properties' );
     

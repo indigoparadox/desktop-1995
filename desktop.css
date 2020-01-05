@@ -401,6 +401,7 @@ button,
 .desktop-icon-img {
     display: block;
     margin: 0 auto;
+    position: relative;
     width: 32px;
     height: 32px;
 }
@@ -421,16 +422,6 @@ button,
     margin: 5px 0 0 0;
 }
 
-.window-folder-container .desktop-icon-text {
-    color: black;
-}
-
-.desktop-icon-selected .desktop-icon-text {
-    background-color: #00007f;
-    border: 1px dotted white;
-    margin: 4px 0 0 0;
-}
-
 .window-folder-container {
     background-color: white;
     position: absolute;
@@ -439,6 +430,21 @@ button,
     bottom: 2px;
     left: 2px;
     /* overflow: scroll; */
+}
+
+.window-folder-container .desktop-icon-text {
+    color: black;
+}
+
+.window-folder-container .desktop-icon-selected .desktop-icon-img {
+    right: 1px;
+}
+
+.desktop-icon-selected .desktop-icon-text {
+    background-color: #00007f;
+    color: white;
+    border: 1px dotted white;
+    margin: 4px 0 0 0;
 }
 
 /* Menus */
