@@ -227,6 +227,10 @@ function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=n
     return winHandle;
 }
 
+function browserURLWaybackify( url ) {
+    return 'http://web.archive.org/web/19981202230410/' + url;
+}
+
 function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='', menu=null, x=10, y=10, w=640, h=480 ) {
     if( null == menu ) {
         menu = [
@@ -242,46 +246,27 @@ function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
     
     winHandle.addClass( 'window-browser' );
 
-    var browser = $('<iframe class="browser-pane" src="' + url + '"></iframe>');
+    // This window type still uses wrappers because the pseudo-elements are 
+    // rather prone to yet-unexplainable misbehaviors.
+    var browser = $('<div class="browser-pane-wrapper"><iframe class="browser-pane" src="' + url + '"></iframe></div>');
     winHandle.children( '.window-form' ).append( browser );
 
-    var offsetBottom = 91;
-    var offsetRight = 10;
-    // The iframe element doesn't seem to like our absolute positioning trick,
-    // and it has its own chisel effect, so we're handling it a bit differently,
-    // here...
-    winHandle.on( 'resize', function( e, ui ) {
-        var windowWidth = parseInt( winHandle.css( 'width' ) );
-        var windowHeight = parseInt( winHandle.css( 'height' ) );
-        browser.css( 'width', (windowWidth - offsetRight).toString() + 'px' );
-        browser.css( 'height', (windowHeight - offsetBottom).toString() + 'px' );
-    } );
-    var windowWidth = parseInt( winHandle.css( 'width' ) );
-    var windowHeight = parseInt( winHandle.css( 'height' ) );
-    browser.css( 'width', (windowWidth - offsetRight).toString() + 'px' );
-    browser.css( 'height', (windowHeight - offsetBottom).toString() + 'px' );
-
-    var urlBox = $('<div class="url-bar"><input type="text" class="url-address input-text" value="' + url + '" /></div>')
+    var urlBox = $('<div class="url-bar"><div class="input-url-wrapper"><input type="text" class="input-url" value="' + url + '" /></div></div>')
     winHandle.children( '.window-form' ).prepend( urlBox );
+
+    winHandle.find( '.input-url' ).keypress( function( e ) {
+        if( 13 == e.keyCode ) {
+            // Enter was pressed.
+            var newLoc = browserURLWaybackify(
+                winHandle.find( '.input-url' ).val() );
+            winHandle.find( '.browser-pane' ).attr( 'src', newLoc );
+            e.preventDefault();
+        }
+    } );
 
     winHandle.show();
 
     return winHandle;
-}
-
-function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
-
-    /* Create a wrapper for the 3D chisel effect. */
-    var input = $('<input class="input-text" type="text" value="' + value + '" />');
-    $(win).children( '.window-form' ).append( input );
-    
-    if( 'auto' != x ) {
-        $(input).css( 'left', x );
-    }
-
-    if( 'auto' != y ) {
-        $(input).css( 'top', y );
-    }
 }
 
 function windowCommandEnterLine( winHandle, text ) {

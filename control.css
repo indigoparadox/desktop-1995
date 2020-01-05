@@ -51,6 +51,8 @@
 }
 
 .input-text,
+.input-url,
+.browser-pane,
 .input-textarea,
 .input-select,
 .input-prompt,
@@ -62,13 +64,13 @@
     border-right: 1px solid #bfbfbf;
 }
 
-
 .input-text {
     padding: 1px 2px;
 }
 
 .input-text:focus,
 .input-textarea:focus,
+.input-url:focus,
 .window-properties-tab-tab a:focus {
     outline: none;
 }
@@ -149,16 +151,50 @@
 
 /* Window: Browser */
 
-.window-browser .browser-pane {
+.browser-pane-wrapper,
+.input-url-wrapper {
+    border-top: 1px solid #7f787f;
+    border-left: 1px solid #7f787f;
+    border-bottom: 1px solid #fff8ff;
+    border-right: 1px solid #fff8ff;
+}
+
+.window-browser .browser-pane-wrapper {
+    padding-right: 2px;
+    padding-bottom: 2px;
     position: absolute;
-    top: 23px;
+    top: 27px;
     right: 1px;
     bottom: 1px;
     left: 1px;
 }
 
+.window-browser .browser-pane {
+    width: 100%;
+    height: 100%;
+}
+
 .window-browser .url-bar {
+    display: flex;
+    flex-direction: column;
+    padding: 0 2px 0 2px;
     position: relative;
+    height: 20px;
+}
+
+.window-browser .input-url-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.window-browser .input-url {
+    position: relative;
+    height: 14px;
 }
 
 /* Window: Properties */
