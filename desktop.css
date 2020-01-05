@@ -240,6 +240,14 @@ button:active {
     flex-grow: 1;
 }
 
+.window-browser .browser-pane {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+}
+
 /* Tab panes have a slightly different chiseled pattern. */
 button:before,
 .window-properties-tab-pane:before,
@@ -457,7 +465,7 @@ button,
     color: black;
 }
 
-.window-folder-container .desktop-icon-selected .desktop-icon-img {
+.desktop-icon-selected .desktop-icon-img {
     right: 1px;
 }
 

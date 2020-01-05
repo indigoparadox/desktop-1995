@@ -227,6 +227,39 @@ function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=n
     return winHandle;
 }
 
+function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='', menu=null, x=10, y=10, w=640, h=480 ) {
+    if( null == menu ) {
+        menu = [
+            {'text': 'File', 'children': [
+                {'text': 'Close', 'callback': function( m ) {
+                    winHandle.remove();
+                }}
+            ]}
+        ];
+    }
+
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false, true );
+    
+    winHandle.addClass( 'window-browser' );
+
+    var browser = $('<iframe class="browser-pane" src="' + url + '"></iframe>');
+    winHandle.find( '.window-form' ).append( browser );
+
+    winHandle.addClass( 'window-scroll-contents' );
+
+    winHandle.on( 'resize', function( e, ui ) {
+        console.log( browser );
+        var windowWidth = parseInt( winHandle.css( 'width' ) );
+        var windowHeight = parseInt( winHandle.css( 'height' ) );
+        browser.css( 'width', (windowWidth - 10).toString() + 'px' );
+        browser.css( 'height', (windowHeight - 68).toString() + 'px' );
+    } );
+
+    winHandle.show();
+
+    return winHandle;
+}
+
 function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
 
     /* Create a wrapper for the 3D chisel effect. */
