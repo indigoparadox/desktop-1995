@@ -1,0 +1,40 @@
+
+.menu {
+    position: absolute;
+    display: inline-block;
+    margin: 0;
+    padding: 1px;
+    z-index: 20;
+}
+
+.menu-item {
+    color: black;
+    font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
+    font-size: 12px; /* Rare text sizing in pixels for accuracy. */
+    line-height: 14px;
+    text-decoration: none;
+    display: block;
+    padding: 3px 18px;
+    margin: 0 1px;
+}
+
+.menubar {
+    position: absolute;
+    left: 1px;
+    top: 21px;
+}
+
+.menubar .menu-item {
+    display: table;
+    padding: 3px;
+}
+
+.menu-item-icon {
+    line-height: 20px;
+    padding: 3px 28px;
+}
+
+.menu-item:hover {
+    background-color: #00007f;
+    color: white;
+}

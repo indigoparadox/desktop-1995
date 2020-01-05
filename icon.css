@@ -1,0 +1,55 @@
+
+.window-folder-container .desktop-icon-text {
+    color: black;
+}
+
+.desktop-icon {
+    display: inline-block;
+    position: absolute;
+    padding: 0;
+}
+
+.desktop-icon-overlay {
+    padding: 5px;
+    position: absolute;
+    left: -5px; /* Cover parent padding. */
+    top: -5px; /* Cover parent padding. */
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.desktop-icon-img {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    width: 32px;
+    height: 32px;
+}
+
+.desktop-icon-text-center {
+    display: table;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.desktop-icon-text {
+    color: white;
+    font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
+    font-size: 12px; /* Rare text sizing in pixels for accuracy. */
+    line-height: 12px;
+    text-align: center;
+    display: inline-block;
+    margin: 5px 0 0 0;
+}
+
+.desktop-icon-selected .desktop-icon-img {
+    right: 1px;
+}
+
+.desktop-icon-selected .desktop-icon-text {
+    background-color: #00007f;
+    color: white;
+    border: 1px dotted white;
+    margin: 4px 0 0 0;
+}
