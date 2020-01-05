@@ -243,17 +243,26 @@ function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
     winHandle.addClass( 'window-browser' );
 
     var browser = $('<iframe class="browser-pane" src="' + url + '"></iframe>');
-    winHandle.find( '.window-form' ).append( browser );
+    winHandle.children( '.window-form' ).append( browser );
 
-    winHandle.addClass( 'window-scroll-contents' );
-
+    var offsetBottom = 91;
+    var offsetRight = 10;
+    // The iframe element doesn't seem to like our absolute positioning trick,
+    // and it has its own chisel effect, so we're handling it a bit differently,
+    // here...
     winHandle.on( 'resize', function( e, ui ) {
-        console.log( browser );
         var windowWidth = parseInt( winHandle.css( 'width' ) );
         var windowHeight = parseInt( winHandle.css( 'height' ) );
-        browser.css( 'width', (windowWidth - 10).toString() + 'px' );
-        browser.css( 'height', (windowHeight - 68).toString() + 'px' );
+        browser.css( 'width', (windowWidth - offsetRight).toString() + 'px' );
+        browser.css( 'height', (windowHeight - offsetBottom).toString() + 'px' );
     } );
+    var windowWidth = parseInt( winHandle.css( 'width' ) );
+    var windowHeight = parseInt( winHandle.css( 'height' ) );
+    browser.css( 'width', (windowWidth - offsetRight).toString() + 'px' );
+    browser.css( 'height', (windowHeight - offsetBottom).toString() + 'px' );
+
+    var urlBox = $('<div class="url-bar"><input type="text" class="url-address input-text" value="' + url + '" /></div>')
+    winHandle.children( '.window-form' ).prepend( urlBox );
 
     winHandle.show();
 

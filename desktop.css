@@ -242,10 +242,14 @@ button:active {
 
 .window-browser .browser-pane {
     position: absolute;
-    top: 1px;
+    top: 23px;
     right: 1px;
     bottom: 1px;
     left: 1px;
+}
+
+.window-browser .url-bar {
+    position: relative;
 }
 
 /* Tab panes have a slightly different chiseled pattern. */
