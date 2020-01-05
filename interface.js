@@ -350,9 +350,11 @@ function windowPropertiesAddTab( winHandle, caption, id ) {
     return tabPane;
 }
 
-function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container='#desktop' ) {
+function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container='#desktop', cbData=null ) {
     var icoWidth = 32;
     var icoHeight = 32;
+
+    console.assert( $(container).length == 1 );
     
     var icoImg = $('<div class="desktop-icon-img"></div>');
 
@@ -393,7 +395,7 @@ function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container
     $(iconWrapper).mousedown( function() {
         desktopSelectIcon( container, this );
     } );
-    $(iconWrapper).dblclick( callback );
+    $(iconWrapper).on( 'dblclick', cbData, callback );
 
     return iconWrapper;
 }
