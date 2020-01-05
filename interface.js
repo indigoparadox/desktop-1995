@@ -101,12 +101,6 @@ function windowActivate( container, winHandle ) {
         return  aInt - bInt;
     } )
     .each( function( idx, winIter ) {
-        /* console.log( $(winIter).css( 'z-index' ) );
-        if( lastZ == parseInt( $(winIter).css( 'z-index' ) ) ) {
-            $(winIter).css( 'z-index', (lastZ + 1) );
-        }
-
-        lastZ = parseInt( $(winIter).css( 'z-index') ); */
         lastZ += 1;
         $(winIter).css( 'z-index', lastZ );
     } );
@@ -118,7 +112,7 @@ function windowActivate( container, winHandle ) {
     $(winHandle).css( 'z-index', lastZ + 2 );
 }
 
-function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true ) {
+function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true, statusBar=false ) {
     
     var winHandle = $('<div class="window"><form class="window-form"></form></div>');
     if( null != id ) {
@@ -133,7 +127,7 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
 
     winHandle.draggable( {'handle': '.titlebar'} );
     if( resizable ) {
-        //winHandle.resizable();
+        winHandle.resizable();
         winHandle.addClass( 'window-resizable' );
     }
 
@@ -180,6 +174,12 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
         windowActivate( '#desktop', $(e.target).parents( '.window' ) );
     } );
 
+    if( statusBar ) {
+        winHandle.addClass( 'window-statusbar' );
+        var statusBarHandle = $('<div class="statusbar"></div>');
+        winHandle.append( statusBarHandle );
+    }
+
     return winHandle;
 }
 
@@ -195,12 +195,18 @@ function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=n
         ];
     }
 
-    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false, true );
     
     winHandle.addClass( 'window-folder' );
 
     var container = $('<div class="window-folder-container container"></div>');
     winHandle.find( '.window-form' ).append( container );
+
+    var trayObjects = $('<div class="tray tray-objects"></div>');
+    winHandle.children( '.statusbar' ).append( trayObjects );
+
+    var trayBytes = $('<div class="tray tray-bytes"></div>');
+    winHandle.children( '.statusbar' ).append( trayBytes );
 
     winHandle.show();
 
@@ -297,7 +303,7 @@ function windowOpenNotepad() {
 }
 
 function windowOpenProperties( caption, id=null, icoImg=null, icoX=0, icoY=0, x=0, y=0 ) {
-    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, null, x, y, 408, 446, false );
+    var winHandle = windowOpen( caption, id, false, icoImg, icoX, icoY, null, x, y, 408, 446, false );
     
     winHandle.addClass( 'window-properties' );
     

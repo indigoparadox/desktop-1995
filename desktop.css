@@ -104,7 +104,7 @@ button:active {
 .titlebar-icon {
     display: inline-block;
     position: relative;
-    margin: 1px;
+    margin: 1px 1px 1px 3px;
     width: 16px;
     height: 16px;
     vertical-align: middle;
@@ -194,7 +194,40 @@ button:active {
 }
 
 .window-menubar .window-form {
-    top: 43px;
+    top: 41px;
+}
+
+.window-statusbar .window-form {
+    bottom: 21px;
+}
+
+.statusbar {
+    display: flex;
+    position: absolute;
+    height: 22px;
+    right: 1px;
+    bottom: 1px;
+    left: 2px;
+}
+
+.statusbar .tray {
+    border-top: 1px solid #7f7f7f;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+    border-left: 1px solid #7f7f7f;
+    display: inline-flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin: 3px 2px 2px 0;
+    height: 15px;
+}
+
+.statusbar .tray-objects {
+    flex-grow: 2;
+}
+
+.statusbar .tray-bytes {
+    flex-grow: 1;
 }
 
 /* Tab panes have a slightly different chiseled pattern. */
@@ -422,7 +455,7 @@ button,
     color: black;
     font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
     font-size: 12px; /* Rare text sizing in pixels for accuracy. */
-    line-height: 16px;
+    line-height: 14px;
     text-decoration: none;
     display: block;
     padding: 3px 18px;
