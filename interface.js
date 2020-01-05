@@ -88,13 +88,34 @@ function _menuAddWindowMenu( winHandle, element, leftClick=false ) {
 /* Public Functions */
 
 function windowActivate( container, winHandle ) {
-    $(container).children( '.window' ).each( function( idx, winIter ) {
-        $(winIter).removeClass( 'window-active' );
+
+    if( $(winHandle).hasClass( 'window-active' ) ) {
+        return;
+    }
+
+    var lastZ = 0;
+    $(container).children( '.window:not( .window-active )' )
+    .sort( function( a, b ) {
+        var aInt = parseInt( $(a).css( 'z-index' ) );
+        var bInt = parseInt( $(b).css( 'z-index' ) );
+        return  aInt - bInt;
+    } )
+    .each( function( idx, winIter ) {
+        /* console.log( $(winIter).css( 'z-index' ) );
+        if( lastZ == parseInt( $(winIter).css( 'z-index' ) ) ) {
+            $(winIter).css( 'z-index', (lastZ + 1) );
+        }
+
+        lastZ = parseInt( $(winIter).css( 'z-index') ); */
+        lastZ += 1;
+        $(winIter).css( 'z-index', lastZ );
     } );
 
-    if( null != winHandle ) {
-        $(winHandle).addClass( 'window-active' );
-    }
+    $('.window-active').css( 'z-index', lastZ + 1 );
+    $('.window-active').removeClass( 'window-active' );
+
+    $(winHandle).addClass( 'window-active' );
+    $(winHandle).css( 'z-index', lastZ + 2 );
 }
 
 function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true ) {
@@ -105,6 +126,8 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     }
     if( !show ) {
         winHandle.css( 'display', 'none' );
+    } else {
+        windowActivate( '#desktop', winHandle );
     }
     $('#desktop').append( winHandle );
 
@@ -154,7 +177,7 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     } );
 
     $(winHandle).mousedown( function( e ) {
-        windowActivate( '#desktop', $(e.target).parents( '.winHandle' ) );
+        windowActivate( '#desktop', $(e.target).parents( '.window' ) );
     } );
 
     return winHandle;
@@ -254,6 +277,7 @@ function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=
 
     winHandle.addClass( 'window-command' );
     winHandle.show();
+    windowActivate( '#desktop', winHandle );
 
     return winHandle;
 }
@@ -265,6 +289,9 @@ function windowOpenNotepad() {
 
     var prompt = $('<textarea class="input-textarea"></textarea>');
     winHandle.children( '.window-form' ).append( prompt );
+
+    winHandle.show();
+    windowActivate( '#desktop', winHandle );
 
     return winHandle;
 }
@@ -297,6 +324,7 @@ function windowOpenProperties( caption, id=null, icoImg=null, icoX=0, icoY=0, x=
     } );
 
     winHandle.show();
+    windowActivate( '#desktop', winHandle );
 
     return winHandle;
 }
