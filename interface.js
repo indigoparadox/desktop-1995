@@ -114,6 +114,12 @@ function windowActivate( container, winHandle ) {
 
 function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true, statusBar=false ) {
     
+    if( 0 < $('#' + id).length ) {
+        /* The requested window is already open. */
+        windowActivate( '#desktop', '#' + id );
+        return $('#' + id);
+    }
+
     var winHandle = $('<div class="window"><form class="window-form"></form></div>');
     if( null != id ) {
         winHandle.attr( 'id', id );
@@ -184,6 +190,8 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
         winHandle.append( statusBarHandle );
     }
 
+    windowActivate( '#desktop', winHandle );
+
     return winHandle;
 }
 
@@ -211,6 +219,8 @@ function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=n
 
     var trayBytes = $('<div class="tray tray-bytes"></div>');
     winHandle.children( '.statusbar' ).append( trayBytes );
+
+    winHandle.addClass( 'window-scroll-contents' );
 
     winHandle.show();
 
@@ -285,6 +295,8 @@ function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=
         }
     } );
 
+    winHandle.addClass( 'window-scroll-contents' );
+
     winHandle.addClass( 'window-command' );
     winHandle.show();
     windowActivate( '#desktop', winHandle );
@@ -299,6 +311,8 @@ function windowOpenNotepad() {
 
     var prompt = $('<textarea class="input-textarea"></textarea>');
     winHandle.children( '.window-form' ).append( prompt );
+
+    winHandle.addClass( 'window-scroll-contents' );
 
     winHandle.show();
     windowActivate( '#desktop', winHandle );
