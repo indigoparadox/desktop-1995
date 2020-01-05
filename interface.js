@@ -242,11 +242,29 @@ function windowCreateInputText( win, label, value='', x='auto', y='auto' ) {
     }
 }
 
-function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=0, y=0, w=480, h=260 ) {
+function windowCommandEnterLine( winHandle, text ) {
+    /* Put the old line in the backbuffer. */
+    var line = $('<span class="input-line">' + text + '</span>');
+    var cmd = $(winHandle).children( '.window-form' );
+    cmd = cmd.children( '.input-prompt' );
+    cmd.children( '.backbuffer' ).append( line );
+    cmd.children( '.backbuffer' ).append( '<br />' );
+}
+
+function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, promptText=null, x=0, y=0, w=480, h=260, lineHandler=null, lineHandlerData=null ) {
 
     var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
 
-    var cmd = $('<div class="input-prompt"><div class="backbuffer"></div><div class="input-line-caret"><span class="input-line"></span><div class="input-caret"></div></div></div>');
+    var cmd = $('<div class="input-prompt"><div class="backbuffer"></div>' +
+        '<div class="input-line-caret">' +
+        '<span class="input-line"></span><div class="input-caret"></div></div></div>');
+
+    // Add prompt text if one was provided.
+    if( null != promptText ) {
+        cmd.children( '.input-line-caret' ).prepend(
+            '<span class="prompt-text">' + promptText + '</span>' );
+        cmd.children( '.input-line-caret' ).data( 'prompt-text', promptText );
+    }
 
     var cmdInput = $('<input type="text" class="input-textarea" />');
 
@@ -270,21 +288,29 @@ function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=
         if( 13 == e.keyCode ) {
             /* Enter was pressed. */
 
+            var lineCaretBundle = $(cmd).children( '.input-line-caret' );
+
             $(this).val( '' ); /* Clear virtual input. */
+            var prevPrompt = lineCaretBundle.children( '.prompt-text' ).remove();
             
             /* Put the old line in the backbuffer. */
             var line = $(cmd)
                 .children( '.input-line-caret' )
                 .children( '.input-line' )
                 .remove();
-            $(cmd).children( '.backbuffer' ).append( line );
-            $(cmd).children( '.backbuffer' ).append( '<br />' );
+            windowCommandEnterLine( winHandle, prevPrompt.text() + line.text() );
 
-            /* TODO: Process line input. */
+            /* Process line input. */
+            if( null != lineHandler ) {
+                lineHandler( lineHandlerData, winHandle );
+            }
 
             /* Create a new input line. */
-            $(cmd).children( '.input-line-caret' )
-                .prepend( '<span class="input-line"></span>' );
+            lineCaretBundle.prepend( '<span class="input-line"></span>' );
+            if( 0 < prevPrompt.length ) {
+                lineCaretBundle.prepend( '<span class="prompt-text">' +
+                    lineCaretBundle.data( 'prompt-text' ) + '</span>' );
+            }
 
             e.preventDefault();
         } else {
@@ -404,6 +430,9 @@ function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container
 
     $(container).append( iconWrapper );
     $(iconWrapper).draggable( {'handle': '.desktop-icon-overlay'/* , 'containment': container */ } );
+
+    $(iconWrapper).css( 'left', x.toString() + 'px' );
+    $(iconWrapper).css( 'top', y.toString() + 'px' );
 
     /* Setup action handlers. */
     $(iconWrapper).mousedown( function() {

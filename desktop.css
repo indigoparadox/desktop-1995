@@ -176,9 +176,17 @@ button:active {
     overflow: scroll;
 }
 
-.window-command .input-prompt span {
-    float: left;
+.window-command .backbuffer {
     padding-left: 3px;
+    white-space: pre;
+}
+
+.window-command .input-prompt .input-line-caret {
+    padding-left: 3px;
+}
+
+.window-command .input-prompt .input-line-caret * {
+    float: left;
     white-space: pre;
 }
 
@@ -397,7 +405,7 @@ button,
 
 .desktop-icon {
     display: inline-block;
-    position: relative;
+    position: absolute;
     padding: 0;
 }
 
