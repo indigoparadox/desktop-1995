@@ -14,13 +14,21 @@ function _menuAssignItemCallback( container, item, callback ) {
     } );
 }
 
-function _menuAssignItemChildren( container, item, children, followMouse ) {
+function _menuAssignItemChildren( container, item, children, followMouse, closeOtherMenus=false ) {
     item.click( function( e ) {
         var x = item.offset().left - $(container).offset().left;
         var y = item.offset().top - $(container).offset().top + item.height();
 
-        /* Context menus follow mouse, not element. */
+        // Close all sibling menus.
+        /* $(item).siblings( '.menu' ).each( function( idx, menuIter ) {
+            menuClose( container, menuIter );
+        } ); */
+        if( closeOtherMenus ) {
+            menuClose( container );
+        }
+
         if( followMouse ) {
+            // Context menus follow mouse, not element.
             x = e.pageX;
             y = e.pageY;
         }
@@ -34,15 +42,24 @@ function _menuPopulate( container, menu, items, followMouse=true ) {
     /* Iterate the list of menu items and append them to the provided menu. */
     for( var i = 0 ; items.length > i ; i++ ) {
         var menuItem = null;
+
+        // Close other menus at the root level before opening this one.
+        var menubarRoot = false;
+        if( $(menu).hasClass( 'menubar') ) {
+            menubarRoot = true;
+        }
+
         if( 'divider' in items[i] && items[i].divider ) {
             menuItem = $('<hr />');
+        } else if( 'group' in items[i] && items[i].group ) {
+            menuItem = $('<div class="menu-group" id="' + items[i].group.id + '"></div>');
         } else {
             menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
             if( 'callback' in items[i] ) {
                 _menuAssignItemCallback( container, menuItem, items[i].callback );
             } else if( 'children' in items[i] ) {
                 _menuAssignItemChildren( 
-                    container, menuItem, items[i].children, followMouse );
+                    container, menuItem, items[i].children, followMouse, menubarRoot );
             }
         }
         menu.append( menuItem );
@@ -85,7 +102,25 @@ function _menuAddWindowMenu( winHandle, element, leftClick=false ) {
     }
 }
 
+// Again, a named function to isolate the closure scope, designed to be called
+// from a loop below.
+function _browserFavoritesMenuAdd( winHandle, menu, favorite ) {
+    menu.push( {
+        'text': favorite.name,
+        'callback': function( m ) {
+            browserOpenURL( winHandle, favorite.url );
+        }
+    } );
+}
+
 /* Public Functions */
+
+function windowAddMenuBar( winHandle, menu ) {
+    var menuBar = $('<div class="menubar"></div>');
+    winHandle.prepend( menuBar );
+    winHandle.addClass( 'window-menubar' );
+    _menuPopulate( winHandle, menuBar, menu, false );
+}
 
 function windowActivate( container, winHandle ) {
 
@@ -140,16 +175,8 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     winHandle.css( 'width', w.toString() + 'px' );
     winHandle.css( 'height', h.toString() + 'px' );
 
-    /* Close any menus opened by clicking in parent elements. */
-    /* winHandle.click( function( e ) {
-        menuClose( winHandle, null );
-    } ); */
-
     if( null != menu ) {
-        var menuBar = $('<div class="menubar"></div>');
-        winHandle.prepend( menuBar );
-        winHandle.addClass( 'window-menubar' );
-        _menuPopulate( winHandle, menuBar, menu, false );
+        windowAddMenuBar( winHandle, menu );
     }
 
     var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + caption + '</h1></div>');
@@ -233,28 +260,74 @@ function browserURLWaybackify( url ) {
 
 function browserOpenURL( winHandle, url ) {
     var newLoc = browserURLWaybackify( url );
+    winHandle.find( '.input-url' ).val( url );
     winHandle.find( '.tray-status-text' ).text( 'Opening ' + url + '...' );
     winHandle.find( '.browser-pane' ).attr( 'src', newLoc );
 }
 
-function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='', menu=null, x=10, y=10, w=640, h=480 ) {
-    if( null == menu ) {
-        menu = [
-            {'text': 'File', 'children': [
-                {'text': 'Close', 'callback': function( m ) {
-                    winHandle.remove();
-                }}
-            ]}
+function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='', favorites=null, x=10, y=10, w=640, h=480 ) {
+
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, null, x, y, w, h, false, true );
+    
+    menu = [
+        {'text': 'File', 'children': [
+            {'text': 'New Window', 'callback': function( m ) {
+                windowOpenBrowser( caption, id + '-new', icoImg, icoX, icoY, url, favorites, x + 20, y + 20, w, h );
+            }},
+            {'divider': true},
+            {'group': true, 'id': 'browser-recent'},
+            {'text': 'Exit', 'callback': function( m ) {
+                winHandle.remove();
+            }}
+        ]},
+        {'text': 'Edit', 'children': [
+            {'text': 'Cut', 'callback': function( m ) {
+            }},
+            {'text': 'Copy', 'callback': function( m ) {
+            }},
+            {'text': 'Paste', 'callback': function( m ) {
+            }},
+            {'divider': true},
+            {'text': 'Select All', 'callback': function( m ) {
+            }},
+            {'divider': true},
+            {'text': 'Find...', 'callback': function( m ) {
+            }}
+        ]},
+        {'text': 'View', 'children': [
+        ]},
+        {'text': 'Go', 'children': [
+        ]},
+        {'text': 'Favorites', 'children': [
+        ]},
+        {'text': 'Help', 'children': [
+        ]}
+    ];
+
+    if( null == favorites ) {
+        favorites = [
+            {'name': 'Altavista', 'url': 'http://altavista.com'},
+            {'name': 'BBSpot', 'url': 'http://bbspot.com'},
+            {'name': 'Microsoft', 'url': 'http://microsoft.com'},
+            {'name': 'Slashdot', 'url': 'http://slashdot.org'},
+            {'name': 'Yahoo', 'url': 'http://yahoo.com'},
         ];
     }
-
-    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false, true );
     
+    // Roll the favorites into the favorites menu.
+    for( var i = 0 ; favorites.length > i ; i++ ) {
+        _browserFavoritesMenuAdd( winHandle, menu[4].children, favorites[i] );
+    }
+
+    // Add the menu now, once winHande is defined, so callbacks above have it
+    // in scope.
+    windowAddMenuBar( winHandle, menu );
+
     winHandle.addClass( 'window-browser' );
 
     // This window type still uses wrappers because the pseudo-elements are 
     // rather prone to yet-unexplainable misbehaviors.
-    var browser = $('<div class="browser-pane-wrapper"><iframe class="browser-pane"></iframe></div>');
+    var browser = $('<div class="browser-pane-wrapper"><iframe class="browser-pane" sandbox="allow-same-origin"></iframe></div>');
     winHandle.children( '.window-form' ).append( browser );
 
     // Setup the browser toolbar.

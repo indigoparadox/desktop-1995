@@ -19,6 +19,7 @@
 }
 
 .menubar {
+    display: flex;
     position: absolute;
     left: 1px;
     top: 21px;
