@@ -131,7 +131,7 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     }
     $('#desktop').append( winHandle );
 
-    winHandle.draggable( {'handle': '.titlebar'} );
+    winHandle.draggable( {'handle': '.titlebar', 'containment': '#desktop'} );
     if( resizable ) {
         winHandle.resizable();
         winHandle.addClass( 'window-resizable' );
@@ -489,7 +489,7 @@ function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container
     iconWrapper.append( iconText );
 
     $(container).append( iconWrapper );
-    $(iconWrapper).draggable( {'handle': '.desktop-icon-overlay'/* , 'containment': container */ } );
+    $(iconWrapper).draggable( {'handle': '.desktop-icon-overlay', 'containment': container } );
 
     $(iconWrapper).css( 'left', x.toString() + 'px' );
     $(iconWrapper).css( 'top', y.toString() + 'px' );

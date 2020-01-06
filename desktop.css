@@ -166,3 +166,26 @@ button:active {
 .window-statusbar .window-form {
     bottom: 21px;
 }
+
+.taskbar:before {
+    content: " ";
+    border-top: 1px solid #bfbfbf;
+    position: absolute;
+    top: -2px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.taskbar {
+    background-color: #bfbfbf;
+    border-top: 1px solid #fff8ff;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    height: 26px;
+    z-index: 100;
+}
