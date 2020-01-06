@@ -523,6 +523,40 @@ function windowPropertiesAddTab( winHandle, caption, id ) {
     return tabPane;
 }
 
+function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, playlist=[], x=0, y=0 ) {
+    
+    var winHandle = windowOpen( caption, id, false, icoImg, icoX, icoY, null, x, y, 300, 200, false, true );
+    
+    winHandle.addClass( 'window-cdplayer' );
+    
+    var controls = $('<div class="window-cdplayer-controls-row"><div class="window-cdplayer-display"></div><div class="window-cdplayer-controls"><div class="window-cdplayer-controls-play-pause-stop"></div><div class="window-cdplayer-controls-tracks-eject"></div></div></div>');
+    winHandle.children( '.window-form' ).append( controls );
+
+    var btnPlay = $('<button class="button-play">&gt;</button>');
+    controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnPlay );
+    $(btnPlay).click( function( e ) {
+        e.preventDefault();
+    } );
+
+
+    var btnPause = $('<button class="button-pause">||</button>');
+    controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnPause );
+    $(btnPause).click( function( e ) {
+        e.preventDefault();
+    } );
+
+    var btnStop = $('<button class="button-stop">x</button>');
+    controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnStop );
+    $(btnStop).click( function( e ) {
+        e.preventDefault();
+    } );
+
+    winHandle.show();
+    windowActivate( '#desktop', winHandle );
+
+    return winHandle;
+}
+
 function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container='#desktop', cbData=null ) {
     var icoWidth = 32;
     var icoHeight = 32;

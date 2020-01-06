@@ -102,7 +102,8 @@
     bottom: 2px;
     left: 2px;
     padding: 1px 0;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .window-command .backbuffer {
@@ -341,4 +342,40 @@ button,
     width: 70px;
     height: 20px;
     float: right;
+}
+
+/* Window: CD Player */
+
+.window-cdplayer-controls-row {
+    display: flex;
+    width: 100%;
+}
+
+.window-cdplayer-display {
+    display: inline-block;
+    width: 154px;
+    height: 47px;
+}
+
+.window-cdplayer-controls {
+    display: inline-block;
+    width: 120px;
+    height: 50px;
+}
+
+.window-cdplayer-controls div {
+    display: flex;
+}
+
+.window-cdplayer-controls-play-pause-stop {
+}
+
+.window-cdplayer-controls button {
+    display: flex;
+    flex-grow: 1;
+    height: 18px;
+}
+
+.window-cdplayer-controls .button-play {
+    flex-grow: 3;
 }
