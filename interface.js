@@ -231,6 +231,12 @@ function browserURLWaybackify( url ) {
     return 'http://web.archive.org/web/19981202230410/' + url;
 }
 
+function browserOpenURL( winHandle, url ) {
+    var newLoc = browserURLWaybackify( url );
+    winHandle.find( '.tray-status-text' ).text( 'Opening ' + url + '...' );
+    winHandle.find( '.browser-pane' ).attr( 'src', newLoc );
+}
+
 function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='', menu=null, x=10, y=10, w=640, h=480 ) {
     if( null == menu ) {
         menu = [
@@ -248,10 +254,10 @@ function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
 
     // This window type still uses wrappers because the pseudo-elements are 
     // rather prone to yet-unexplainable misbehaviors.
-    var browser = $('<div class="browser-pane-wrapper"><iframe class="browser-pane" src="' + url + '"></iframe></div>');
+    var browser = $('<div class="browser-pane-wrapper"><iframe class="browser-pane"></iframe></div>');
     winHandle.children( '.window-form' ).append( browser );
 
-    /* Browser Toolbar */
+    // Setup the browser toolbar.
 
     var browserToolbar = $('<div class="browser-toolbar"></div>');
     var browserToolbarLeft = $('<div class="browser-toolbar-left"></div>');
@@ -259,16 +265,6 @@ function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
 
     var urlBox = $('<div class="url-bar"><span class="label">Address:</span> <span class="input-url-wrapper"><input type="text" class="input-url" value="' + url + '" /></span></div>');
     browserToolbarLeft.prepend( urlBox );
-
-    winHandle.find( '.input-url' ).keypress( function( e ) {
-        if( 13 == e.keyCode ) {
-            // Enter was pressed.
-            var newLoc = browserURLWaybackify(
-                winHandle.find( '.input-url' ).val() );
-            winHandle.find( '.browser-pane' ).attr( 'src', newLoc );
-            e.preventDefault();
-        }
-    } );
     browserToolbarLeft.prepend( '<hr />' );
 
     var buttons = $('<div class="browser-buttons"><button /></div>')
@@ -276,6 +272,30 @@ function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
     browserToolbarLeft.prepend( '<hr />' );
 
     winHandle.children( '.window-form' ).prepend( browserToolbar );
+
+    // Setup the status bar.
+    var trayStatusText = $('<div class="tray tray-status-text"></div>');
+    winHandle.children( '.statusbar' ).append( trayStatusText );
+
+    var trayMisc = $('<div class="tray tray-misc"></div>');
+    winHandle.children( '.statusbar' ).append( trayMisc );
+
+    var trayStatusIcon = $('<div class="tray tray-status-icon"></div>');
+    winHandle.children( '.statusbar' ).append( trayStatusIcon );
+
+    winHandle.find( '.browser-pane' ).on( 'load', function( e ) {
+        winHandle.find( '.tray-status-text' ).text( '' );
+    } );
+
+    // Associate the event handlers and load start page.
+    winHandle.find( '.input-url' ).keypress( function( e ) {
+        if( 13 == e.keyCode ) {
+            // Enter was pressed.
+            e.preventDefault();
+            browserOpenURL( winHandle, winHandle.find( '.input-url' ).val() );
+        }
+    } );
+    browserOpenURL( winHandle, url );
 
     winHandle.show();
 

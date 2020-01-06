@@ -7,6 +7,7 @@
     display: inline-block;
     position: absolute;
     padding: 0;
+    width: 60px;
 }
 
 .desktop-icon-overlay {
@@ -41,10 +42,6 @@
     text-align: center;
     display: inline-block;
     margin: 5px 0 0 0;
-}
-
-.desktop-icon-selected .desktop-icon-img {
-    right: 1px;
 }
 
 .desktop-icon-selected .desktop-icon-text {

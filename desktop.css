@@ -1,5 +1,6 @@
 
 html, body {
+    font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
     background-color: #00787f;
     font-smooth: never;
     -webkit-font-smoothing : none;
@@ -118,7 +119,6 @@ button:active {
 }
 
 .titlebar-text {
-    font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
     font-size: 12px; /* Rare text sizing in pixels for accuracy. */
     line-height: 18px;
     display: inline-block;
@@ -144,7 +144,6 @@ button:active {
 }
 
 .window-form {
-    font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
     position: absolute;
     top: 21px;
     right: 1px;

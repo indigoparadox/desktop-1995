@@ -1,5 +1,7 @@
 
 .statusbar {
+    font-size: 12px;
+    line-height: 16px;
     display: flex;
     position: absolute;
     height: 22px;
@@ -17,6 +19,7 @@
     flex-direction: column;
     flex-grow: 1;
     margin: 3px 2px 2px 0;
+    padding: 1px;
     height: 15px;
 }
 
@@ -224,6 +227,18 @@
 .window-browser .input-url {
     position: relative;
     height: 14px;
+}
+
+.window-browser .statusbar .tray-status-text {
+    flex-grow: 5;
+}
+
+.window-browser .statusbar .tray-misc {
+    flex-grow: 2;
+}
+
+.window-browser .statusbar .tray-status-icon {
+    flex-grow: 1;
 }
 
 /* Window: Properties */
