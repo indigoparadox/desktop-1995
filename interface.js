@@ -93,7 +93,7 @@ function windowActivate( container, winHandle ) {
         return;
     }
 
-    var lastZ = 0;
+    var lastZ = 50;
     $(container).children( '.window:not( .window-active )' )
     .sort( function( a, b ) {
         var aInt = parseInt( $(a).css( 'z-index' ) );
@@ -251,8 +251,14 @@ function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
     var browser = $('<div class="browser-pane-wrapper"><iframe class="browser-pane" src="' + url + '"></iframe></div>');
     winHandle.children( '.window-form' ).append( browser );
 
-    var urlBox = $('<div class="url-bar"><div class="input-url-wrapper"><input type="text" class="input-url" value="' + url + '" /></div></div>')
-    winHandle.children( '.window-form' ).prepend( urlBox );
+    /* Browser Toolbar */
+
+    var browserToolbar = $('<div class="browser-toolbar"></div>');
+    var browserToolbarLeft = $('<div class="browser-toolbar-left"></div>');
+    browserToolbar.append( browserToolbarLeft );
+
+    var urlBox = $('<div class="url-bar"><span class="label">Address:</span> <span class="input-url-wrapper"><input type="text" class="input-url" value="' + url + '" /></span></div>');
+    browserToolbarLeft.prepend( urlBox );
 
     winHandle.find( '.input-url' ).keypress( function( e ) {
         if( 13 == e.keyCode ) {
@@ -263,6 +269,13 @@ function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
             e.preventDefault();
         }
     } );
+    browserToolbarLeft.prepend( '<hr />' );
+
+    var buttons = $('<div class="browser-buttons"><button /></div>')
+    browserToolbarLeft.prepend( buttons );
+    browserToolbarLeft.prepend( '<hr />' );
+
+    winHandle.children( '.window-form' ).prepend( browserToolbar );
 
     winHandle.show();
 

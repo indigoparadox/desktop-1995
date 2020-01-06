@@ -151,6 +151,32 @@
 
 /* Window: Browser */
 
+.browser-toolbar {
+    position: relative;
+}
+
+.browser-toolbar-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 66px;
+    bottom: 0;
+}
+
+.window-browser .window-form hr {
+    margin: 0;
+}
+
+.window-browser .browser-buttons {
+    margin: 0;
+    padding: 3px 2px 0 7px;
+}
+
+.window-browser .browser-buttons button {
+    width: 18px;
+    height: 18px;
+}
+
 .browser-pane-wrapper,
 .input-url-wrapper {
     border-top: 1px solid #7f787f;
@@ -163,7 +189,7 @@
     padding-right: 2px;
     padding-bottom: 2px;
     position: absolute;
-    top: 27px;
+    top: 52px;
     right: 1px;
     bottom: 1px;
     left: 1px;
@@ -175,9 +201,10 @@
 }
 
 .window-browser .url-bar {
+    font-size: 12px;
+    line-height: 22px;
     display: flex;
-    flex-direction: column;
-    padding: 0 2px 0 2px;
+    padding: 2px 2px 0 5px;
     position: relative;
     height: 20px;
 }
@@ -185,6 +212,8 @@
 .window-browser .input-url-wrapper {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    margin-left: 4px;
     position: relative;
     top: 0;
     right: 0;
