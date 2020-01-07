@@ -151,11 +151,17 @@
     white-space: pre;
 }
 
+@keyframes caret-blink {
+    50% { opacity: 0; }
+}
+
 .window-command .input-caret {
-    float: left;
+    background-color: white;    
+    margin-top: 10px;
     width: 5px;
-    height: 14px;
-    background-color: #a0a0a0;    
+    height: 1px;
+    float: left;
+    animation: caret-blink 1s step-start infinite;
 }
 
 .window-command .input-textarea {
