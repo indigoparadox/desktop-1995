@@ -54,7 +54,8 @@ function _menuPopulate( container, menu, items, followMouse=true ) {
         } else if( 'group' in items[i] && items[i].group ) {
             menuItem = $('<div class="menu-group" id="' + items[i].group.id + '"></div>');
         } else {
-            menuItem = $('<a href="#" class="menu-item">' + items[i].text + '</a>');
+            menuItem = $('<a href="#" class="menu-item"><span class="menu-icon"></span>' + items[i].text + '</a>');
+            menuItem.addClass( 'menu-item-' + _htmlStrToClass( items[i].text ) );
             if( 'callback' in items[i] ) {
                 _menuAssignItemCallback( container, menuItem, items[i].callback );
             } else if( 'children' in items[i] ) {
@@ -111,6 +112,10 @@ function _browserFavoritesMenuAdd( winHandle, menu, favorite ) {
             browserOpenURL( winHandle, favorite.url );
         }
     } );
+}
+
+function _htmlStrToClass( input ) {
+    return input.replace( /[ "\'!@#$%\^&\*\(\)\.,]/g, '' ).replace( / /g, '-' ).toLowerCase();
 }
 
 function _htmlEncode( input ) {
@@ -856,9 +861,12 @@ function desktopSelectIcon( container, icon ) {
         $(icon).data( 'icon-bg' ) );
 }
 
-function menuPopup( container, items, x, y ) {
+function menuPopup( container, items, x, y, show=true ) {
 
     var menu = $('<div class="menu"></div>');
+    if( !show ) {
+        menu.hide();
+    }
     $(container).append( menu );
     menu.css( 'left', x.toString() + 'px' );
     menu.css( 'top', y.toString() + 'px' );
@@ -880,4 +888,47 @@ function menuClose( container, menu ) {
 }
 
 $(document).ready( function() {
+
+    $('.button-start').click( function( e ) {
+            
+        e.preventDefault();
+
+        var menu = [
+            {'text': 'Programs', 'callback': function( m ) {
+
+            }},
+            {'text': 'Documents', 'callback': function( m ) {
+                
+            }},
+            {'text': 'Settings', 'callback': function( m ) {
+                
+            }},
+            {'text': 'Find', 'callback': function( m ) {
+                
+            }},
+            {'text': 'Help', 'callback': function( m ) {
+                
+            }},
+            {'text': 'Run...', 'callback': function( m ) {
+                
+            }},
+            {'divider': true },
+            {'text': 'Shut Down...', 'callback': function( m ) {
+                winHandle.remove();
+            }}
+        ];
+
+        menuClose( '#desktop', null );
+        var menu = menuPopup( '#desktop', menu,
+            $('.button-start').offset().left,
+            $('.button-start').offset().top, false );
+        menu.addClass( 'logo-menu' );
+
+        var stripe = '<div class="logo-stripe-wrapper"><div class="logo-stripe">Windows 95</div></div>';
+        menu.append( stripe );
+
+        menu.css( 'top', ($('.button-start').offset().top - menu.height() - 5).toString() + 'px' );
+
+        menu.show();
+    } );
 } );
