@@ -586,6 +586,12 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
             {'text': 'Exit', 'callback': function( m ) {
                 winHandle.remove();
             }}
+        ]},
+        {'text': 'View', 'children': [
+        ]},
+        {'text': 'Options', 'children': [
+        ]},
+        {'text': 'Help', 'children': [
         ]}
     ];
 
@@ -593,7 +599,7 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
     // in scope.
     windowAddMenuBar( winHandle, menu );
 
-    var controls = $('<div class="window-cdplayer-controls-row"><div class="window-cdplayer-display"></div><div class="window-cdplayer-controls"><div class="window-cdplayer-controls-play-pause-stop"></div><div class="window-cdplayer-controls-tracks-eject"></div></div></div>');
+    var controls = $('<div class="window-cdplayer-controls-row"><div class="window-cdplayer-display">[00] 00:00</div><div class="window-cdplayer-controls"><div class="window-cdplayer-controls-play-pause-stop"></div><div class="window-cdplayer-controls-tracks-eject"></div></div></div>');
     winHandle.children( '.window-form' ).append( controls );
 
     var audio = new Audio( 'finalizing.mp3' );
@@ -622,6 +628,40 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
         audio.currentTime = 0;
         e.preventDefault();
     } );
+
+    var btnPrevTrack = $('<button class="button-track-prev">&#x23ee;</button>');
+    controls.find( '.window-cdplayer-controls-tracks-eject').append( btnPrevTrack );
+    btnPrevTrack.attr( 'enabled', false );
+    btnPrevTrack.click( function( e ) {
+        e.preventDefault();
+    } );
+
+    var btnRewind = $('<button class="button-rewind">&#x23ea;</button>');
+    controls.find( '.window-cdplayer-controls-tracks-eject').append( btnRewind );
+    btnRewind.attr( 'enabled', false );
+    btnRewind.click( function( e ) {
+        e.preventDefault();
+    } );
+
+    var btnFastFwd = $('<button class="button-fast-fwd">&#x23e9;</button>');
+    controls.find( '.window-cdplayer-controls-tracks-eject').append( btnFastFwd );
+    btnFastFwd.attr( 'enabled', false );
+    btnFastFwd.click( function( e ) {
+        e.preventDefault();
+    } );
+
+    var btnNextTrack = $('<button class="button-track-next">&#x23ee;</button>');
+    controls.find( '.window-cdplayer-controls-tracks-eject').append( btnNextTrack );
+    btnNextTrack.attr( 'enabled', false );
+    btnNextTrack.click( function( e ) {
+        e.preventDefault();
+    } );
+
+    var drops = $('<div class="window-cdplayer-drops"></div>');
+    winHandle.children( '.window-form' ).append( drops );
+
+    var dropArtist = $('<div class="window-cdplayer-drop-artist-wrapper"><label>Artist: </label><div class="select-wrapper"><select class="input-select select-artist"></select></div></div>');
+    drops.append( dropArtist );
 
     // Setup the status bar.
     var trayStatusTime = $('<div class="tray tray-status-time"></div>');

@@ -25,6 +25,7 @@
 
 .pane-wrapper,
 .textarea-wrapper,
+.select-wrapper,
 .input-url-wrapper {
     border-top: 1px solid #7f787f;
     border-left: 1px solid #7f787f;
@@ -51,7 +52,6 @@
 .window-cdplayer-display:before,
 .input-text:before,
 .input-textarea:before,
-.input-select:before,
 .input-prompt:before,
 .window-scroll-contents .window-form:after {
     /* Use border and positioning to simulate shadow effect. */
@@ -77,6 +77,10 @@
     top: 1px;
     right: 1px;
     bottom: 1px;
+}
+
+.select-wrapper .input-select {
+    width: 100%;
 }
 
 .window-cdplayer-display,
@@ -393,6 +397,10 @@ button,
 .window-cdplayer-controls-play-pause-stop {
 }
 
+.window-cdplayer-controls-tracks-eject {
+    margin-top: 12px;
+}
+
 .window-cdplayer-controls button {
     line-height: 14px;
     text-align: center;
@@ -402,4 +410,24 @@ button,
 
 .window-cdplayer-controls .button-play {
     flex-grow: 3;
+}
+
+.window-cdplayer-drops {
+    margin: 8px 8px;
+}
+
+.window-cdplayer-drop-artist-wrapper {
+    display: flex;
+}
+
+.window-cdplayer-drop-artist-wrapper label {
+    font-size: 12px;
+    line-height: 18px;
+    text-align: right;
+    flex-grow: 1;
+    margin-right: 5px;
+}
+
+.window-cdplayer-drop-artist-wrapper .select-wrapper {
+    flex-grow: 5;
 }
