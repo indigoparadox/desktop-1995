@@ -23,10 +23,16 @@
     height: 15px;
 }
 
+.window-cdplayer-display:before,
+.input-text:before,
+.input-textarea:before,
+.input-prompt:before,
+.window-scroll-contents .window-form:after,
 .pane-wrapper,
 .textarea-wrapper,
 .select-wrapper,
-.input-url-wrapper {
+.input-url-wrapper,
+.inset:before {
     border-top: 1px solid #7f787f;
     border-left: 1px solid #7f787f;
     border-bottom: 1px solid #fff8ff;
@@ -53,7 +59,8 @@
 .input-text:before,
 .input-textarea:before,
 .input-prompt:before,
-.window-scroll-contents .window-form:after {
+.window-scroll-contents .window-form:after,
+.inset:before {
     /* Use border and positioning to simulate shadow effect. */
     content: " ";
     position: absolute;
@@ -61,10 +68,6 @@
     top: -2px;
     right: -2px;
     bottom: -2px;
-    border-top: 2px solid #7f787f;
-    border-left: 2px solid #7f787f;
-    border-bottom: 2px solid #fff8ff;
-    border-right: 2px solid #fff8ff;
     z-index: -1;
 }
 
@@ -83,6 +86,11 @@
     width: 100%;
 }
 
+.inset {
+    margin: 0 1px;
+    padding: 0 4px;
+}
+
 .window-cdplayer-display,
 .input-text,
 .input-url,
@@ -90,7 +98,8 @@
 .input-textarea,
 .input-select,
 .input-prompt,
-.window-folder-container {
+.window-folder-container,
+.inset {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid black;
     border-left: 1px solid black;
@@ -401,6 +410,7 @@ button,
 }
 
 .window-cdplayer-controls-play-pause-stop {
+    font-family: serif;
 }
 
 .window-cdplayer-controls-tracks-eject {
@@ -419,21 +429,26 @@ button,
 }
 
 .window-cdplayer-drops {
-    margin: 8px 8px;
-}
-
-.window-cdplayer-drop-artist-wrapper {
-    display: flex;
-}
-
-.window-cdplayer-drop-artist-wrapper label {
     font-size: 12px;
     line-height: 18px;
-    text-align: right;
-    flex-grow: 1;
-    margin-right: 5px;
+    position: relative;
+    margin: 4px 8px;
 }
 
-.window-cdplayer-drop-artist-wrapper .select-wrapper {
+.window-cdplayer-drops .wrapper {
+    display: flex;
+    position: relative;
+    margin-bottom: 4px;
+}
+
+.window-cdplayer-drops label {
+    text-align: right;
+    margin-right: 5px;
+    width: 35px;
+}
+
+.window-cdplayer-drops .select-wrapper,
+.window-cdplayer-drops .inset {
     flex-grow: 5;
+    position: relative;
 }

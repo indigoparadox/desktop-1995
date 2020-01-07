@@ -113,6 +113,23 @@ function _browserFavoritesMenuAdd( winHandle, menu, favorite ) {
     } );
 }
 
+function _htmlEncode( input ) {
+    return input.replace( /[\u00A0-\u9999<>\&]/gim, function( c ) {
+        return '&#' + c.charCodeAt( 0 ) + ';';
+    } );
+}
+
+function _htmlCharSVG( u ) {
+    var svg = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="header" viewBox="0 0 20 30">
+<defs></defs><g id="0" visibility="visible">
+<text id="gText_11081308229940" name="-1" x="0" y="12"  
+    font="Arial"  rotate="0" horizAnchor="middle" vertAnchor="middle" 
+    scale="4,4" width="1" stroke="0x000000">` + u + `</text> 
+</g></svg>`;
+    return svg;
+}
+
 /* Public Functions */
 
 function windowAddMenuBar( winHandle, menu ) {
@@ -602,7 +619,7 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
     var controls = $('<div class="window-cdplayer-controls-row"><div class="window-cdplayer-display">[00] 00:00</div><div class="window-cdplayer-controls"><div class="window-cdplayer-controls-play-pause-stop"></div><div class="window-cdplayer-controls-tracks-eject"></div></div></div>');
     winHandle.children( '.window-form' ).append( controls );
 
-    var audio = new Audio( playlist[0] );
+    var audio = new Audio( playlist[0].url );
 
     var btnPlay = $('<button class="button-play disable-until-load">&#x25b6;</button>');
     controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnPlay );
@@ -618,7 +635,7 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
         e.preventDefault();
     } );
 
-    var btnStop = $('<button class="button-stop disable-until-load">&#x23f9;</button>');
+    var btnStop = $('<button class="button-stop disable-until-load">' + _htmlCharSVG( '\u23f9' ) + '</button>');
     controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnStop );
     btnStop.click( function( e ) {
         audio.pause();
@@ -655,8 +672,14 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
     var drops = $('<div class="window-cdplayer-drops"></div>');
     winHandle.children( '.window-form' ).append( drops );
 
-    var dropArtist = $('<div class="window-cdplayer-drop-artist-wrapper"><label>Artist: </label><div class="select-wrapper"><select class="input-select select-artist"></select></div></div>');
+    var dropArtist = $('<div class="wrapper window-cdplayer-drop-artist-wrapper"><label>Artist: </label><div class="select-wrapper"><select class="input-select select-artist"></select></div></div>');
     drops.append( dropArtist );
+
+    var dropAlbum = $('<div class="wrapper window-cdplayer-drop-album-wrapper"><label>Title: </label><div class="inset inset-album"></div></div>');
+    drops.append( dropAlbum );
+
+    var dropTrack = $('<div class="wrapper window-cdplayer-drop-track-wrapper"><label>Track: </label><div class="select-wrapper"><select class="input-select select-track"></select></div></div>');
+    drops.append( dropTrack );
 
     // Setup the status bar.
     var trayStatusTime = $('<div class="tray tray-status-time"></div>');
@@ -673,7 +696,7 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
 
     var jsmediatags = window.jsmediatags;
     try {
-        jsmediatags.read( playlist[0], {
+        jsmediatags.read( playlist[0].url, {
         'onSuccess': function( tag ) {
             console.log( tag );
             if( mediaLoadComplete ) {
@@ -688,6 +711,12 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
             winHandle.find( '.disable-until-load' ).attr( 'disabled', false );
         } else {
             mediaLoadComplete = true;
+
+            dropArtist.find( 'select' ).empty();
+            dropArtist.find( 'select' ).append( '<option>' + _htmlEncode( playlist[0].artist ) + '</option>' );
+            dropAlbum.find( '.inset-album' ).text( _htmlEncode( playlist[0].album ) );
+            dropTrack.find( 'select' ).empty();
+            dropTrack.find( 'select' ).append( '<option>' + _htmlEncode( playlist[0].title ) + '</option>' );
         }
     }
             
@@ -699,7 +728,7 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
             winHandle.find( '.disable-until-load' ).attr( 'disabled', false );
         } else {
             mediaLoadComplete = true;
-        }
+        }        
 
         // Show the audio duration now that it's loaded.
         var duration = audio.duration;
