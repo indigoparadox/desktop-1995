@@ -602,60 +602,55 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
     var controls = $('<div class="window-cdplayer-controls-row"><div class="window-cdplayer-display">[00] 00:00</div><div class="window-cdplayer-controls"><div class="window-cdplayer-controls-play-pause-stop"></div><div class="window-cdplayer-controls-tracks-eject"></div></div></div>');
     winHandle.children( '.window-form' ).append( controls );
 
-    var audio = new Audio( 'finalizing.mp3' );
+    var audio = new Audio( playlist[0] );
 
-    var btnPlay = $('<button class="button-play">&#x25b6;</button>');
-    btnPlay.attr( 'enabled', false );
+    var btnPlay = $('<button class="button-play disable-until-load">&#x25b6;</button>');
     controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnPlay );
     btnPlay.click( function( e ) {
         audio.play();
         e.preventDefault();
     } );
 
-    var btnPause = $('<button class="button-pause">&#x23f8;</button>');
+    var btnPause = $('<button class="button-pause disable-until-load">&#x23f8;</button>');
     controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnPause );
-    btnPause.attr( 'enabled', false );
     btnPause.click( function( e ) {
         audio.pause();
         e.preventDefault();
     } );
 
-    var btnStop = $('<button class="button-stop">&#x23f9;</button>');
+    var btnStop = $('<button class="button-stop disable-until-load">&#x23f9;</button>');
     controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnStop );
-    btnStop.attr( 'enabled', false );
     btnStop.click( function( e ) {
         audio.pause();
         audio.currentTime = 0;
         e.preventDefault();
     } );
 
-    var btnPrevTrack = $('<button class="button-track-prev">&#x23ee;</button>');
+    var btnPrevTrack = $('<button class="button-track-prev disable-until-load">&#x23ee;</button>');
     controls.find( '.window-cdplayer-controls-tracks-eject').append( btnPrevTrack );
-    btnPrevTrack.attr( 'enabled', false );
     btnPrevTrack.click( function( e ) {
         e.preventDefault();
     } );
 
-    var btnRewind = $('<button class="button-rewind">&#x23ea;</button>');
+    var btnRewind = $('<button class="button-rewind disable-until-load">&#x23ea;</button>');
     controls.find( '.window-cdplayer-controls-tracks-eject').append( btnRewind );
-    btnRewind.attr( 'enabled', false );
     btnRewind.click( function( e ) {
         e.preventDefault();
     } );
 
-    var btnFastFwd = $('<button class="button-fast-fwd">&#x23e9;</button>');
+    var btnFastFwd = $('<button class="button-fast-fwd disable-until-load">&#x23e9;</button>');
     controls.find( '.window-cdplayer-controls-tracks-eject').append( btnFastFwd );
-    btnFastFwd.attr( 'enabled', false );
     btnFastFwd.click( function( e ) {
         e.preventDefault();
     } );
 
     var btnNextTrack = $('<button class="button-track-next">&#x23ee;</button>');
     controls.find( '.window-cdplayer-controls-tracks-eject').append( btnNextTrack );
-    btnNextTrack.attr( 'enabled', false );
     btnNextTrack.click( function( e ) {
         e.preventDefault();
     } );
+
+    winHandle.find( '.disable-until-load' ).attr( 'disabled', true );
 
     var drops = $('<div class="window-cdplayer-drops"></div>');
     winHandle.children( '.window-form' ).append( drops );
@@ -674,11 +669,37 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
         winHandle.find( '.tray-status-text' ).text( '' );
     } );
 
+    var mediaLoadComplete = false;
+
+    var jsmediatags = window.jsmediatags;
+    try {
+        jsmediatags.read( playlist[0], {
+        'onSuccess': function( tag ) {
+            console.log( tag );
+            if( mediaLoadComplete ) {
+                winHandle.find( '.disable-until-load' ).attr( 'disabled', false );
+            } else {
+                mediaLoadComplete = true;
+            }
+        } } );
+    } catch( e ) {
+        console.log( e );
+        if( mediaLoadComplete ) {
+            winHandle.find( '.disable-until-load' ).attr( 'disabled', false );
+        } else {
+            mediaLoadComplete = true;
+        }
+    }
+            
     audio.volume = 0.3;
 
     // Setup the audio events.
     $(audio).on( 'canplay', function( e ) {
-        btnPlay.attr( 'enabled', true );
+        if( mediaLoadComplete ) {
+            winHandle.find( '.disable-until-load' ).attr( 'disabled', false );
+        } else {
+            mediaLoadComplete = true;
+        }
 
         // Show the audio duration now that it's loaded.
         var duration = audio.duration;
@@ -714,6 +735,11 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
     windowActivate( '#desktop', winHandle );
 
     return winHandle;
+}
+
+function windowCDPlayerEnable( winHandle ) {
+    btnPlay.attr( 'disabled', false );
+
 }
 
 function windowOpenMixer( caption, id=null, icoImg=null, icoX=0, icoY=0, x=0, y=0 ) {
@@ -785,7 +811,6 @@ function desktopSelectIcon( container, icon ) {
     /* Deselect all icons. */
     $(container).children('.desktop-icon').removeClass( 'desktop-icon-selected' );
     $(container).children('.desktop-icon').each( function( idx, iterIcon ) {
-        console.log( $(iterIcon).data( 'icon-bg' ) );
         $(iterIcon).children( '.desktop-icon-img' ).css(
             'background', $(iterIcon).data( 'icon-bg' ) );
     } );
@@ -797,7 +822,6 @@ function desktopSelectIcon( container, icon ) {
 
     /* Select this icon. */
     $(icon).addClass( 'desktop-icon-selected' );
-    console.log( 'linear-gradient(to bottom, rgba(0, 0, 127, 0.3), rgba(0, 0, 127, 0.3)),' + $(icon).data( 'icon-bg' ) );
     $(icon).children( '.desktop-icon-img' ).css(
         'background', 'linear-gradient(to bottom, rgba(0, 0, 127, 0.3), rgba(0, 0, 127, 0.3)),' +
         $(icon).data( 'icon-bg' ) );
