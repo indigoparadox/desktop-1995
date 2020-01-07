@@ -529,27 +529,106 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
     
     winHandle.addClass( 'window-cdplayer' );
     
+    menu = [
+        {'text': 'Disc', 'children': [
+            {'group': true, 'id': 'browser-recent'},
+            {'text': 'Exit', 'callback': function( m ) {
+                winHandle.remove();
+            }}
+        ]}
+    ];
+
+    // Add the menu now, once winHande is defined, so callbacks above have it
+    // in scope.
+    windowAddMenuBar( winHandle, menu );
+
     var controls = $('<div class="window-cdplayer-controls-row"><div class="window-cdplayer-display"></div><div class="window-cdplayer-controls"><div class="window-cdplayer-controls-play-pause-stop"></div><div class="window-cdplayer-controls-tracks-eject"></div></div></div>');
     winHandle.children( '.window-form' ).append( controls );
 
-    var btnPlay = $('<button class="button-play">&gt;</button>');
+    var audio = new Audio( 'finalizing.mp3' );
+
+    var btnPlay = $('<button class="button-play">&#x25b6;</button>');
+    btnPlay.attr( 'enabled', false );
     controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnPlay );
-    $(btnPlay).click( function( e ) {
+    btnPlay.click( function( e ) {
+        audio.play();
         e.preventDefault();
     } );
 
-
-    var btnPause = $('<button class="button-pause">||</button>');
+    var btnPause = $('<button class="button-pause">&#x23f8;</button>');
     controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnPause );
-    $(btnPause).click( function( e ) {
+    btnPause.attr( 'enabled', false );
+    btnPause.click( function( e ) {
+        audio.pause();
         e.preventDefault();
     } );
 
-    var btnStop = $('<button class="button-stop">x</button>');
+    var btnStop = $('<button class="button-stop">&#x23f9;</button>');
     controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnStop );
-    $(btnStop).click( function( e ) {
+    btnStop.attr( 'enabled', false );
+    btnStop.click( function( e ) {
+        audio.pause();
+        audio.currentTime = 0;
         e.preventDefault();
     } );
+
+    // Setup the status bar.
+    var trayStatusTime = $('<div class="tray tray-status-time"></div>');
+    winHandle.children( '.statusbar' ).append( trayStatusTime );
+
+    var trayStatusTrack = $('<div class="tray tray-status-track"></div>');
+    winHandle.children( '.statusbar' ).append( trayStatusTrack );
+
+    winHandle.find( '.browser-pane' ).on( 'load', function( e ) {
+        winHandle.find( '.tray-status-text' ).text( '' );
+    } );
+
+    audio.volume = 0.3;
+
+    // Setup the audio events.
+    $(audio).on( 'canplay', function( e ) {
+        btnPlay.attr( 'enabled', true );
+
+        // Show the audio duration now that it's loaded.
+        var duration = audio.duration;
+        var minutes = Math.floor( duration / 60 ).toString();
+        if( 9 >= minutes ) {
+            minutes = "0" + minutes;
+        }
+        var seconds = Math.floor( duration % 60 ).toString();
+        if( 9 >= seconds ) {
+            seconds = "0" + seconds;
+        }
+        trayStatusTime.text( 'Total Play: ' + minutes + ':' + seconds + ' m:s' );
+    } );
+    $(audio).on( 'timeupdate', function( e ) {        
+        var currentTime = audio.currentTime;
+        var minutes = Math.floor( currentTime / 60 ).toString();
+        if( 9 >= minutes ) {
+            minutes = "0" + minutes;
+        }
+        var seconds = Math.floor( currentTime % 60 ).toString();
+        if( 9 >= seconds ) {
+            seconds = "0" + seconds;
+        }
+        winHandle.find( '.window-cdplayer-display' ).text( '[00] ' + minutes + ':' + seconds );
+
+    } );
+    $(audio).addClass( 'cd-player-audio' );
+
+    // This should probably be global and attached to the mixer.
+    winHandle.append( audio );
+
+    winHandle.show();
+    windowActivate( '#desktop', winHandle );
+
+    return winHandle;
+}
+
+function windowOpenMixer( caption, id=null, icoImg=null, icoX=0, icoY=0, x=0, y=0 ) {
+    var winHandle = windowOpen( caption, id, false, icoImg, icoX, icoY, null, x, y, 408, 446, false );
+    
+    winHandle.addClass( 'window-mixer' );
 
     winHandle.show();
     windowActivate( '#desktop', winHandle );
