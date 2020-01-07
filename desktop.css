@@ -206,3 +206,7 @@ button:active,
     height: 16px;
     vertical-align: middle;
 }
+
+.window-minimized {
+    visibility: hidden;
+}
