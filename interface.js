@@ -327,7 +327,7 @@ function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
 
     // This window type still uses wrappers because the pseudo-elements are 
     // rather prone to yet-unexplainable misbehaviors.
-    var browser = $('<div class="browser-pane-wrapper"><iframe class="browser-pane" sandbox="allow-same-origin"></iframe></div>');
+    var browser = $('<div class="browser-pane-wrapper"><iframe class="browser-pane" sandbox="allow-same-origin allow-forms"></iframe></div>');
     winHandle.children( '.window-form' ).append( browser );
 
     // Setup the browser toolbar.
@@ -463,15 +463,17 @@ function windowOpenCommand( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=
     return winHandle;
 }
 
-function windowOpenNotepad() {
-    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false );
+function windowOpenNotepad( caption, id=null, icoImg=null, icoX=0, icoY=0, contents='', x=0, y=0, w=480, h=260 ) {
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, null, x, y, w, h, false );
     
     winHandle.addClass( 'window-notepad' );
 
-    var prompt = $('<textarea class="input-textarea"></textarea>');
-    winHandle.children( '.window-form' ).append( prompt );
+    var text = $('<textarea class="input-textarea"></textarea>');
+    winHandle.children( '.window-form' ).append( text );
 
     winHandle.addClass( 'window-scroll-contents' );
+
+    text.text( contents );
 
     winHandle.show();
     windowActivate( '#desktop', winHandle );
