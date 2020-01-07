@@ -79,16 +79,31 @@
     transform: rotate( 270deg );
 }
 
-.button-start {
-    font-weight: bold;
+.taskbar .tasks {
+    display: flex;
+    margin: 0 5px;
+}
+
+.button-start,
+.button-task {
     padding: 4px;
 }
 
-.button-start .icon-start {
+.button-start .icon-start,
+.button-task .icon {
     vertical-align: middle;
     display: inline-block;
     margin-right: 2px;
     position: relative;
     width: 16px;
     height: 16px;
+}
+
+.button-start {
+    font-weight: bold;
+}
+
+.button-task {
+    flex-grow: 1;
+    max-width: 150px;
 }

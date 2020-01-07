@@ -167,9 +167,62 @@ function windowActivate( container, winHandle ) {
 
     $(winHandle).addClass( 'window-active' );
     $(winHandle).css( 'z-index', lastZ + 2 );
+
+    $('#taskbar > .tasks > button').removeClass( 'task-button-active' );
+    $(winHandle).data( 'taskbar-button' ).addClass( 'task-button-active' );
 }
 
-function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true, statusBar=false ) {
+function windowMaximize( winHandle ) {
+
+    if( $(winHandle).hasClass( 'window-maximized' ) ) {
+        return;
+    }
+
+    $(winHandle).data( 'restore-left', $(winHandle).css( 'left' ) );
+    $(winHandle).data( 'restore-top', $(winHandle).css( 'top' ) );
+    $(winHandle).data( 'restore-width', $(winHandle).css( 'width' ) );
+    $(winHandle).data( 'restore-height', $(winHandle).css( 'height' ) );
+
+    $(winHandle).resizable( 'disable' );
+    $(winHandle).draggable( 'disable' );
+    $(winHandle).css( 'left', '-1px' );
+    $(winHandle).css( 'top', '-1px' );
+    $(winHandle).css( 'width', '100%' );
+    $(winHandle).css( 'height', '100%' );
+
+    var btnRestore = $('<button class="titlebar-restore">&#x29C9;</button>');
+    $(btnRestore).click( function() {
+        windowRestore( winHandle );
+    } );
+
+    $(winHandle).addClass( 'window-maximized' );
+
+    $(winHandle).find( '.titlebar-maximize' ).replaceWith( btnRestore );
+}
+
+function windowRestore( winHandle ) {
+
+    if( !$(winHandle).hasClass( 'window-maximized' ) ) {
+        return;
+    }
+
+    $(winHandle).css( 'left', $(winHandle).data( 'restore-left' ) );
+    $(winHandle).css( 'top', $(winHandle).data( 'restore-top' ) );
+    $(winHandle).css( 'width', $(winHandle).data( 'restore-width' ) );
+    $(winHandle).css( 'height', $(winHandle).data( 'restore-height' ) );
+
+    $(winHandle).resizable( 'enable' );
+    $(winHandle).draggable( 'enable' );
+
+    var btnMax = $('<button class="titlebar-maximize">&#x25a1;</button>');
+    $(btnMax).click( function() {
+        windowMaximize( winHandle );
+    } );
+
+    winHandle.find( '.titlebar-restore' ).replaceWith( btnMax );
+}
+
+function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true, statusBar=false, taskBar=true ) {
     
     if( 0 < $('#' + id).length ) {
         /* The requested window is already open. */
@@ -222,7 +275,13 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
         titlebar.addClass( 'titlebar-no-icon' );
     }
 
-    /* Add the window close button. */
+    // Add the window control buttons.
+    var btnMax = $('<button class="titlebar-maximize">&#x25a1;</button>');
+    $(titlebar).append( btnMax );
+    $(btnMax).click( function() {
+        windowMaximize( winHandle );
+    } );
+
     var btnClose = $('<button class="titlebar-close">x</button>');
     $(titlebar).append( btnClose );
     $(btnClose).click( function() {
@@ -237,6 +296,19 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
         winHandle.addClass( 'window-statusbar' );
         var statusBarHandle = $('<div class="statusbar"></div>');
         winHandle.append( statusBarHandle );
+    }
+
+    if( taskBar ) {
+        var taskButton = $('<button class="button-task">' + caption + '</button>' );
+        winHandle.bind( 'DOMNodeRemoved', function( e ) {
+            taskButton.remove();
+        } );
+        taskButton.click( function( e ) {
+            windowRestore( winHandle );
+            windowActivate( '#desktop', winHandle );
+        } );
+        $('#taskbar > .tasks').append( taskButton );
+        winHandle.data( 'taskbar-button', taskButton );
     }
 
     windowActivate( '#desktop', winHandle );
@@ -553,7 +625,7 @@ function windowOpenNotepad( caption, id=null, icoImg=null, icoX=0, icoY=0, conte
 }
 
 function windowOpenProperties( caption, id=null, x=0, y=0 ) {
-    var winHandle = windowOpen( caption, id, false, null, 0, 0, null, x, y, 408, 446, false );
+    var winHandle = windowOpen( caption, id, false, null, 0, 0, null, x, y, 408, 446, false, false, false );
     
     winHandle.addClass( 'window-properties' );
     

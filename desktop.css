@@ -50,18 +50,20 @@ button:focus {
     outline: none;
 }
 
-button:active:before {
-    border-top: 1px solid #dfd8df;
-    border-left: 1px solid #dfd8df;
-    border-right: 1px solid #7f787f;
-    border-bottom: 1px solid #7f787f;
+button:active:before,
+.task-button-active:before {
+    border-top: 1px solid #7f787f;
+    border-left: 1px solid #7f787f;
+    border-bottom: 1px solid #fff8ff;
+    border-right: 1px solid #fff8ff;
 }
 
-button:active {
-    border-top: 1px solid #fff8ff;
-    border-left: 1px solid #fff8ff;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
+button:active,
+.task-button-active {
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 1px solid #bfbfbf;
+    border-right: 1px solid #bfbfbf;
 }
 
 /* Windows */
@@ -188,4 +190,8 @@ button:active {
     display: flex;
     height: 26px;
     z-index: 100;
+}
+
+.taskbar .tasks {
+    flex-grow: 1;
 }
