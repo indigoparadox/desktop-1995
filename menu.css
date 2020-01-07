@@ -78,3 +78,17 @@
     height: 25px;
     transform: rotate( 270deg );
 }
+
+.button-start {
+    font-weight: bold;
+    padding: 4px;
+}
+
+.button-start .icon-start {
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 2px;
+    position: relative;
+    width: 16px;
+    height: 16px;
+}
