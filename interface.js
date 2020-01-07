@@ -299,7 +299,12 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     }
 
     if( taskBar ) {
+        var taskIcon = $('<span class="task-icon"></span>');
+        taskIcon.css( 'background', 'url(' + staticPath + icoImg + 
+        ') right ' + icoX.toString() + 'px bottom ' + icoY.toString() + 'px' );
+
         var taskButton = $('<button class="button-task">' + caption + '</button>' );
+        taskButton.prepend( taskIcon );
         winHandle.bind( 'DOMNodeRemoved', function( e ) {
             taskButton.remove();
         } );

@@ -195,3 +195,14 @@ button:active,
 .taskbar .tasks {
     flex-grow: 1;
 }
+
+.taskbar .tasks button {
+    text-align: left;
+}
+.taskbar .tasks .task-icon {
+    display: inline-block;
+    margin-right: 4px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
