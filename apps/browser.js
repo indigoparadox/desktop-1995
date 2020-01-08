@@ -137,7 +137,7 @@ case 'open':
         if( 13 == e.keyCode ) {
             // Enter was pressed.
             e.preventDefault();
-            browserOpenURL( winHandle, winHandle.find( '.input-url' ).val() );
+            winHandle.browser95( 'go', winHandle.find( '.input-url' ).val() );
         }
     } );
     winHandle.browser95( 'go', settings );

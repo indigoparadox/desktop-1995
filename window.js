@@ -16,7 +16,9 @@ var settings = $.extend( {
     'h': 200,
     'show': true,
     'statusBar': false,
-    'taskBar': true
+    'taskBar': true,
+    'min': true,
+    'max': true
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -184,17 +186,21 @@ case 'open':
     }
 
     // Add the window control buttons.
-    var btnMin = $('<button class="titlebar-minimize">_</button>');
-    $(titlebar).append( btnMin );
-    $(btnMin).click( function() {
-        winHandle.window95( 'minimize' );
-    } );
+    if( settings.min ) {
+        var btnMin = $('<button class="titlebar-minimize">_</button>');
+        $(titlebar).append( btnMin );
+        $(btnMin).click( function() {
+            winHandle.window95( 'minimize' );
+        } );
+    }
 
-    var btnMax = $('<button class="titlebar-maximize">&#x25a1;</button>');
-    $(titlebar).append( btnMax );
-    $(btnMax).click( function() {
-        winHandle.window95( 'maximize' );
-    } );
+    if( settings.max ) {
+        var btnMax = $('<button class="titlebar-maximize">&#x25a1;</button>');
+        $(titlebar).append( btnMax );
+        $(btnMax).click( function() {
+            winHandle.window95( 'maximize' );
+        } );
+    }
 
     var btnRestore = $('<button class="titlebar-restore">&#x29C9;</button>');
     $(titlebar).append( btnRestore );
@@ -243,6 +249,63 @@ case 'open':
 
     // Return the newly created window.
     return winHandle;
+
+case 'properties':
+
+    settings.resizable = false;
+    settings.statusBar = false;
+    settings.taskBar = false;
+    settings.menu = null;
+    settings.w = 408;
+    settings.h = 446;
+    settings.min = false;
+    settings.max = false;
+    var winHandle = this.window95( 'open', settings );
+
+    winHandle.addClass( 'window-properties' );
+    
+    /*
+    var tabsWrapper = $('<div class="window-properties-tabs-wrapper"></div>');
+    winHandle.find( '.window-form' ).append( tabsWrapper );*/
+
+    var tabs = $('<div class="window-properties-tabs"><ul></ul></div>');
+    winHandle.children( '.window-form' ).append( tabs );
+
+    var buttons = $('<div class="window-properties-buttons"></div>');
+    winHandle.children( '.window-form' ).append( buttons );
+
+    var btnCancel = $('<button class="button-cancel">Cancel</button>');
+    buttons.append( btnCancel );
+    $(btnCancel).click( function( e ) {
+        e.preventDefault();
+        winHandle.window95( 'close' );
+    } );
+
+    var btnOK = $('<button class="button-ok">OK</button>');
+    buttons.append( btnOK );
+    $(btnOK).click( function( e ) {
+        e.preventDefault();
+    } );
+
+    winHandle.removeClass( 'window-hidden' );
+    winHandle.window95( 'activate' );
+
+    return winHandle;
+
+case 'tab':
+    
+    console.assert( null != settings.id );
+    console.assert( 0 >= $('#' + settings.id).length );
+
+    var tabPane = $('<div class="window-properties-tab-pane"></div>');
+    tabPane.attr( 'id', settings.id )
+    this.find( '.window-properties-tabs' ).append( tabPane );
+
+    var tab = '<li class="window-properties-tab-tab"><a href="#' + settings.id +
+        '">' + settings.caption + '</a></li>';
+    this.find( '.window-properties-tabs > ul' ).append( tab );
+
+    return tabPane;
 
 }; }; }( jQuery ) );
 

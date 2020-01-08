@@ -109,7 +109,7 @@ function _browserFavoritesMenuAdd( winHandle, menu, favorite ) {
     menu.push( {
         'text': favorite.name,
         'callback': function( m ) {
-            browserOpenURL( winHandle, favorite.url );
+            winHandle.browser95( 'go', { 'url': favorite.url } );
         }
     } );
 }
@@ -244,50 +244,6 @@ function windowOpenWordpad( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
     } );
 
     return winHandle;
-}
-
-function windowOpenProperties( caption, id=null, x=0, y=0 ) {
-    var winHandle = windowOpen( caption, id, false, null, 0, 0, null, x, y, 408, 446, false, false, false );
-    
-    winHandle.addClass( 'window-properties' );
-    
-    /*
-    var tabsWrapper = $('<div class="window-properties-tabs-wrapper"></div>');
-    winHandle.find( '.window-form' ).append( tabsWrapper );*/
-
-    var tabs = $('<div class="window-properties-tabs"><ul></ul></div>');
-    winHandle.children( '.window-form' ).append( tabs );
-
-    var buttons = $('<div class="window-properties-buttons"></div>');
-    winHandle.children( '.window-form' ).append( buttons );
-
-    var btnCancel = $('<button class="button-cancel">Cancel</button>');
-    buttons.append( btnCancel );
-    $(btnCancel).click( function( e ) {
-        e.preventDefault();
-    } );
-
-    var btnOK = $('<button class="button-ok">OK</button>');
-    buttons.append( btnOK );
-    $(btnOK).click( function( e ) {
-        e.preventDefault();
-    } );
-
-    winHandle.show();
-    winHandle.window95( 'activate' );
-
-    return winHandle;
-}
-
-function windowPropertiesAddTab( winHandle, caption, id ) {
-    
-    var tabPane = $('<div class="window-properties-tab-pane" id="' + id + '"></div>');
-    $(winHandle).find( '.window-properties-tabs' ).append( tabPane );
-
-    var tab = '<li class="window-properties-tab-tab"><a href="#' + id + '">' + caption + '</a></li>';
-    var tabs = $(winHandle).find( '.window-properties-tabs > ul' ).append( tab );
-
-    return tabPane;
 }
 
 function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container='#desktop', cbData=null ) {
