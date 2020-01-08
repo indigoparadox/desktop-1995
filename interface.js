@@ -666,6 +666,76 @@ function windowOpenNotepad( caption, id=null, icoImg=null, icoX=0, icoY=0, conte
     return winHandle;
 }
 
+function windowOpenWordpad( caption, id=null, icoImg=null, icoX=0, icoY=0, url='', x=0, y=0, w=480, h=260 ) {
+    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, null, x, y, w, h, false );
+    
+    menu = [
+        {'text': 'File', 'children': [
+            {'text': 'New Window', 'callback': function( m ) {
+                windowOpenBrowser( caption, id + '-new', icoImg, icoX, icoY, url, favorites, x + 20, y + 20, w, h );
+            }},
+            {'divider': true},
+            {'group': true, 'id': 'browser-recent'},
+            {'text': 'Exit', 'callback': function( m ) {
+                windowClose( winHandle );
+            }}
+        ]},
+        {'text': 'Edit', 'children': [
+            {'text': 'Undo', 'callback': function( m ) {
+            }},
+            {'divider': true},
+            {'text': 'Cut', 'callback': function( m ) {
+            }},
+            {'text': 'Copy', 'callback': function( m ) {
+            }},
+            {'text': 'Paste', 'callback': function( m ) {
+            }},
+            {'text': 'Delete', 'callback': function( m ) {
+            }},
+            {'divider': true},
+            {'text': 'Select All', 'callback': function( m ) {
+            }},
+            {'text': 'Time/Date', 'callback': function( m ) {
+            }},
+            {'divider': true},
+            {'text': 'Word Wrap', 'callback': function( m ) {
+            }}
+        ]},
+        {'text': 'View', 'children': [
+        ]},
+        {'text': 'Search', 'children': [
+        ]},
+        {'text': 'Help', 'children': [
+        ]}
+    ];
+
+    // Add the menu now, once winHande is defined, so callbacks above have it
+    // in scope.
+    windowAddMenuBar( winHandle, menu );
+
+    winHandle.addClass( 'window-notepad' );
+
+    // This window type still uses wrappers because the pseudo-elements are 
+    // rather prone to yet-unexplainable misbehaviors.
+    var wrapper = $('<div class="textarea-wrapper"></div>');
+    winHandle.children( '.window-form' ).append( wrapper );
+
+    var text = $('<textarea class="input-textarea"></textarea>');
+    wrapper.append( text );
+
+    winHandle.addClass( 'window-scroll-contents' );
+
+    console.log( url );
+    $.get( url, function( data ) {
+        text.text( data );
+    
+        winHandle.show();
+        windowActivate( '#desktop', winHandle );
+    } );
+
+    return winHandle;
+}
+
 function windowOpenProperties( caption, id=null, x=0, y=0 ) {
     var winHandle = windowOpen( caption, id, false, null, 0, 0, null, x, y, 408, 446, false, false, false );
     
