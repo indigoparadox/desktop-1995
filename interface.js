@@ -86,7 +86,7 @@ function _menuAddWindowMenu( winHandle, element, leftClick=false ) {
                 
             }},
             {'text': 'Close', 'callback': function( m ) {
-                winHandle.remove();
+                windowClose( winHandle );
             }}
         ];
 
@@ -191,15 +191,11 @@ function windowMaximize( winHandle ) {
     $(winHandle).css( 'width', '100%' );
     $(winHandle).css( 'height', '100%' );
 
-    var btnRestore = $('<button class="titlebar-restore">&#x29C9;</button>');
-    $(btnRestore).click( function() {
-        windowRestore( winHandle );
-    } );
-
     $(winHandle).removeClass( 'window-minimized' );
     $(winHandle).addClass( 'window-maximized' );
 
-    $(winHandle).find( '.titlebar-maximize' ).replaceWith( btnRestore );
+    $(winHandle).find( '.titlebar-restore' ).css( 'display', 'inline-block' );
+    $(winHandle).find( '.titlebar-maximize' ).css( 'display', 'none' );
 }
 
 function windowMinimize( winHandle ) {
@@ -207,18 +203,6 @@ function windowMinimize( winHandle ) {
     if( $(winHandle).hasClass( 'window-minimized' ) ) {
         return;
     }
-
-    //$(winHandle).data( 'restore-left', $(winHandle).css( 'left' ) );
-    //$(winHandle).data( 'restore-top', $(winHandle).css( 'top' ) );
-    //$(winHandle).data( 'restore-width', $(winHandle).css( 'width' ) );
-    //$(winHandle).data( 'restore-height', $(winHandle).css( 'height' ) );
-
-    //$(winHandle).resizable( 'disable' );
-    //$(winHandle).draggable( 'disable' );
-    //$(winHandle).css( 'left', '-1px' );
-    //$(winHandle).css( 'top', '-1px' );
-    //$(winHandle).css( 'width', '100%' );
-    //$(winHandle).css( 'height', '100%' );
 
     $(winHandle).addClass( 'window-minimized' );
 }
@@ -232,7 +216,9 @@ function windowRestore( winHandle ) {
         return;
     }
     
-    if( $(winHandle).hasClass( 'window-maximized' ) ) {
+    if( $(winHandle).hasClass( 'window-minimized' ) ) {
+        $(winHandle).removeClass( 'window-minimized' );
+    } else if( $(winHandle).hasClass( 'window-maximized' ) ) {
         $(winHandle).css( 'left', $(winHandle).data( 'restore-left' ) );
         $(winHandle).css( 'top', $(winHandle).data( 'restore-top' ) );
         $(winHandle).css( 'width', $(winHandle).data( 'restore-width' ) );
@@ -241,15 +227,16 @@ function windowRestore( winHandle ) {
         $(winHandle).resizable( 'enable' );
         $(winHandle).draggable( 'enable' );
 
-        var btnMax = $('<button class="titlebar-maximize">&#x25a1;</button>');
-        $(btnMax).click( function() {
-            windowMaximize( winHandle );
-        } );
+        $(winHandle).removeClass( 'window-maximized' );
 
-        winHandle.find( '.titlebar-restore' ).replaceWith( btnMax );
-    } else if( $(winHandle).hasClass( 'window-minimized' ) ) {
-        $(winHandle).removeClass( 'window-minimized' );
+        $(winHandle).find( '.titlebar-restore' ).css( 'display', 'none' );
+        $(winHandle).find( '.titlebar-maximize' ).css( 'display', 'inline-block' );
     }
+}
+
+function windowClose( winHandle ) {
+    $(winHandle).data( 'taskbar-button' ).remove();
+    $(winHandle).remove();
 }
 
 function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true, statusBar=false, taskBar=true ) {
@@ -312,10 +299,17 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
         windowMaximize( winHandle );
     } );
 
+    var btnRestore = $('<button class="titlebar-restore">&#x29C9;</button>');
+    $(titlebar).append( btnRestore );
+    btnRestore.css( 'display', 'none' );
+    $(btnRestore).click( function() {
+        windowRestore( winHandle );
+    } );
+
     var btnClose = $('<button class="titlebar-close">x</button>');
     $(titlebar).append( btnClose );
     $(btnClose).click( function() {
-        $(winHandle).remove();
+        windowClose( winHandle );
     } );
 
     $(winHandle).mousedown( function( e ) {
@@ -333,17 +327,13 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
         taskIcon.css( 'background', 'url(' + staticPath + icoImg + 
         ') right ' + icoX.toString() + 'px bottom ' + icoY.toString() + 'px' );
 
-        var taskButton = $('<button class="button-task">' + caption + '</button>' );
+        var taskButton = $('<button class="button-task" id="button-task-' + id + '">' + caption + '</button>' );
         taskButton.prepend( taskIcon );
-        winHandle.bind( 'DOMNodeRemoved', function( e ) {
-            taskButton.remove();
-        } );
         taskButton.click( function( e ) {
-            if(
-                winHandle.hasClass( 'window-minimized' ) ||
-                winHandle.hasClass( 'window-maximized' )
-            ) {
+            if( winHandle.hasClass( 'window-minimized' ) ) {
                 windowRestore( winHandle );
+                windowActivate( '#desktop', winHandle );
+            } else if( !taskButton.hasClass( 'task-button-active' ) ) {
                 windowActivate( '#desktop', winHandle );
             } else {
                 windowMinimize( winHandle );
@@ -364,7 +354,7 @@ function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=n
         menu = [
             {'text': 'File', 'children': [
                 {'text': 'Close', 'callback': function( m ) {
-                    winHandle.remove();
+                    windowClose( winHandle );
                 }}
             ]}
         ];
@@ -413,7 +403,7 @@ function windowOpenBrowser( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
             {'divider': true},
             {'group': true, 'id': 'browser-recent'},
             {'text': 'Exit', 'callback': function( m ) {
-                winHandle.remove();
+                windowClose( winHandle );
             }}
         ]},
         {'text': 'Edit', 'children': [
@@ -610,7 +600,7 @@ function windowOpenNotepad( caption, id=null, icoImg=null, icoX=0, icoY=0, conte
             {'divider': true},
             {'group': true, 'id': 'browser-recent'},
             {'text': 'Exit', 'callback': function( m ) {
-                winHandle.remove();
+                windowClose( winHandle );
             }}
         ]},
         {'text': 'Edit', 'children': [
@@ -720,7 +710,7 @@ function windowOpenCDPlayer( caption, id=null, icoImg=null, icoX=0, icoY=0, play
         {'text': 'Disc', 'children': [
             {'group': true, 'id': 'browser-recent'},
             {'text': 'Exit', 'callback': function( m ) {
-                winHandle.remove();
+                windowClose( winHandle );
             }}
         ]},
         {'text': 'View', 'children': [
@@ -1002,7 +992,7 @@ function menuClose( container, menu ) {
 }
 
 $(document).ready( function() {
-
+    // Build the start menu if one is provided.
     $('.button-start').click( function( e ) {
             
         e.preventDefault();
@@ -1028,7 +1018,7 @@ $(document).ready( function() {
             }},
             {'divider': true },
             {'text': 'Shut Down...', 'callback': function( m ) {
-                winHandle.remove();
+                windowClose( winHandle );
             }}
         ];
 
