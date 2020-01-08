@@ -114,7 +114,7 @@
 .input-text:focus,
 .input-textarea:focus,
 .input-url:focus,
-.window-properties-tab-tab a:focus {
+.window-properties-tabs-tab a:focus {
     outline: none;
 }
 
@@ -278,8 +278,8 @@
 
 /* Tab panes have a slightly different chiseled pattern. */
 button:before,
-.window-properties-tab-pane:before,
-.window-properties-tab-tab a:before {
+.window-properties-tabs-pane:before,
+.window-properties-tabs-tab a:before {
     content: " ";
     position: absolute;
     left: -2px;
@@ -294,8 +294,8 @@ button:before,
 }
 
 button,
-.window-properties-tab-pane,
-.window-properties-tab-tab a {
+.window-properties-tabs-pane,
+.window-properties-tabs-tab a {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid #dfd8df;
     border-left: 1px solid #dfd8df;
@@ -322,7 +322,7 @@ button,
     z-index: 20;
 }
 
-.window-properties-tab-tab {
+.window-properties-tabs-tab {
     display: inline-block;
     position: relative;
     margin: 0;
@@ -330,12 +330,12 @@ button,
     list-style-type: none;
 }
 
-.window-properties-tab-tab a:before {
+.window-properties-tabs-tab a:before {
     border-bottom: none;
     border-radius: 3px 3px 0 0;
 }
 
-.window-properties-tab-tab a {
+.window-properties-tabs-tab a {
     color: black;
     line-height: 10px;
     text-decoration: none;
@@ -357,7 +357,7 @@ button,
     padding: 3px 9px;
 }
 
-.window-properties-tab-pane {
+.window-properties-tabs-pane {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
