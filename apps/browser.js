@@ -118,6 +118,8 @@ case 'open':
 
     winHandle.children( '.window-form' ).prepend( browserToolbar );
 
+    winHandle.control95( 'statusbar' );
+
     // Setup the status bar.
     var trayStatusText = $('<div class="tray tray-status-text"></div>');
     winHandle.children( '.statusbar' ).append( trayStatusText );

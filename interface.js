@@ -155,6 +155,8 @@ function windowOpenFolder( options ) {
     
     winHandle.addClass( 'window-folder' );
 
+    winHandle.control95( 'statusbar' );
+
     var container = $('<div class="window-folder-container container"></div>');
     winHandle.find( '.window-form' ).append( container );
 

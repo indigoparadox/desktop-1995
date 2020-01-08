@@ -15,7 +15,6 @@ var settings = $.extend( {
     'w': 300,
     'h': 200,
     'show': true,
-    'statusBar': false,
     'taskBar': true,
     'min': true,
     'max': true
@@ -219,12 +218,6 @@ case 'open':
         $(e.target).parents( '.window' ).window95( 'activate' );
     } );
 
-    if( settings.statusBar ) {
-        winHandle.addClass( 'window-statusbar' );
-        var statusBarHandle = $('<div class="statusbar"></div>');
-        winHandle.append( statusBarHandle );
-    }
-
     if( settings.taskBar ) {
         var taskIcon = $('<span class="task-icon"></span>');
         taskIcon.css( 'background', 'url(' + staticPath + settings.icoImg + 
@@ -291,21 +284,6 @@ case 'properties':
     winHandle.window95( 'activate' );
 
     return winHandle;
-
-case 'tab':
-    
-    console.assert( null != settings.id );
-    console.assert( 0 >= $('#' + settings.id).length );
-
-    var tabPane = $('<div class="window-properties-tab-pane"></div>');
-    tabPane.attr( 'id', settings.id )
-    this.find( '.window-properties-tabs' ).append( tabPane );
-
-    var tab = '<li class="window-properties-tab-tab"><a href="#' + settings.id +
-        '">' + settings.caption + '</a></li>';
-    this.find( '.window-properties-tabs > ul' ).append( tab );
-
-    return tabPane;
 
 }; }; }( jQuery ) );
 
