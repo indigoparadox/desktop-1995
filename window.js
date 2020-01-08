@@ -1,10 +1,28 @@
 
 (function( $ ) {
-$.fn.window95 = function( op ) {
-switch( op ) {
+$.fn.window95 = function( action, options ) {
+
+var settings = $.extend( {
+    'caption': '',
+    'id': null,
+    'resizable': false,
+    'icoImg': null,
+    'icoX': 0,
+    'icoY': 0,
+    'menu': null,
+    'x': 10,
+    'y': 10,
+    'w': 300,
+    'h': 200,
+    'show': true,
+    'statusBar': false,
+    'taskBar': true
+}, options );
+
+switch( action ) {
 
 case 'activate':
-    this.each( function( idx, winHandle ) {
+    return this.each( function( idx, winHandle ) {
 
         if( $(winHandle).hasClass( 'window-active' ) ) {
             return;
@@ -37,122 +55,115 @@ case 'activate':
             $(winHandle).data( 'taskbar-button' ).addClass( 'task-button-active' );
         }
 
-        return winHandle;
+        return;
     } );
-    return this;
-};
-};
-}( jQuery ) );
 
-function windowAddMenuBar( winHandle, menu ) {
-    var menuBar = $('<div class="menubar"></div>');
-    winHandle.prepend( menuBar );
-    winHandle.addClass( 'window-menubar' );
-    _menuPopulate( winHandle, menuBar, menu, false );
-}
+case 'maximize':
+    return this.each( function( idx, winHandle ) {
+        if( $(winHandle).hasClass( 'window-maximized' ) ) {
+            return;
+        }
 
-function windowMaximize( winHandle ) {
+        $(winHandle).data( 'restore-left', $(winHandle).css( 'left' ) );
+        $(winHandle).data( 'restore-top', $(winHandle).css( 'top' ) );
+        $(winHandle).data( 'restore-width', $(winHandle).css( 'width' ) );
+        $(winHandle).data( 'restore-height', $(winHandle).css( 'height' ) );
 
-    if( $(winHandle).hasClass( 'window-maximized' ) ) {
-        return;
-    }
+        $(winHandle).resizable( 'disable' );
+        $(winHandle).draggable( 'disable' );
+        $(winHandle).css( 'left', '-1px' );
+        $(winHandle).css( 'top', '-1px' );
+        $(winHandle).css( 'width', '100%' );
+        $(winHandle).css( 'height', '100%' );
 
-    $(winHandle).data( 'restore-left', $(winHandle).css( 'left' ) );
-    $(winHandle).data( 'restore-top', $(winHandle).css( 'top' ) );
-    $(winHandle).data( 'restore-width', $(winHandle).css( 'width' ) );
-    $(winHandle).data( 'restore-height', $(winHandle).css( 'height' ) );
-
-    $(winHandle).resizable( 'disable' );
-    $(winHandle).draggable( 'disable' );
-    $(winHandle).css( 'left', '-1px' );
-    $(winHandle).css( 'top', '-1px' );
-    $(winHandle).css( 'width', '100%' );
-    $(winHandle).css( 'height', '100%' );
-
-    $(winHandle).removeClass( 'window-minimized' );
-    $(winHandle).addClass( 'window-maximized' );
-
-    $(winHandle).find( '.titlebar-restore' ).css( 'display', 'inline-block' );
-    $(winHandle).find( '.titlebar-maximize' ).css( 'display', 'none' );
-}
-
-function windowMinimize( winHandle ) {
-
-    if( $(winHandle).hasClass( 'window-minimized' ) ) {
-        return;
-    }
-
-    $(winHandle).addClass( 'window-minimized' );
-}
-
-function windowRestore( winHandle ) {
-
-    if(
-        !$(winHandle).hasClass( 'window-maximized' ) &&
-        !$(winHandle).hasClass( 'window-minimized' )
-    ) {
-        return;
-    }
-    
-    if( $(winHandle).hasClass( 'window-minimized' ) ) {
         $(winHandle).removeClass( 'window-minimized' );
-    } else if( $(winHandle).hasClass( 'window-maximized' ) ) {
-        $(winHandle).css( 'left', $(winHandle).data( 'restore-left' ) );
-        $(winHandle).css( 'top', $(winHandle).data( 'restore-top' ) );
-        $(winHandle).css( 'width', $(winHandle).data( 'restore-width' ) );
-        $(winHandle).css( 'height', $(winHandle).data( 'restore-height' ) );
+        $(winHandle).addClass( 'window-maximized' );
 
-        $(winHandle).resizable( 'enable' );
-        $(winHandle).draggable( 'enable' );
+        $(winHandle).find( '.titlebar-restore' ).css( 'display', 'inline-block' );
+        $(winHandle).find( '.titlebar-maximize' ).css( 'display', 'none' );
 
-        $(winHandle).removeClass( 'window-maximized' );
+        return;
+    } );
 
-        $(winHandle).find( '.titlebar-restore' ).css( 'display', 'none' );
-        $(winHandle).find( '.titlebar-maximize' ).css( 'display', 'inline-block' );
-    }
-}
+case 'minimize':
+    return this.each( function( idx, winHandle ) {
+        if( $(winHandle).hasClass( 'window-minimized' ) ) {
+            return;
+        }
 
-function windowClose( winHandle ) {
-    if( null != $(winHandle).data( 'taskbar-button' ) ) {
-        $(winHandle).data( 'taskbar-button' ).remove();
-    }
-    $(winHandle).remove();
-}
+        $(winHandle).addClass( 'window-minimized' );
+    } );
 
-function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200, show=true, statusBar=false, taskBar=true ) {
-    
-    if( 0 < $('#' + id).length ) {
+case 'restore':
+    return this.each( function( idx, winHandle ) {
+        if(
+            !$(winHandle).hasClass( 'window-maximized' ) &&
+            !$(winHandle).hasClass( 'window-minimized' )
+        ) {
+            return;
+        }
+        
+        if( $(winHandle).hasClass( 'window-minimized' ) ) {
+            $(winHandle).removeClass( 'window-minimized' );
+        } else if( $(winHandle).hasClass( 'window-maximized' ) ) {
+            $(winHandle).css( 'left', $(winHandle).data( 'restore-left' ) );
+            $(winHandle).css( 'top', $(winHandle).data( 'restore-top' ) );
+            $(winHandle).css( 'width', $(winHandle).data( 'restore-width' ) );
+            $(winHandle).css( 'height', $(winHandle).data( 'restore-height' ) );
+
+            $(winHandle).resizable( 'enable' );
+            $(winHandle).draggable( 'enable' );
+
+            $(winHandle).removeClass( 'window-maximized' );
+
+            $(winHandle).find( '.titlebar-restore' ).css( 'display', 'none' );
+            $(winHandle).find( '.titlebar-maximize' ).css( 'display', 'inline-block' );
+        }
+    } );
+
+case 'close':
+    return this.each( function( idx, winHandle ) {
+        if( null != $(winHandle).data( 'taskbar-button' ) ) {
+            $(winHandle).data( 'taskbar-button' ).remove();
+        }
+        $(winHandle).remove();
+        return;
+    } );
+
+case 'open':
+
+    if( 0 < $('#' + settings.id).length ) {
         /* The requested window is already open. */
-        $('#' + id).window95( 'activate' );
-        return $('#' + id);
+        $('#' + settings.id).window95( 'activate' );
+        return $('#' + settings.id);
     }
 
     var winHandle = $('<div class="window"><form class="window-form"></form></div>');
-    if( null != id ) {
-        winHandle.attr( 'id', id );
+    if( null != settings.id ) {
+        winHandle.attr( 'id', settings.id );
     }
-    if( !show ) {
-        winHandle.css( 'display', 'none' );
+    if( !settings.show ) {
+        winHandle.addClass( 'window-hidden' );
     } else {
-        $(winHandle).window95( 'activate' );
+        winHandle.window95( 'activate' );
     }
-    $('#desktop').append( winHandle );
+    this.append( winHandle );
 
     winHandle.draggable( {'handle': '.titlebar', 'containment': '#desktop'} );
-    if( resizable ) {
+    if( settings.resizable ) {
         winHandle.resizable();
         winHandle.addClass( 'window-resizable' );
     }
 
-    winHandle.css( 'width', w.toString() + 'px' );
-    winHandle.css( 'height', h.toString() + 'px' );
+    winHandle.css( 'width', settings.w.toString() + 'px' );
+    winHandle.css( 'height', settings.h.toString() + 'px' );
 
-    if( null != menu ) {
-        windowAddMenuBar( winHandle, menu );
+    if( null != settings.menu ) {
+        windowAddMenuBar( winHandle, settings.menu );
     }
 
-    var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + caption + '</h1></div>');
-    $(winHandle).prepend( titlebar );
+    var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + settings.caption + '</h1></div>');
+    winHandle.prepend( titlebar );
 
     _menuAddWindowMenu( winHandle, titlebar, false );
     titlebar.children( '.titlebar-text' ).click( function( e ) {
@@ -161,11 +172,11 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     } );
 
     /* Add the window icon. */
-    if( null != icoImg ) {
+    if( null != settings.icoImg ) {
         var icon = $('<div class="titlebar-icon"></div>');
         $(titlebar).prepend( icon );
-        icon.css( 'background', 'url(' + staticPath + icoImg + 
-            ') right ' + icoX.toString() + 'px bottom ' + icoY.toString() + 'px' );
+        icon.css( 'background', 'url(' + staticPath + settings.icoImg + 
+            ') right ' + settings.icoX.toString() + 'px bottom ' + settings.icoY.toString() + 'px' );
 
         _menuAddWindowMenu( winHandle, icon, true );
     } else {
@@ -176,60 +187,68 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     var btnMin = $('<button class="titlebar-minimize">_</button>');
     $(titlebar).append( btnMin );
     $(btnMin).click( function() {
-        windowMinimize( winHandle );
+        winHandle.window95( 'minimize' );
     } );
 
     var btnMax = $('<button class="titlebar-maximize">&#x25a1;</button>');
     $(titlebar).append( btnMax );
     $(btnMax).click( function() {
-        windowMaximize( winHandle );
+        winHandle.window95( 'maximize' );
     } );
 
     var btnRestore = $('<button class="titlebar-restore">&#x29C9;</button>');
     $(titlebar).append( btnRestore );
     btnRestore.css( 'display', 'none' );
     $(btnRestore).click( function() {
-        windowRestore( winHandle );
+        winHandle.window95( 'restore' );
     } );
 
     var btnClose = $('<button class="titlebar-close">x</button>');
     $(titlebar).append( btnClose );
     $(btnClose).click( function() {
-        windowClose( winHandle );
+        winHandle.window95( 'close' );
     } );
 
     $(winHandle).mousedown( function( e ) {
         $(e.target).parents( '.window' ).window95( 'activate' );
     } );
 
-    if( statusBar ) {
+    if( settings.statusBar ) {
         winHandle.addClass( 'window-statusbar' );
         var statusBarHandle = $('<div class="statusbar"></div>');
         winHandle.append( statusBarHandle );
     }
 
-    if( taskBar ) {
+    if( settings.taskBar ) {
         var taskIcon = $('<span class="task-icon"></span>');
-        taskIcon.css( 'background', 'url(' + staticPath + icoImg + 
-        ') right ' + icoX.toString() + 'px bottom ' + icoY.toString() + 'px' );
+        taskIcon.css( 'background', 'url(' + staticPath + settings.icoImg + 
+        ') right ' + settings.icoX.toString() + 'px bottom ' + settings.icoY.toString() + 'px' );
 
-        var taskButton = $('<button class="button-task" id="button-task-' + id + '">' + caption + '</button>' );
+        var taskButton = $('<button class="button-task" id="button-task-' + settings.id + '">' + settings.caption + '</button>' );
         taskButton.prepend( taskIcon );
         taskButton.click( function( e ) {
             if( winHandle.hasClass( 'window-minimized' ) ) {
-                windowRestore( winHandle );
-                $(winHandle).window95( 'activate' );
+                winHandle.window95( 'restore' );
+                winHandle.window95( 'activate' );
             } else if( !taskButton.hasClass( 'task-button-active' ) ) {
-                $(winHandle).window95( 'activate' );
+                winHandle.window95( 'activate' );
             } else {
-                windowMinimize( winHandle );
+                winHandle.window95( 'minimize' );
             }
         } );
         $('#taskbar > .tasks').append( taskButton );
         winHandle.data( 'taskbar-button', taskButton );
     }
+    winHandle.window95( 'activate' );
 
-    $(winHandle).window95( 'activate' );
-
+    // Return the newly created window.
     return winHandle;
+
+}; }; }( jQuery ) );
+
+function windowAddMenuBar( winHandle, menu ) {
+    var menuBar = $('<div class="menubar"></div>');
+    winHandle.prepend( menuBar );
+    winHandle.addClass( 'window-menubar' );
+    _menuPopulate( winHandle, menuBar, menu, false );
 }

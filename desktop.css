@@ -210,3 +210,7 @@ button:active,
 .window-minimized {
     visibility: hidden;
 }
+
+.window-hidden {
+    display: none !important;
+}

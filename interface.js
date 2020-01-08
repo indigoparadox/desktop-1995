@@ -86,14 +86,14 @@ function _menuAddWindowMenu( winHandle, element, leftClick=false ) {
                 
             }},
             {'text': 'Close', 'callback': function( m ) {
-                windowClose( winHandle );
+                $(winHandle).window95( 'close' );
             }}
         ];
 
-        menuClose( winHandle, null );
-        menuPopup( winHandle, menu,
-            e.pageX - winHandle.offset().left,
-            e.pageY - winHandle.offset().top );
+        menuClose( $(winHandle), null );
+        menuPopup( $(winHandle), menu,
+            e.pageX - $(winHandle).offset().left,
+            e.pageY - $(winHandle).offset().top );
     };
 
     if( leftClick ) {
@@ -139,19 +139,21 @@ function _htmlCharSVG( u ) {
 
 
 
-function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=null, x=10, y=10, w=300, h=200 ) {
+function windowOpenFolder( options ) {
 
-    if( null == menu ) {
-        menu = [
-            {'text': 'File', 'children': [
-                {'text': 'Close', 'callback': function( m ) {
-                    windowClose( winHandle );
-                }}
-            ]}
-        ];
-    }
+    options.menu = [
+        {'text': 'File', 'children': [
+            {'text': 'Close', 'callback': function( m ) {
+                winHandle.window95( 'close' );
+            }}
+        ]}
+    ];
+    options.show = false;
 
-    var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, menu, x, y, w, h, false, true );
+    var winHandle = $('#desktop').window95( 'open', options );
+
+    console.log( winHandle );
+    console.assert( winHandle.attr( 'id' ) == options.id );
     
     winHandle.addClass( 'window-folder' );
 
@@ -166,7 +168,12 @@ function windowOpenFolder( caption, id=null, icoImg=null, icoX=0, icoY=0, menu=n
 
     winHandle.addClass( 'window-scroll-contents' );
 
-    winHandle.show();
+    console.assert( 1 == winHandle.length );
+    console.assert( winHandle.hasClass( 'window-hidden' ) );
+
+    winHandle.removeClass( 'window-hidden' );
+
+    console.assert( 1 == winHandle.length );
 
     return winHandle;
 }
@@ -741,8 +748,11 @@ function windowCDPlayerEnable( winHandle ) {
 
 }
 
-function windowOpenMixer( caption, id=null, icoImg=null, icoX=0, icoY=0, x=0, y=0 ) {
-    var winHandle = windowOpen( caption, id, false, icoImg, icoX, icoY, null, x, y, 408, 446, false );
+function windowOpenMixer( caption, options ) {
+    options.w = 408;
+    options.h = 446;
+    options.menu = null;
+    var winHandle = $.window95( 'open', options );
     
     winHandle.addClass( 'window-mixer' );
 
