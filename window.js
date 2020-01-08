@@ -19,7 +19,7 @@ var settings = $.extend( {
     'taskBar': true
 }, options );
 
-switch( action ) {
+switch( action.toLowerCase() ) {
 
 case 'activate':
     return this.each( function( idx, winHandle ) {
