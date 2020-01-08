@@ -169,8 +169,10 @@ function windowActivate( container, winHandle ) {
     $(winHandle).addClass( 'window-active' );
     $(winHandle).css( 'z-index', lastZ + 2 );
 
-    $('#taskbar > .tasks > button').removeClass( 'task-button-active' );
-    $(winHandle).data( 'taskbar-button' ).addClass( 'task-button-active' );
+    if( null != $(winHandle).data( 'taskbar-button' ) ) {
+        $('#taskbar > .tasks > button').removeClass( 'task-button-active' );
+        $(winHandle).data( 'taskbar-button' ).addClass( 'task-button-active' );
+    }
 }
 
 function windowMaximize( winHandle ) {
@@ -235,7 +237,9 @@ function windowRestore( winHandle ) {
 }
 
 function windowClose( winHandle ) {
-    $(winHandle).data( 'taskbar-button' ).remove();
+    if( null != $(winHandle).data( 'taskbar-button' ) ) {
+        $(winHandle).data( 'taskbar-button' ).remove();
+    }
     $(winHandle).remove();
 }
 
@@ -293,6 +297,12 @@ function windowOpen( caption, id=null, resizable=false, icoImg=null, icoX=0, ico
     }
 
     // Add the window control buttons.
+    var btnMin = $('<button class="titlebar-minimize">_</button>');
+    $(titlebar).append( btnMin );
+    $(btnMin).click( function() {
+        windowMinimize( winHandle );
+    } );
+
     var btnMax = $('<button class="titlebar-maximize">&#x25a1;</button>');
     $(titlebar).append( btnMax );
     $(btnMax).click( function() {
