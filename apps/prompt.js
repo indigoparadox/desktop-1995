@@ -83,7 +83,7 @@ case 'open':
 
             /* Process line input. */
             if( null != settings.lineHandler ) {
-                lineHandler( settings.lineHandlerData, winHandle );
+                settings.lineHandler( settings.lineHandlerData, winHandle );
             }
 
             /* Create a new input line. */
