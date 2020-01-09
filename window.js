@@ -22,6 +22,13 @@ var settings = $.extend( {
 
 switch( action.toLowerCase() ) {
 
+case 'nextfreeid':
+    var idIter = 0;
+    while( $( '#' + settings.id + '-' + idIter.toString()).length > 0 ) {
+        idIter += 1;
+    }
+    return settings.id + '-' + idIter.toString();
+
 case 'activate':
     return this.each( function( idx, winHandle ) {
 

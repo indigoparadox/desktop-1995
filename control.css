@@ -1,7 +1,7 @@
 
 .statusbar {
     font-size: 12px;
-    line-height: 16px;
+    line-height: 24px;
     display: flex;
     position: absolute;
     height: 22px;
@@ -11,6 +11,8 @@
 }
 
 .statusbar .tray {
+    font-size: 12px;
+    line-height: 16px;
     border-top: 1px solid #7f7f7f;
     border-right: 1px solid white;
     border-bottom: 1px solid white;
@@ -111,11 +113,47 @@
     padding: 1px 2px;
 }
 
+.input-rtf:focus,
 .input-text:focus,
 .input-textarea:focus,
 .input-url:focus,
 .window-properties-tabs-tab a:focus {
     outline: none;
+}
+
+.window > .toolbar:before {
+    content: " ";
+    border-top: 1px solid #7f787f;
+    border-bottom: 1px solid white;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: -2px;
+    bottom: -2px;
+}
+
+.window > .toolbar {
+    border-top: 1px solid white;
+    border-bottom: 1px solid #7f787f;
+    padding: 4px;
+    position: absolute;
+    right: 2px;
+    left: 2px;
+}
+
+.window-toolbar:not( .window-menubar ) > .toolbar {
+    top: 22px;
+}
+
+.window-menubar.window-toolbar > .toolbar {
+    top: 42px;
+}
+
+.toolbar-button-icon {
+    display: inline-block;
+    position: relative;
+    width: 16px;
+    height: 16px;
 }
 
 /* Window: Notepad */
@@ -126,6 +164,24 @@
     height: 100%;
     resize: none;
     overflow: scroll;
+}
+
+/* Window: Wordpad */
+
+.window-wordpad .input-rtf {
+    background: white;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    resize: none;
+    overflow: scroll;
+}
+
+.window-wordpad .input-rtf p {
+    margin: 0 0 10px 0;
 }
 
 /* Window: Command Prompt */
@@ -217,6 +273,7 @@
     margin: 0;
 }
 
+/*
 .window-browser .browser-buttons {
     margin: 0;
     padding: 3px 2px 0 7px;
@@ -226,9 +283,10 @@
     width: 18px;
     height: 18px;
 }
+*/
 
 .window-browser .pane-wrapper {
-    top: 52px;
+    top: 32px;
 }
 
 .window-browser .browser-pane {

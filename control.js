@@ -5,7 +5,9 @@ $.fn.control95 = function( control, action='create', options ) {
 var settings = $.extend( {
     'caption': '',
     'id': null,
-    'parentClass': null
+    'parentClass': null,
+    'classes': [],
+    'icon': null
 }, options );
 
 switch( control.toLowerCase() ) {
@@ -34,6 +36,50 @@ case 'statusbar':
         $(winHandle).addClass( 'window-statusbar' );
         var statusBarHandle = $('<div class="statusbar"></div>');
         $(winHandle).append( statusBarHandle );
+    } );
+
+case 'toolbar':
+    if( 'destroy' == action ) {
+        this.removeClass( 'window-toolbar' );
+        return this.children( '.toolbar' ).remove();
+    } else if( 'create' == action ) {
+        this.addClass( 'window-toolbar' );
+        var toolBarHandle = $('<div class="toolbar"></div>');
+        toolBarHandle.insertBefore( this.children( '.window-form' ) );
+        return toolBarHandle;
+    }
+    return this;
+
+case 'button':
+    return 'destroy' == action ? this.each( function( idx, toolbar ) {
+
+    } ) : this.each( function( idx, toolbar ) {
+        console.log( settings );
+        var btn = $('<button class="input-button"></button>');
+        $(toolbar).append( btn );
+        if( null != settings.icon ) {
+            var icoSpan = $('<span class="toolbar-button-icon"></span>');
+            icoSpan.css( 'background', 'url(' + staticPath + settings.icon.icoImg + 
+            ') right ' + settings.icon.icoX.toString() + 'px bottom ' + settings.icon.icoY.toString() + 'px' );
+            btn.append( icoSpan );
+        }
+        if( null != settings.contents ) {
+            btn.append( settings.contents );
+        }
+        if( null != settings.id ) {
+            btn.attr( 'id', settings.id );
+        }
+        for( var i = 0 ; settings.classes.length > i ; i++ ) {
+            btn.addClass( settings.classes[i] );
+        }
+        
+        // Attach callback if there is one.
+        if( null != settings.callback ) {
+            btn.click( function( e ) {
+                settings.callback( e );
+                e.preventDefault();
+            }, settings.cbData );
+        }
     } );
 
 }; }; }( jQuery ) );

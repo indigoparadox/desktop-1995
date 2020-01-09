@@ -110,11 +110,14 @@ case 'open':
 
     var urlBox = $('<div class="url-bar"><span class="label">Address:</span> <span class="input-url-wrapper"><input type="text" class="input-url" /></span></div>');
     browserToolbarLeft.prepend( urlBox );
-    browserToolbarLeft.prepend( '<hr />' );
+    //browserToolbarLeft.prepend( '<hr />' );
 
+    /*
     var buttons = $('<div class="browser-buttons"><button /></div>')
     browserToolbarLeft.prepend( buttons );
     browserToolbarLeft.prepend( '<hr />' );
+    */
+    winHandle.control95( 'toolbar', 'create' );
 
     winHandle.children( '.window-form' ).prepend( browserToolbar );
 

@@ -165,6 +165,15 @@ button:active,
     top: 41px;
 }
 
+.window-toolbar .window-form {
+    top: 31px;
+}
+
+.window-toolbar.window-menubar .window-form {
+    top: 76px; /* Sum of both, above. */
+}
+
+
 .window-statusbar .window-form {
     bottom: 21px;
 }
