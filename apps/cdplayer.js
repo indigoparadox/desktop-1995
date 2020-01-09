@@ -50,6 +50,8 @@ case 'open':
     
     winHandle.addClass( 'window-cdplayer' );
     
+    winHandle.control95( 'statusbar' );
+    
     menu = [
         {'text': 'Disc', 'children': [
             {'group': true, 'id': 'browser-recent'},

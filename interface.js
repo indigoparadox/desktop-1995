@@ -137,47 +137,6 @@ function _htmlCharSVG( u ) {
 
 /* Public Functions */
 
-function windowOpenFolder( options ) {
-
-    options.menu = [
-        {'text': 'File', 'children': [
-            {'text': 'Close', 'callback': function( m ) {
-                winHandle.window95( 'close' );
-            }}
-        ]}
-    ];
-    options.show = false;
-
-    var winHandle = $('#desktop').window95( 'open', options );
-
-    console.log( winHandle );
-    console.assert( winHandle.attr( 'id' ) == options.id );
-    
-    winHandle.addClass( 'window-folder' );
-
-    winHandle.control95( 'statusbar' );
-
-    var container = $('<div class="window-folder-container container"></div>');
-    winHandle.find( '.window-form' ).append( container );
-
-    var trayObjects = $('<div class="tray tray-objects"></div>');
-    winHandle.children( '.statusbar' ).append( trayObjects );
-
-    var trayBytes = $('<div class="tray tray-bytes"></div>');
-    winHandle.children( '.statusbar' ).append( trayBytes );
-
-    winHandle.addClass( 'window-scroll-contents' );
-
-    console.assert( 1 == winHandle.length );
-    console.assert( winHandle.hasClass( 'window-hidden' ) );
-
-    winHandle.removeClass( 'window-hidden' );
-
-    console.assert( 1 == winHandle.length );
-
-    return winHandle;
-}
-
 function windowOpenWordpad( caption, id=null, icoImg=null, icoX=0, icoY=0, url='', x=0, y=0, w=480, h=260 ) {
     var winHandle = windowOpen( caption, id, true, icoImg, icoX, icoY, null, x, y, w, h, false );
     
@@ -247,81 +206,6 @@ function windowOpenWordpad( caption, id=null, icoImg=null, icoX=0, icoY=0, url='
 
     return winHandle;
 }
-
-function desktopCreateIcon( text, imgPath, imgX, imgY, x, y, callback, container='#desktop', cbData=null ) {
-    var icoWidth = 32;
-    var icoHeight = 32;
-
-    console.assert( $(container).length == 1 );
-    
-    var icoImg = $('<div class="desktop-icon-img"></div>');
-
-    var iconWrapper = $('<div class="desktop-icon"><div class="desktop-icon-overlay"></div>');
-    iconWrapper.append( icoImg );
-
-    /* Setup the icon image and save it for reuse later. */
-    var bgURL = 'url(' + staticPath + imgPath + 
-        ') right ' + imgX.toString() + 'px bottom ' + imgY.toString() + 'px';
-    icoImg.css( 'background', bgURL );
-    iconWrapper.data( 'icon-bg', bgURL ); /* Save for later. */
-    iconWrapper.hide(); /* Hide until loaded. */
-
-    /* Setup a clipping mask to limit the highlight overlay. */
-    var spritesheetImg = new Image();
-    spritesheetImg.onload = function() {
-        /* We need to know the spritesheet dimensions for the math, so load
-         * the spritesheet temporarily to get them.
-         */
-        var spritesheetWidth = this.width;
-        var spritesheetHeight = this.height;
-        
-        icoImg.css( '-webkit-mask-image', 'url(' + staticPath + imgPath + ')' );
-        icoImg.css( '-webkit-mask-position-x', (spritesheetWidth - (imgX - icoWidth)).toString() + 'px' );
-        icoImg.css( '-webkit-mask-position-y', (spritesheetHeight - (imgY - icoHeight)).toString() + 'px' );
-
-        iconWrapper.show();
-    };
-    spritesheetImg.src = staticPath + imgPath;
-    
-    var iconText = $('<div class="desktop-icon-text-center"><div class="desktop-icon-text">' + text + '</div></div>');
-    iconWrapper.append( iconText );
-
-    $(container).append( iconWrapper );
-    $(iconWrapper).draggable( {'handle': '.desktop-icon-overlay', 'containment': container } );
-
-    $(iconWrapper).css( 'left', x.toString() + 'px' );
-    $(iconWrapper).css( 'top', y.toString() + 'px' );
-
-    /* Setup action handlers. */
-    $(iconWrapper).mousedown( function() {
-        desktopSelectIcon( container, this );
-    } );
-    $(iconWrapper).on( 'dblclick', cbData, callback );
-
-    return iconWrapper;
-}
-
-function desktopSelectIcon( container, icon ) {
-
-    /* Deselect all icons. */
-    $(container).children('.desktop-icon').removeClass( 'desktop-icon-selected' );
-    $(container).children('.desktop-icon').each( function( idx, iterIcon ) {
-        $(iterIcon).children( '.desktop-icon-img' ).css(
-            'background', $(iterIcon).data( 'icon-bg' ) );
-    } );
-
-    if( null == icon ) {
-        /* No icon to select, do just leave it at that. */
-        return;
-    }
-
-    /* Select this icon. */
-    $(icon).addClass( 'desktop-icon-selected' );
-    $(icon).children( '.desktop-icon-img' ).css(
-        'background', 'linear-gradient(to bottom, rgba(0, 0, 127, 0.3), rgba(0, 0, 127, 0.3)),' +
-        $(icon).data( 'icon-bg' ) );
-}
-
 function menuPopup( container, items, x, y, show=true ) {
 
     var menu = $('<div class="menu"></div>');
