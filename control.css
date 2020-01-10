@@ -510,3 +510,20 @@ button,
     flex-grow: 5;
     position: relative;
 }
+
+/* Window MPvideo */
+
+.window-mpvideo .mpvideo-wrapper {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 30px;
+    left: 1px;
+}
+
+.window-mpvideo .mpvideo-controls {
+    position: absolute;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+}
