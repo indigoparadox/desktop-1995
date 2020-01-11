@@ -16,7 +16,8 @@ var settings = $.extend( {
     'w': 640,
     'h': 480,
     'waybackDate': '19981202230410',
-    'history': true
+    'history': true,
+    'home': 'http://google.com'
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -117,6 +118,8 @@ case 'open':
     browserWrapper.append( browser );
     winHandle.children( '.window-form' ).append( browserWrapper );
 
+    browser.data( 'home', settings.home );
+
     // Setup the browser toolbar.
 
     var browserToolbar = $('<div class="browser-toolbar"></div>');
@@ -133,15 +136,40 @@ case 'open':
     browserToolbarLeft.prepend( '<hr />' );
     */
     winHandle.control95( 'toolbar', 'create' );
+    
+    var btnOpen = winHandle.control95( 'toolbarButton', 'create', {
+        'icon': settings.buttonImgs.open,
+        'classes': ['button-browser-open'],
+        'callback': function( e ) {
+            
+        }
+    } );
+    
+    var btnHome = winHandle.control95( 'toolbarButton', 'create', {
+        'icon': settings.buttonImgs.home,
+        'classes': ['button-browser-home'],
+        'callback': function( e ) {
+            winHandle.browser95( 'go', {
+                'url': browser.data( 'home' ),
+                'useWaybackPrefix': false,
+                'history': false } );
+        }
+    } );
+    btnOpen.attr( 'disabled', true );
+
+    winHandle.control95( 'toolbarDivider', 'create' );
+
     var btnBack = winHandle.control95( 'toolbarButton', 'create', {
         'caption': '&#x2BC7;',
         'classes': ['button-browser-back'],
         'callback': function( e ) {
             browser.data( 'history' ).pop(); // Pop off current URL.
-            var backURL = browser.data( 'history' ).pop();
-            if( 0 >= browser.data( 'history' ).length ) {
+            console.log( browser.data( 'history' ) );
+            if( 1 >= browser.data( 'history' ).length ) {
                 btnBack.attr( 'disabled', true );
             }
+            var history = browser.data( 'history' );
+            backURL = history[history.length - 1];
             winHandle.browser95( 'go', {
                 'url': backURL,
                 'useWaybackPrefix': false,
@@ -158,6 +186,30 @@ case 'open':
         }
     } );
     btnFwd.attr( 'disabled', true );
+
+    winHandle.control95( 'toolbarDivider', 'create' );
+
+    var btnStop = winHandle.control95( 'toolbarButton', 'create', {
+        'icon': settings.buttonImgs.stop,
+        'classes': ['button-browser-stop'],
+        'callback': function( e ) {
+            
+        }
+    } );
+    btnStop.attr( 'disabled', true );
+
+    var btnRefresh = winHandle.control95( 'toolbarButton', 'create', {
+        'icon': settings.buttonImgs.refresh,
+        'classes': ['button-browser-refresh'],
+        'callback': function( e ) {
+            var history = browser.data( 'history' );
+            var lastURL = history[history.length - 1];
+            winHandle.browser95( 'go', {
+                'url': lastURL,
+                'useWaybackPrefix': false,
+                'history': false } );
+        }
+    } );
 
     winHandle.children( '.window-form' ).prepend( browserToolbar );
 

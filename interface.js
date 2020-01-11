@@ -198,7 +198,7 @@ $(document).ready( function() {
             }},
             {'divider': true },
             {'text': 'Shut Down...', 'callback': function( m ) {
-                windowClose( winHandle );
+                
             }}
         ];
 

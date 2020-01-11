@@ -53,6 +53,11 @@ case 'toolbar':
     }
     return this;
 
+case 'toolbardivider':
+    var divider = $('<div class="toolbar-divider"></div>');
+    this.children( '.toolbar' ).append( divider );
+    return divider;
+
 case 'toolbarbutton':
     settings.w = 20;
     settings.h = 20;

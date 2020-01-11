@@ -150,6 +150,15 @@
     top: 42px;
 }
 
+.toolbar .input-button {
+    vertical-align: middle;
+}
+
+.toolbar .toolbar-divider {
+    display: inline-block;
+    width: 8px;
+}
+
 .toolbar-button-icon {
     display: inline-block;
     position: relative;
@@ -306,7 +315,7 @@
 */
 
 .window-browser .pane-wrapper {
-    top: 32px;
+    top: 25px;
 }
 
 .window-browser .browser-pane {
