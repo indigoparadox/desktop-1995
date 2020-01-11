@@ -137,7 +137,7 @@ function _htmlCharSVG( u ) {
 
 /* Public Functions */
 
-function menuPopup( container, items, x, y, show=true ) {
+function menuPopup( container, items, x, y, show=true, caller=null ) {
 
     var menu = $('<div class="menu"></div>');
     if( !show ) {
@@ -147,6 +147,11 @@ function menuPopup( container, items, x, y, show=true ) {
     menu.css( 'left', x.toString() + 'px' );
     menu.css( 'top', y.toString() + 'px' );
 
+    menu.data( 'caller', caller );
+    if( null != menu.data( 'caller' ) ) {
+        menu.data( 'caller' ).addClass( 'menu-caller-active' );
+    }
+
     _menuPopulate( container, menu, items );
     
     return menu;
@@ -154,6 +159,9 @@ function menuPopup( container, items, x, y, show=true ) {
 
 function menuClose( container, menu ) {
     if( null != menu ) {
+        if( null != $(menu).data( 'caller' ) ) {
+            $(menu).data( 'caller' ).removeClass( 'menu-caller-active' );
+        }
         menu.remove();
     } else {
         /* Close all menus in this container. */
@@ -197,7 +205,7 @@ $(document).ready( function() {
         menuClose( '#desktop', null );
         var menu = menuPopup( '#desktop', menu,
             $('.button-start').offset().left,
-            $('.button-start').offset().top, false );
+            $('.button-start').offset().top, false, $('.button-start') );
         menu.addClass( 'logo-menu' );
 
         var stripe = '<div class="logo-stripe-wrapper"><div class="logo-stripe">Windows 95</div></div>';
