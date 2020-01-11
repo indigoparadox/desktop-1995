@@ -7,26 +7,29 @@ var settings = $.extend( {
     'id': null,
     'parentClass': null,
     'classes': [],
-    'icon': null
+    'icon': null,
+    'callback': null,
+    'w': 0,
+    'h': 0,
 }, options );
 
 switch( control.toLowerCase() ) {
 
 case 'tab':
-    return this.each( function( idx, winHandle ) {
+    if( 'create' == action ) {
         console.assert( null != settings.id );
         console.assert( 0 >= $('#' + settings.id).length );
 
         var tabPane = $('<div class="' + settings.parentClass + '-pane"></div>');
         tabPane.attr( 'id', settings.id )
-        $(winHandle).find( '.' + settings.parentClass ).append( tabPane );
+        this.find( '.' + settings.parentClass ).append( tabPane );
 
         var tab = '<li class="' + settings.parentClass + '-tab"><a href="#' + 
             settings.id + '">' + settings.caption + '</a></li>';
-        $(winHandle).find( '.' + settings.parentClass + ' > ul' ).append( tab );
+        this.find( '.' + settings.parentClass + ' > ul' ).append( tab );
 
         return tabPane;
-    } );
+    }
 
 case 'statusbar':
     return 'destroy' == action ? this.each( function( idx, winHandle ) {
@@ -50,26 +53,36 @@ case 'toolbar':
     }
     return this;
 
-case 'button':
-    return 'destroy' == action ? this.each( function( idx, toolbar ) {
+case 'toolbarbutton':
+    settings.w = 20;
+    settings.h = 20;
+    return this.children( '.toolbar' ).control95( 'button', action, settings );
 
-    } ) : this.each( function( idx, toolbar ) {
-        var btn = $('<button class="input-button"></button>');
-        $(toolbar).append( btn );
+case 'button':
+    if( 'destroy' == action ) {
+
+    } else if( 'create' == action ) {
+        var btn = $('<button class="input-button">' + settings.caption + '</button>');
+        this.append( btn );
         if( null != settings.icon ) {
             var icoSpan = $('<span class="toolbar-button-icon"></span>');
-            icoSpan.css( 'background', 'url(' + staticPath + settings.icon.icoImg + 
-            ') right ' + settings.icon.icoX.toString() + 'px bottom ' + settings.icon.icoY.toString() + 'px' );
+            icoSpan.css(
+                'background', 'url(' + staticPath + settings.icon.icoImg + 
+                ') right ' + settings.icon.icoX.toString() + 'px bottom ' +
+                settings.icon.icoY.toString() + 'px' );
             btn.append( icoSpan );
-        }
-        if( null != settings.contents ) {
-            btn.append( settings.contents );
         }
         if( null != settings.id ) {
             btn.attr( 'id', settings.id );
         }
         for( var i = 0 ; settings.classes.length > i ; i++ ) {
             btn.addClass( settings.classes[i] );
+        }
+        if( 0 < settings.w ) {
+            btn.css( 'width', settings.w.toString() + 'px' );
+        }
+        if( 0 < settings.h ) {
+            btn.css( 'height', settings.h.toString() + 'px' );
         }
         
         // Attach callback if there is one.
@@ -79,7 +92,8 @@ case 'button':
                 e.preventDefault();
             }, settings.cbData );
         }
-    } );
+    }
+    return btn;
 
 case 'scrubber':
     if( 'destroy' == action ) {

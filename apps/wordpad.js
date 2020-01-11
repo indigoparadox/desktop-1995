@@ -145,7 +145,7 @@ function _wordpadFormatText( text ) {
         sb.children( '.statusbar' ).text( 'For Help, press F1' );
 
         var tb = winHandle.control95( 'toolbar', 'create' );
-        tb.control95( 'button', 'create', { 'icon': settings.buttonImgs.new, 'callback':
+        var btn = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.new, 'callback':
             function( e ) { winHandle.wordpad95( 'newfile' ); } } );
     
         // This window type still uses wrappers because the pseudo-elements are 

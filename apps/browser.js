@@ -15,7 +15,8 @@ var settings = $.extend( {
     'y': 10,
     'w': 640,
     'h': 480,
-    'waybackDate': '19981202230410'
+    'waybackDate': '19981202230410',
+    'history': true
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -25,6 +26,18 @@ case 'go':
         var newLoc = 'http://web.archive.org/web/' + settings.waybackDate + '/' + settings.url;
         $(winHandle).find( '.input-url' ).val( settings.url );
         $(winHandle).find( '.tray-status-text' ).text( 'Opening ' + settings.url + '...' );
+        
+        if( settings.history ) {
+            if( null == $(winHandle).find( '.browser-pane' ).data( 'history' ) ) {
+                $(winHandle).find( '.browser-pane' ).data( 'history', [] );
+            }
+            var history = $(winHandle).find( '.browser-pane' ).data( 'history' );
+            history.push( settings.url );
+            if( 1 < history.length ) {
+                $(winHandle).find( '.button-browser-back' ).attr( 'disabled', false );
+            }
+        }
+            
         $(winHandle).find( '.browser-pane' ).attr( 'src', newLoc );
     } );
 
@@ -74,7 +87,7 @@ case 'open':
         ]},
         {'text': 'Help', 'children': [
         ]}
-    ];
+    ]
 
     if( null == settings.favorites ) {
         settings.favorites = [
@@ -99,8 +112,10 @@ case 'open':
 
     // This window type still uses wrappers because the pseudo-elements are 
     // rather prone to yet-unexplainable misbehaviors.
-    var browser = $('<div class="pane-wrapper"><iframe class="browser-pane inset-iframe" sandbox="allow-same-origin allow-forms"></iframe></div>');
-    winHandle.children( '.window-form' ).append( browser );
+    var browserWrapper = $('<div class="pane-wrapper"></div>');
+    var browser = $('<iframe class="browser-pane inset-iframe" sandbox="allow-same-origin allow-forms"></iframe>');
+    browserWrapper.append( browser );
+    winHandle.children( '.window-form' ).append( browserWrapper );
 
     // Setup the browser toolbar.
 
@@ -118,6 +133,31 @@ case 'open':
     browserToolbarLeft.prepend( '<hr />' );
     */
     winHandle.control95( 'toolbar', 'create' );
+    var btnBack = winHandle.control95( 'toolbarButton', 'create', {
+        'caption': '&#x2BC7;',
+        'classes': ['button-browser-back'],
+        'callback': function( e ) {
+            browser.data( 'history' ).pop(); // Pop off current URL.
+            var backURL = browser.data( 'history' ).pop();
+            if( 0 >= browser.data( 'history' ).length ) {
+                btnBack.attr( 'disabled', true );
+            }
+            winHandle.browser95( 'go', {
+                'url': backURL,
+                'useWaybackPrefix': false,
+                'history': false } );
+        }
+    } );
+    btnBack.attr( 'disabled', true );
+    
+    var btnFwd = winHandle.control95( 'toolbarButton', 'create', {
+        'caption': '&#x2BC8;',
+        'classes': ['button-browser-forward'],
+        'callback': function( e ) {
+
+        }
+    } );
+    btnFwd.attr( 'disabled', true );
 
     winHandle.children( '.window-form' ).prepend( browserToolbar );
 
@@ -142,7 +182,7 @@ case 'open':
         if( 13 == e.keyCode ) {
             // Enter was pressed.
             e.preventDefault();
-            winHandle.browser95( 'go', winHandle.find( '.input-url' ).val() );
+            winHandle.browser95( 'go', { 'url': winHandle.find( '.input-url' ).val() } );
         }
     } );
     winHandle.browser95( 'go', settings );
