@@ -99,7 +99,7 @@ case 'open':
 
     // This window type still uses wrappers because the pseudo-elements are 
     // rather prone to yet-unexplainable misbehaviors.
-    var browser = $('<div class="pane-wrapper"><iframe class="browser-pane" sandbox="allow-same-origin allow-forms"></iframe></div>');
+    var browser = $('<div class="pane-wrapper"><iframe class="browser-pane inset-iframe" sandbox="allow-same-origin allow-forms"></iframe></div>');
     winHandle.children( '.window-form' ).append( browser );
 
     // Setup the browser toolbar.

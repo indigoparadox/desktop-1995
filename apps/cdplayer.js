@@ -71,7 +71,7 @@ case 'open':
     // in scope.
     windowAddMenuBar( winHandle, menu );
 
-    var controls = $('<div class="window-cdplayer-controls-row"><div class="window-cdplayer-display">[00] 00:00</div><div class="window-cdplayer-controls"><div class="window-cdplayer-controls-play-pause-stop"></div><div class="window-cdplayer-controls-tracks-eject"></div></div></div>');
+    var controls = $('<div class="window-cdplayer-controls-row"><div class="window-cdplayer-display inset">[00] 00:00</div><div class="window-cdplayer-controls"><div class="window-cdplayer-controls-play-pause-stop"></div><div class="window-cdplayer-controls-tracks-eject"></div></div></div>');
     winHandle.children( '.window-form' ).append( controls );
 
     var audio = new Audio( options.playlist[0].url );

@@ -54,7 +54,6 @@ case 'button':
     return 'destroy' == action ? this.each( function( idx, toolbar ) {
 
     } ) : this.each( function( idx, toolbar ) {
-        console.log( settings );
         var btn = $('<button class="input-button"></button>');
         $(toolbar).append( btn );
         if( null != settings.icon ) {
@@ -81,5 +80,24 @@ case 'button':
             }, settings.cbData );
         }
     } );
+
+case 'scrubber':
+    if( 'destroy' == action ) {
+        return this.each( function( idx, winHandle ) {
+
+        } );
+
+    } else if( 'create' == action ) {
+        return this.each( function( idx, winHandle ) {
+            var scrubber = $('<div class="scrubber-wrapper"><div class="scrubber-timeline"></div><div class="scrubber-controlbar"></div></div>');
+
+            $(winHandle).append( scrubber );
+        } );
+    
+    } else if( 'scrub' == action ) {
+
+
+    }
+
 
 }; }; }( jQuery ) );

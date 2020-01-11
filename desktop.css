@@ -51,7 +51,8 @@ button:focus {
 }
 
 button:active:before,
-.task-button-active:before {
+.task-button-active:before,
+.scrubber-controlbar:before {
     border-top: 1px solid #7f787f;
     border-left: 1px solid #7f787f;
     border-bottom: 1px solid #fff8ff;
@@ -59,7 +60,8 @@ button:active:before,
 }
 
 button:active,
-.task-button-active {
+.task-button-active,
+.scrubber-controlbar {
     border-top: 1px solid black;
     border-left: 1px solid black;
     border-bottom: 1px solid #bfbfbf;

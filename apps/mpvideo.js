@@ -27,46 +27,53 @@ case 'open':
     var winHandle = this.window95( 'open', options );
     
     winHandle.addClass( 'window-mpvideo' );
-        
-    menu = [
-        {'text': 'Disc', 'children': [
-            {'group': true, 'id': 'browser-recent'},
-            {'text': 'Exit', 'callback': function( m ) {
-                winHandle.window95( 'close' );
-            }}
-        ]},
-        {'text': 'View', 'children': [
-        ]},
-        {'text': 'Options', 'children': [
-        ]},
-        {'text': 'Help', 'children': [
-        ]}
-    ];
-
-    // Add the menu now, once winHande is defined, so callbacks above have it
-    // in scope.
-    windowAddMenuBar( winHandle, menu );
 
     var controls = $('<div class="mpvideo-controls"></div>');
 
     var btnPlayPause = $('<button class="button-play disable-until-load">&#x25b6;</button>');
     controls.append( btnPlayPause );
-    btnPlayPause.click( function( e ) {
-        e.preventDefault();
-    } );
 
     var btnStop = $('<button class="button-stop disable-until-load">&#x23f9</button>');
     controls.append( btnStop );
-    btnStop.click( function( e ) {
-        e.preventDefault();
-    } );
-    
-    var ytube = $('<div class="mpvideo-wrapper"><iframe width="100%" height="100%" src="' +
-        settings.ytube + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
+
+    controls.control95( 'scrubber', 'create' );
+
+    var ytube = $('<div class="mpvideo-wrapper"><div id="mpvideo-yt-' +
+        settings.id + '" class="mpvideo-placeholder"></div>')
+
     winHandle.children( '.window-form' ).append( ytube );
     winHandle.children( '.window-form' ).append( controls );
 
     winHandle.removeClass( 'window-hidden' );
+
+    console.log( settings );
+
+    ytubePlayer = new YT.Player( 'mpvideo-yt-' + settings.id, {
+        'width': '100%',
+        'height': '100%',
+        'videoId': settings.ytube,
+        'playerVars': {
+            'modestbranding': true,
+            'controls': 0,
+            //'autoplay': 1
+        },
+        'events': {
+            'onReady': function() {
+
+            }
+        }
+    });
+
+    btnPlayPause.click( function( e ) {
+        ytubePlayer.playVideo();
+        e.preventDefault();
+    } );
+
+    btnStop.click( function( e ) {
+        ytubePlayer.pauseVideo();
+        e.preventDefault();
+    } );
+
     winHandle.window95( 'activate' );
 
     return winHandle;

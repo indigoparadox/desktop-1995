@@ -25,7 +25,6 @@
     height: 15px;
 }
 
-.window-cdplayer-display:before,
 .input-text:before,
 .input-textarea:before,
 .input-prompt:before,
@@ -34,7 +33,8 @@
 .textarea-wrapper,
 .select-wrapper,
 .input-url-wrapper,
-.inset:before {
+.inset:before,
+.scrubber-timeline:before {
     border-top: 1px solid #7f787f;
     border-left: 1px solid #7f787f;
     border-bottom: 1px solid #fff8ff;
@@ -57,12 +57,13 @@
     padding-bottom: 6px;
 }
 
-.window-cdplayer-display:before,
 .input-text:before,
 .input-textarea:before,
 .input-prompt:before,
 .window-scroll-contents .window-form:after,
-.inset:before {
+.inset:before,
+.scrubber-timeline:before,
+.scrubber-controlbar:before {
     /* Use border and positioning to simulate shadow effect. */
     content: " ";
     position: absolute;
@@ -93,15 +94,15 @@
     padding: 0 4px;
 }
 
-.window-cdplayer-display,
 .input-text,
 .input-url,
-.browser-pane,
 .input-textarea,
 .input-select,
 .input-prompt,
 .window-folder-container,
-.inset {
+.inset,
+.inset-iframe,
+.scrubber-timeline {
     /* Use border and positioning to simulate shadow effect. */
     border-top: 1px solid black;
     border-left: 1px solid black;
@@ -154,6 +155,25 @@
     position: relative;
     width: 16px;
     height: 16px;
+}
+
+.scrubber-wrapper .scrubber-timeline {
+    background: white;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    top: 2px;
+    width: 95%;
+    height: 55%;
+}
+
+.scrubber-wrapper .scrubber-controlbar {
+    background-color: #bfbfbf;
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 100%;
 }
 
 /* Window: Notepad */
@@ -526,4 +546,25 @@ button,
     right: 1px;
     bottom: 1px;
     left: 1px;
+}
+
+.window-mpvideo .mpvideo-controls button {
+    padding: 2px;
+}
+
+.window-mpvideo .mpvideo-controls .button-play {
+    margin-bottom: 2px;
+    margin-left: 2px;
+}
+
+.window-mpvideo .mpvideo-controls .button-stop {
+    margin-bottom: 2px;
+}
+
+.window-mpvideo .mpvideo-controls .scrubber-wrapper {
+    position: absolute;
+    right: 2px;
+    bottom: 4px;
+    left: 50px;
+    height: 20px;
 }
