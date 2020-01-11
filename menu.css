@@ -4,7 +4,7 @@
     display: inline-block;
     margin: 0;
     padding: 1px;
-    z-index: 20;
+    z-index: 200;
 }
 
 .menu-item {
@@ -81,12 +81,13 @@
 
 .taskbar .tasks {
     display: flex;
-    margin: 0 5px;
+    margin: 0;
 }
 
 .button-start,
 .button-task {
-    padding: 4px;
+    margin: 3px 2px;
+    padding: 2px 4px;
 }
 
 .button-start .icon-start,

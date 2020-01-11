@@ -103,7 +103,6 @@ case 'open':
     } );
 
     winHandle.addClass( 'window-scroll-contents' );
-
     winHandle.addClass( 'window-command' );
     winHandle.removeClass( 'window-hidden' );
     winHandle.window95( 'activate' );

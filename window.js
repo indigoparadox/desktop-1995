@@ -32,9 +32,9 @@ case 'nextfreeid':
 case 'activate':
     return this.each( function( idx, winHandle ) {
 
-        if( $(winHandle).hasClass( 'window-active' ) ) {
+        /* if( $(winHandle).hasClass( 'window-active' ) ) {
             return;
-        }
+        } */
 
         // Re-sort inactive siblings on z-index from 50 up.
         var lastZ = 50;
