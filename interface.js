@@ -171,6 +171,27 @@ function menuClose( container, menu ) {
     }
 }
 
+function trayUpdateTime( tray ) {
+    var now = new Date();
+    
+    var minuteString = now.getMinutes();
+    if( 9 >= minuteString ) {
+        minuteString = "0" + minuteString.toString();
+    } else {
+        minuteString = minuteString.toString();
+    }
+    
+    var amPm = 'AM';
+    var hourString = now.getHours();
+    if( 12 < hourString ) {
+        hourString -= 12;
+        amPm = 'PM';
+    }
+    hourString = hourString.toString();
+    
+    $(tray).text( hourString + ':' + minuteString + ' ' + amPm );
+}
+
 $(document).ready( function() {
     // Build the start menu if one is provided.
     $('.button-start').click( function( e ) {
@@ -214,5 +235,12 @@ $(document).ready( function() {
         menu.css( 'top', ($('.button-start').offset().top - menu.height() - 5).toString() + 'px' );
 
         menu.show();
+    } );
+
+    $('.tray.notification-area').each( function() {
+        trayUpdateTime( this );
+        setInterval( function() { 
+            trayUpdateTime( this );
+        }, 1000 );
     } );
 } );
