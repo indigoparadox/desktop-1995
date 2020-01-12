@@ -145,8 +145,46 @@ function _wordpadFormatText( text ) {
         sb.children( '.statusbar' ).text( 'For Help, press F1' );
 
         var tb = winHandle.control95( 'toolbar', 'create' );
-        var btn = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.new, 'callback':
+        var btnNew = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.new, 'callback':
             function( e ) { winHandle.wordpad95( 'newfile' ); } } );
+
+        var btnOpen = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.open, 'callback':
+        function( e ) {  } } );
+
+        var btnSave = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.save, 'callback':
+        function( e ) {  } } );
+
+        winHandle.control95( 'toolbarDivider', 'create' );
+
+        var btnPrint = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.print, 'callback':
+        function( e ) {  } } );
+
+        var btnPreview = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.preview, 'callback':
+        function( e ) {  } } );
+
+        winHandle.control95( 'toolbarDivider', 'create' );
+        
+        var btnSearch = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.search, 'callback':
+        function( e ) {  } } );
+
+        winHandle.control95( 'toolbarDivider', 'create' );
+
+        var btnCut = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.cut, 'callback':
+        function( e ) {  } } );
+
+        var btnCopy = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.copy, 'callback':
+        function( e ) {  } } );
+
+        var btnPaste = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.paste, 'callback':
+        function( e ) {  } } );
+
+        var btnUndo = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.undo, 'callback':
+        function( e ) {  } } );
+
+        winHandle.control95( 'toolbarDivider', 'create' );
+
+        var btnDateTime = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.dateTime, 'callback':
+        function( e ) {  } } );
     
         // This window type still uses wrappers because the pseudo-elements are 
         // rather prone to yet-unexplainable misbehaviors.
