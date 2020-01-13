@@ -24,7 +24,7 @@
     position: relative;
 }
 
-.menu-parent:after {
+:not( .menubar ) > .menu-parent:after {
     content: "";
     border: 4px solid transparent;
     border-left-color: black;
@@ -57,7 +57,7 @@
     color: white;
 }
 
-.menu-parent:hover:after {
+:not( .menubar ) > .menu-parent:hover:after {
     content: "";
     border-left-color: white;
     z-index: 1;

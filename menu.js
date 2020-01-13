@@ -64,7 +64,6 @@ var _menuBuildItem = function( itemOptions ) {
         break;
 
     case menu95Type.SUBMENU:
-        console.log( itemSettings );
         menuElement = $('<a href="#" class="menu-item"><span class="menu-icon"></span>' +
              itemSettings.caption + '</a>');
         menuElement.addClass( 'menu-item-' + _htmlStrToClass( itemSettings.caption ) );
@@ -74,7 +73,19 @@ var _menuBuildItem = function( itemOptions ) {
         itemSettings.caller = menuElement;
 
         // Setup submenu open handlers.
+        menuElement.mouseover( function( e ) {
+            if( 
+                menuElement.parent().hasClass( 'menubar' ) ||
+                menuElement.hasClass( 'menu-caller-active' )
+            ) {
+                return;
+            }
+            menuElement.menu95( 'open', itemSettings );
+        } );
         menuElement.click( function( e ) {
+            if( menuElement.hasClass( 'menu-caller-active' ) ) {
+                return;
+            }
             menuElement.menu95( 'open', itemSettings );
         } );
         break;
@@ -84,7 +95,6 @@ var _menuBuildItem = function( itemOptions ) {
             itemSettings.caption + '</a>');
         menuElement.addClass( 'menu-item-' + _htmlStrToClass( itemSettings.caption ) );
         
-        //_menuAssignItemCallback( container, menuElement, items[i].callback );
         menuElement.click( function( e ) {
             itemSettings.callback( itemSettings );
             $(itemSettings.container).menu95( 'close' );

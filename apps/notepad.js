@@ -38,50 +38,55 @@ case 'open':
 
     var winHandle = this.window95( 'open', settings );
     
-    menu = [
-        {'text': 'File', 'children': [
-            {'text': 'New Window', 'callback': function( m ) {
-                settings.id = settings.id + 'n';
-                this.notepad95( 'open', settings );
-            }},
-            {'divider': true},
-            {'group': true, 'id': 'browser-recent'},
-            {'text': 'Exit', 'callback': function( m ) {
-                winHandle.window95( 'close' );
-            }}
-        ]},
-        {'text': 'Edit', 'children': [
-            {'text': 'Undo', 'callback': function( m ) {
-            }},
-            {'divider': true},
-            {'text': 'Cut', 'callback': function( m ) {
-            }},
-            {'text': 'Copy', 'callback': function( m ) {
-            }},
-            {'text': 'Paste', 'callback': function( m ) {
-            }},
-            {'text': 'Delete', 'callback': function( m ) {
-            }},
-            {'divider': true},
-            {'text': 'Select All', 'callback': function( m ) {
-            }},
-            {'text': 'Time/Date', 'callback': function( m ) {
-            }},
-            {'divider': true},
-            {'text': 'Word Wrap', 'callback': function( m ) {
-            }}
-        ]},
-        {'text': 'View', 'children': [
-        ]},
-        {'text': 'Search', 'children': [
-        ]},
-        {'text': 'Help', 'children': [
-        ]}
-    ];
+    menu = {
+        'type': menu95Type.MENUBAR,
+        'caller': winHandle,
+        'container': winHandle,
+        'items': [
+            {'caption': 'File', 'type': menu95Type.SUBMENU, 'items': [
+                {'caption': 'New Window', 'callback': function( m ) {
+                    settings.id = settings.id + 'n';
+                    this.notepad95( 'open', settings );
+                }},
+                {'type': menu95Type.DIVIDER},
+                {'group': true, 'id': 'browser-recent'},
+                {'caption': 'Exit', 'callback': function( m ) {
+                    winHandle.window95( 'close' );
+                }}
+            ]},
+            {'caption': 'Edit', 'type': menu95Type.SUBMENU, 'items': [
+                {'caption': 'Undo', 'callback': function( m ) {
+                }},
+                {'type': menu95Type.DIVIDER},
+                {'caption': 'Cut', 'callback': function( m ) {
+                }},
+                {'caption': 'Copy', 'callback': function( m ) {
+                }},
+                {'caption': 'Paste', 'callback': function( m ) {
+                }},
+                {'caption': 'Delete', 'callback': function( m ) {
+                }},
+                {'type': menu95Type.DIVIDER},
+                {'caption': 'Select All', 'callback': function( m ) {
+                }},
+                {'caption': 'Time/Date', 'callback': function( m ) {
+                }},
+                {'type': menu95Type.DIVIDER},
+                {'caption': 'Word Wrap', 'callback': function( m ) {
+                }}
+            ]},
+            {'text': 'View', 'children': [
+            ]},
+            {'text': 'Search', 'children': [
+            ]},
+            {'text': 'Help', 'children': [
+            ]}
+        ]
+    };
 
     // Add the menu now, once winHande is defined, so callbacks above have it
     // in scope.
-    windowAddMenuBar( winHandle, menu );
+    winHandle.menu95( 'open', menu );
 
     winHandle.addClass( 'window-notepad' );
 

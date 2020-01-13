@@ -129,13 +129,13 @@ function _wordpadFormatText( text ) {
                     {'caption': 'Word Wrap', 'callback': function( m ) {
                     }}
                 ]},
-                {'caption': 'View', 'children': [
+                {'caption': 'View', 'type': menu95Type.SUBMENU, 'children': [
                 ]},
-                {'caption': 'Insert', 'children': [
+                {'caption': 'Insert', 'type': menu95Type.SUBMENU, 'children': [
                 ]},
-                {'caption': 'Format', 'children': [
+                {'caption': 'Format', 'type': menu95Type.SUBMENU, 'children': [
                 ]},
-                {'caption': 'Help', 'children': [
+                {'caption': 'Help', 'type': menu95Type.SUBMENU, 'children': [
                 ]}
             ]
         };
