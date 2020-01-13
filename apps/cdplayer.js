@@ -41,35 +41,45 @@ case 'openmixer':
     return winHandle;
 
 case 'open':
+    var winHandle = null;
 
     options.menu = null;
     options.show = false;
     options.resizable = false;
 
-    var winHandle = this.window95( 'open', options );
+    winHandle = this.window95( 'open', options );
+
+    menu = {
+        'type': menu95Type.MENUBAR,
+        'caller': winHandle,
+        'container': winHandle,
+        'items': [
+            {'caption': 'Disc',
+            'type': menu95Type.SUBMENU,
+            'items': [
+                {'type': menu95Type.GROUP, 'id': 'browser-recent'},
+                {'caption': 'Exit', 'callback': function( m ) {
+                    winHandle.window95( 'close' );
+                }}
+            ]},
+            {'caption': 'View', 'children': [
+            ]},
+            {'caption': 'Options', 'children': [
+            ]},
+            {'caption': 'Help', 'children': [
+            ]}
+        ]
+    };
+
+    winHandle.menu95( 'open', menu );
     
     winHandle.addClass( 'window-cdplayer' );
     
     winHandle.control95( 'statusbar' );
-    
-    menu = [
-        {'caption': 'Disc', 'children': [
-            {'type': menu95Type.GROUP, 'id': 'browser-recent'},
-            {'text': 'Exit', 'callback': function( m ) {
-                winHandle.window95( 'close' );
-            }}
-        ]},
-        {'caption': 'View', 'children': [
-        ]},
-        {'caption': 'Options', 'children': [
-        ]},
-        {'caption': 'Help', 'children': [
-        ]}
-    ];
 
     // Add the menu now, once winHande is defined, so callbacks above have it
     // in scope.
-    windowAddMenuBar( winHandle, menu );
+    //windowAddMenuBar( winHandle, menu );
 
     var controls = $('<div class="window-cdplayer-controls-row"><div class="window-cdplayer-display inset">[00] 00:00</div><div class="window-cdplayer-controls"><div class="window-cdplayer-controls-play-pause-stop"></div><div class="window-cdplayer-controls-tracks-eject"></div></div></div>');
     winHandle.children( '.window-form' ).append( controls );

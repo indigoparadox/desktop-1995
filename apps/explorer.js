@@ -101,13 +101,16 @@ case 'select':
 
 case 'open':
 
-    settings.menu = [
-        {'text': 'File', 'children': [
-            {'text': 'Close', 'callback': function( m ) {
-                winHandle.window95( 'close' );
-            }}
+    settings.menu = {
+        'type': menu95Type.MENUBAR,
+        'items': [
+            {'caption': 'File',
+            'type': menu95Type.SUBMENU, 'items': [
+                {'caption': 'Close', 'callback': function( m ) {
+                    winHandle.window95( 'close' );
+                }}
         ]}
-    ];
+    ]};
     settings.show = false;
     settings.resizable = true;
 

@@ -54,41 +54,45 @@ case 'open':
 
     var winHandle = this.window95( 'open', settings );
     
-    menu = [
-        {'text': 'File', 'children': [
-            {'text': 'New Window', 'callback': function( m ) {
-                settings.id = settings.id + 'n';
-                this.browser95( 'open', settings );
-            }},
-            {'divider': true},
-            {'group': true, 'id': 'browser-recent'},
-            {'text': 'Exit', 'callback': function( m ) {
-                windowClose( winHandle );
-            }}
-        ]},
-        {'text': 'Edit', 'children': [
-            {'text': 'Cut', 'callback': function( m ) {
-            }},
-            {'text': 'Copy', 'callback': function( m ) {
-            }},
-            {'text': 'Paste', 'callback': function( m ) {
-            }},
-            {'divider': true},
-            {'text': 'Select All', 'callback': function( m ) {
-            }},
-            {'divider': true},
-            {'text': 'Find...', 'callback': function( m ) {
-            }}
-        ]},
-        {'text': 'View', 'children': [
-        ]},
-        {'text': 'Go', 'children': [
-        ]},
-        {'text': 'Favorites', 'children': [
-        ]},
-        {'text': 'Help', 'children': [
-        ]}
-    ]
+    menu = {
+        'type': menu95Type.MENUBAR,
+        'caller': winHandle,
+        'container': winHandle,
+        'items': [
+            {'caption': 'File', 'type': menu95Type.SUBMENU, 'items': [
+                {'caption': 'New Window', 'callback': function( m ) {
+                    settings.id = settings.id + 'n';
+                    this.browser95( 'open', settings );
+                }},
+                {'type': menu95Type.DIVIDER},
+                {'group': true, 'id': 'browser-recent'},
+                {'caption': 'Exit', 'callback': function( m ) {
+                    winHandle.window95( 'close' );
+                }}
+            ]},
+            {'caption': 'Edit', 'type': menu95Type.SUBMENU, 'items': [
+                {'caption': 'Cut', 'callback': function( m ) {
+                }},
+                {'caption': 'Copy', 'callback': function( m ) {
+                }},
+                {'caption': 'Paste', 'callback': function( m ) {
+                }},
+                {'type': menu95Type.DIVIDER},
+                {'caption': 'Select All', 'callback': function( m ) {
+                }},
+                {'type': menu95Type.DIVIDER},
+                {'caption': 'Find...', 'callback': function( m ) {
+                }}
+            ]},
+            {'caption': 'View', 'items': [
+            ]},
+            {'caption': 'Go', 'items': [
+            ]},
+            {'caption': 'Favorites', 'items': [
+            ]},
+            {'caption': 'Help', 'items': [
+            ]}
+    ]};
 
     if( null == settings.favorites ) {
         settings.favorites = [
@@ -102,12 +106,12 @@ case 'open':
     
     // Roll the favorites into the favorites menu.
     for( var i = 0 ; settings.favorites.length > i ; i++ ) {
-        _browserFavoritesMenuAdd( winHandle, menu[4].children, settings.favorites[i] );
+        //_browserFavoritesMenuAdd( winHandle, menu[4].children, settings.favorites[i] );
     }
 
     // Add the menu now, once winHande is defined, so callbacks above have it
     // in scope.
-    windowAddMenuBar( winHandle, menu );
+    winHandle.menu95( 'open', menu );
 
     winHandle.addClass( 'window-browser' );
 

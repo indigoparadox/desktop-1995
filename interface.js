@@ -1,51 +1,6 @@
 
 /* Internal Utility Functions */
 
-/* This wrapper function limits the scope of the onClick handler closure, so
- * that the callback set for the last assigned menu item in a loop isn't
- * also inadvertantly assigned to all previous menu items handled in that loop
- * due to the changing value of i in the loop control.
- */
-function _menuAssignItemCallback( container, item, callback ) {
-    item.click( function( e ) {
-        callback( item );
-        menuClose( container );
-        e.preventDefault();
-    } );
-}
-
-function _menuAssignItemChildren( container, item, children, followMouse, closeOtherMenus=false ) {
-    $(item).mouseenter( function( e ) {
-        if( $(this).hasClass( 'menu-expanded' ) ) {
-            return;
-        }
-        $(this).addClass( 'menu-expanded' );
-        
-        var x = item.offset().left - $(container).offset().left;
-        var y = item.offset().top - $(container).offset().top + item.height();
-
-        // Close all sibling menus.
-        /* $(item).siblings( '.menu' ).each( function( idx, menuIter ) {
-            menuClose( container, menuIter );
-        } ); */
-        if( closeOtherMenus ) {
-            menuClose( container );
-        }
-
-        if( followMouse ) {
-            // Context menus follow mouse, not element.
-            x = e.pageX;
-            y = e.pageY;
-        }
-
-        menuPopup( container, children, x, y );
-        e.preventDefault();
-    } );
-    $(item).mouseleave( function( e ) {
-        menuClose( item );
-    } );
-}
-
 function _menuAddWindowMenu( winHandle, element, leftClick=false ) {
     var popupHandler = function( e ) {
         var menu = [
@@ -115,20 +70,4 @@ function _htmlCharSVG( u ) {
 }
 
 /* Public Functions */
-
-
-
-function menuClose( container, menu ) {
-    if( null != menu ) {
-        if( null != $(menu).data( 'caller' ) ) {
-            $(menu).data( 'caller' ).removeClass( 'menu-caller-active' );
-        }
-        menu.remove();
-    } else {
-        /* Close all menus in this container. */
-        $(container).find( '.menu' ).each( function( idx, menuIter ) {
-            menuClose( container, menuIter );
-        } );
-    }
-}
 

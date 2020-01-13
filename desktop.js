@@ -16,47 +16,47 @@ case 'enable':
 
         // Close the menu if it's presently open.
         if( $(this).hasClass( 'menu-caller-active' ) ) {
-            menuClose( settings.menuContainer, null );
+            $('.logo-menu').menu95( 'close' );
             return; // Stop after closing.
         }
 
         // Build and show the menu.
-        var menu = [
-            {'text': 'Programs', 'callback': function( m ) {
+        var menu = {
+            'location': menu95Location.TOP,
+            'caller': '.button-start',
+            'classes': ['logo-menu'],
+            'items': [
+                {'caption': 'Programs', 'callback': function( m ) {
 
-            }},
-            {'text': 'Documents', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Settings', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Find', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Help', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Run...', 'callback': function( m ) {
-                
-            }},
-            {'divider': true },
-            {'text': 'Shut Down...', 'callback': function( m ) {
-                
-            }}
-        ];
+                }},
+                {'caption': 'Documents', 'callback': function( m ) {
+                    
+                }},
+                {'caption': 'Settings', 'callback': function( m ) {
+                    
+                }},
+                {'caption': 'Find', 'callback': function( m ) {
+                    
+                }},
+                {'caption': 'Help', 'callback': function( m ) {
+                    
+                }},
+                {'caption': 'Run...', 'callback': function( m ) {
+                    
+                }},
+                {'type': menu95Type.DIVIDER},
+                {'caption': 'Shut Down...', 'callback': function( m ) {
+                    
+                }}
+            ]
+        };
 
-        menuClose( settings.menuContainer, null );
-        var menu = menuPopup( settings.menuContainer, menu,
-            $('.button-start').offset().left,
-            $('.button-start').offset().top, false, $('.button-start') );
-        menu.addClass( 'logo-menu' );
+        $(settings.menuContainer).menu95( 'close' );
+        var menu = $(settings.menuContainer).menu95( 'open', menu );
 
         var stripe = '<div class="logo-stripe-wrapper"><div class="logo-stripe">' +
             settings.caption + '</div></div>';
         menu.append( stripe );
-
-        menu.css( 'top', ($('.button-start').offset().top - menu.height() - 5).toString() + 'px' );
 
         menu.show();
     } );
@@ -78,7 +78,7 @@ case 'update':
     
     var minuteString = now.getMinutes();
     if( 9 >= minuteString ) {
-        minuteString = "0" + minuteString.toString();
+        minuteString = '0' + minuteString.toString();
     } else {
         minuteString = minuteString.toString();
     }

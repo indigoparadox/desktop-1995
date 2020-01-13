@@ -21,6 +21,7 @@
     display: block;
     padding: 3px 18px;
     margin: 0 1px;
+    position: relative;
 }
 
 .menu-parent:after {

@@ -167,7 +167,10 @@ case 'open':
     winHandle.css( 'height', settings.h.toString() + 'px' );
 
     if( null != settings.menu ) {
-        windowAddMenuBar( winHandle, settings.menu );
+        settings.menu.type = menu95Type.MENUBAR;
+        settings.menu.caller = winHandle;
+        settings.menu.container = winHandle;
+        winHandle.menu95( 'open', settings.menu );
     }
 
     var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + settings.caption + '</h1></div>');
@@ -175,8 +178,8 @@ case 'open':
 
     _menuAddWindowMenu( winHandle, titlebar, false );
     titlebar.children( '.titlebar-text' ).click( function( e ) {
-        /* Plain clicks on the titlebar close all menus. */
-        menuClose( winHandle, null );
+        // Plain clicks on the titlebar close all menus.
+        winHandle.menu95( 'close' );
     } );
 
     /* Add the window icon. */
@@ -293,10 +296,3 @@ case 'properties':
     return winHandle;
 
 }; }; }( jQuery ) );
-
-function windowAddMenuBar( winHandle, menu ) {
-    var menuBar = $('<div class="menubar"></div>');
-    winHandle.prepend( menuBar );
-    winHandle.addClass( 'window-menubar' );
-    _menuPopulate( winHandle, menuBar, menu, false );
-}
