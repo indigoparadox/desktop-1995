@@ -46,36 +46,6 @@ function _menuAssignItemChildren( container, item, children, followMouse, closeO
     } );
 }
 
-function _menuPopulate( container, menu, items, followMouse=true ) {
-    /* Iterate the list of menu items and append them to the provided menu. */
-    for( var i = 0 ; items.length > i ; i++ ) {
-        var menuItem = null;
-
-        // Close other menus at the root level before opening this one.
-        var menubarRoot = false;
-        if( $(menu).hasClass( 'menubar') ) {
-            menubarRoot = true;
-        }
-
-        if( 'divider' in items[i] && items[i].divider ) {
-            menuItem = $('<hr />');
-        } else if( 'group' in items[i] && items[i].group ) {
-            menuItem = $('<div class="menu-group" id="' + items[i].group.id + '"></div>');
-        } else {
-            menuItem = $('<a href="#" class="menu-item"><span class="menu-icon"></span>' + items[i].text + '</a>');
-            menuItem.addClass( 'menu-item-' + _htmlStrToClass( items[i].text ) );
-            if( 'callback' in items[i] ) {
-                _menuAssignItemCallback( container, menuItem, items[i].callback );
-            } else if( 'children' in items[i] ) {
-                menuItem.addClass( 'menu-parent' );
-                _menuAssignItemChildren( 
-                    container, menuItem, items[i].children, followMouse, menubarRoot );
-            }
-        }
-        menu.append( menuItem );
-    }
-}
-
 function _menuAddWindowMenu( winHandle, element, leftClick=false ) {
     var popupHandler = function( e ) {
         var menu = [
@@ -146,25 +116,7 @@ function _htmlCharSVG( u ) {
 
 /* Public Functions */
 
-function menuPopup( container, items, x, y, show=true, caller=null ) {
 
-    var menu = $('<div class="menu"></div>');
-    if( !show ) {
-        menu.hide();
-    }
-    $(container).append( menu );
-    menu.css( 'left', x.toString() + 'px' );
-    menu.css( 'top', y.toString() + 'px' );
-
-    menu.data( 'caller', caller );
-    if( null != menu.data( 'caller' ) ) {
-        menu.data( 'caller' ).addClass( 'menu-caller-active' );
-    }
-
-    _menuPopulate( container, menu, items );
-    
-    return menu;
-}
 
 function menuClose( container, menu ) {
     if( null != menu ) {

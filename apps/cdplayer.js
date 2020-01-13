@@ -53,17 +53,17 @@ case 'open':
     winHandle.control95( 'statusbar' );
     
     menu = [
-        {'text': 'Disc', 'children': [
-            {'group': true, 'id': 'browser-recent'},
+        {'caption': 'Disc', 'children': [
+            {'type': menu95Type.GROUP, 'id': 'browser-recent'},
             {'text': 'Exit', 'callback': function( m ) {
                 winHandle.window95( 'close' );
             }}
         ]},
-        {'text': 'View', 'children': [
+        {'caption': 'View', 'children': [
         ]},
-        {'text': 'Options', 'children': [
+        {'caption': 'Options', 'children': [
         ]},
-        {'text': 'Help', 'children': [
+        {'caption': 'Help', 'children': [
         ]}
     ];
 
