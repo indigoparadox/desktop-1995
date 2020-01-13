@@ -15,7 +15,12 @@ function _menuAssignItemCallback( container, item, callback ) {
 }
 
 function _menuAssignItemChildren( container, item, children, followMouse, closeOtherMenus=false ) {
-    item.click( function( e ) {
+    $(item).mouseenter( function( e ) {
+        if( $(this).hasClass( 'menu-expanded' ) ) {
+            return;
+        }
+        $(this).addClass( 'menu-expanded' );
+        
         var x = item.offset().left - $(container).offset().left;
         var y = item.offset().top - $(container).offset().top + item.height();
 
@@ -35,6 +40,9 @@ function _menuAssignItemChildren( container, item, children, followMouse, closeO
 
         menuPopup( container, children, x, y );
         e.preventDefault();
+    } );
+    $(item).mouseleave( function( e ) {
+        menuClose( item );
     } );
 }
 
@@ -59,6 +67,7 @@ function _menuPopulate( container, menu, items, followMouse=true ) {
             if( 'callback' in items[i] ) {
                 _menuAssignItemCallback( container, menuItem, items[i].callback );
             } else if( 'children' in items[i] ) {
+                menuItem.addClass( 'menu-parent' );
                 _menuAssignItemChildren( 
                     container, menuItem, items[i].children, followMouse, menubarRoot );
             }
@@ -171,76 +180,3 @@ function menuClose( container, menu ) {
     }
 }
 
-function trayUpdateTime( tray ) {
-    var now = new Date();
-    
-    var minuteString = now.getMinutes();
-    if( 9 >= minuteString ) {
-        minuteString = "0" + minuteString.toString();
-    } else {
-        minuteString = minuteString.toString();
-    }
-    
-    var amPm = 'AM';
-    var hourString = now.getHours();
-    if( 12 < hourString ) {
-        hourString -= 12;
-        amPm = 'PM';
-    }
-    hourString = hourString.toString();
-    
-    $(tray).text( hourString + ':' + minuteString + ' ' + amPm );
-}
-
-$(document).ready( function() {
-    // Build the start menu if one is provided.
-    $('.button-start').click( function( e ) {
-            
-        e.preventDefault();
-
-        var menu = [
-            {'text': 'Programs', 'callback': function( m ) {
-
-            }},
-            {'text': 'Documents', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Settings', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Find', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Help', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Run...', 'callback': function( m ) {
-                
-            }},
-            {'divider': true },
-            {'text': 'Shut Down...', 'callback': function( m ) {
-                
-            }}
-        ];
-
-        menuClose( '#desktop', null );
-        var menu = menuPopup( '#desktop', menu,
-            $('.button-start').offset().left,
-            $('.button-start').offset().top, false, $('.button-start') );
-        menu.addClass( 'logo-menu' );
-
-        var stripe = '<div class="logo-stripe-wrapper"><div class="logo-stripe">Windows 95</div></div>';
-        menu.append( stripe );
-
-        menu.css( 'top', ($('.button-start').offset().top - menu.height() - 5).toString() + 'px' );
-
-        menu.show();
-    } );
-
-    $('.tray.notification-area').each( function() {
-        trayUpdateTime( this );
-        setInterval( function() { 
-            trayUpdateTime( this );
-        }, 1000 );
-    } );
-} );
