@@ -226,6 +226,9 @@ case 'open':
 
     winHandle.control95( 'statusbar' );
 
+    logoBox = $('<div class="inset browser-logo-box"></div>');
+    winHandle.prepend( logoBox );
+
     // Setup the status bar.
     var trayStatusText = $('<div class="tray tray-status-text"></div>');
     winHandle.children( '.statusbar' ).append( trayStatusText );

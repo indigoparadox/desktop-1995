@@ -370,6 +370,16 @@
     flex-grow: 1;
 }
 
+.browser-logo-box {
+    background-color: #bfbfbf;
+    position: absolute;
+    right: 2px;
+    top: 42px;
+    width: 53px;
+    height: 53px;
+    z-index: 5;
+}
+
 /* Window: Properties */
 
 /* Tab panes have a slightly different chiseled pattern. */
