@@ -132,6 +132,12 @@ case 'open':
         e.preventDefault();
     } );
 
+    var btnEject = $('<button class="button-eject">&#x23cf;</button>');
+    controls.find( '.window-cdplayer-controls-tracks-eject').append( btnEject );
+    btnEject.click( function( e ) {
+        e.preventDefault();
+    } );
+
     winHandle.find( '.disable-until-load' ).attr( 'disabled', true );
 
     var drops = $('<div class="window-cdplayer-drops"></div>');

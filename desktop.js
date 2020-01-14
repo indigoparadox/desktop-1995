@@ -14,6 +14,55 @@ case 'propsmonitor':
     monitor.append( '<div class="props-monitor props-monitor-stand-mid"></div>' );
     monitor.append( '<div class="props-monitor props-monitor-stand-lower"></div>' );
     return monitor;
+
+case 'enable':
+
+    var desktopElement = this;
+
+    this.mousedown( function( e ) {
+        if( $(e.target).hasClass( 'container' ) ) {
+            $(e.target).explorer95( 'select' );
+        }
+        $(e.target).menu95( 'close' );
+    } );
+
+    var desktopMenu = {
+        'items': [
+            {'caption': 'Arrange Icons', 'type': menu95Type.SUBMENU, 'items': [
+                {'caption': 'By name', 'callback': function( m ) {
+                }}
+            ]},
+            {'type': menu95Type.DIVIDER},
+            {'caption': 'Paste', 'callback': function( m ) {
+            }},
+            {'type': menu95Type.DIVIDER},
+            {'caption': 'New', 'type': menu95Type.SUBMENU, 'items': [
+                {'caption': 'Folder', 'callback': function( m ) {
+                }}
+            ]},
+            {'type': menu95Type.DIVIDER},
+            {'caption': 'Properties', 'callback': function( m ) {
+                desktopElement.props95( props95Panel.DISPLAY );
+            }}
+        ]
+    };
+
+    this.contextmenu( function( e ) {
+        e.preventDefault();
+
+        if( 
+            $(e.target).parents().hasClass( 'menu' ) ||
+            $(e.target).parents().hasClass( 'window' )
+        ) {
+            // Don't call menus on menus.
+            return;
+        }
+
+        desktopMenu.location = {'x': e.pageX, 'y': e.pageY};
+        $(this).menu95( 'open', desktopMenu );
+    } );
+
+    return this;
 } };
 
 $.fn.startmenu95 = function( action, options ) {
