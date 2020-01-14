@@ -135,6 +135,10 @@ case 'open':
     if( menu95Type.MENUBAR == menuSettings.type ) {
         menuSettings.menubarRoot = menu;
     }
+
+    if( null == menuSettings.container ) {
+        menuSettings.container = this;
+    }
     
     if( !menuSettings.show ) {
         menu.hide();

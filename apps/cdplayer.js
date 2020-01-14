@@ -100,7 +100,7 @@ case 'open':
         e.preventDefault();
     } );
 
-    var btnStop = $('<button class="button-stop disable-until-load">' + _htmlCharSVG( '\u23f9' ) + '</button>');
+    var btnStop = $('<button class="button-stop disable-until-load">&#x23f9;</button>');
     controls.find( '.window-cdplayer-controls-play-pause-stop').append( btnStop );
     btnStop.click( function( e ) {
         audio.pause();

@@ -227,3 +227,82 @@ button.menu-caller-active,
 .window-hidden {
     display: none !important;
 }
+
+.props-monitor {
+    border: 1px solid black;
+    display: block;
+    position: relative;
+}
+
+.props-outer:before {
+    content: " ";
+    border-top: 2px solid #bfbfbf;
+    border-left: 2px solid #bfbfbf;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    bottom: -3px;
+    left: -3px;
+    z-index: -1;
+}
+
+.props-monitor-outer {
+    border-top: 2px solid #fff8ff;
+    border-left: 2px solid #fff8ff;
+    border-right: 2px solid #7f787f;
+    border-bottom: 2px solid #7f787f;
+    margin: 10px auto 0 auto;
+    width: 180px;
+    height: 150px;
+    z-index: 10;
+}
+
+.props-monitor-inner {
+    margin: 15px auto;
+    width: 160px;
+    height: 120px;
+}
+
+.props-monitor-stand-upper:before {
+    content: " ";
+    border-radius: 0 0 10px 10px;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    bottom: -3px;
+    left: -3px;
+    z-index: -1;
+}
+
+.props-monitor-stand-upper {
+    border-radius:  0 0 10px 10px;
+    border-top: 2px solid #7f787f;
+    border-left: 2px solid #7f787f;
+    border-right: 2px solid #7f787f;
+    border-bottom: 2px solid #7f787f;
+    margin: 0 auto;
+    width: 90px;
+    height: 5px;
+    z-index: 5;
+}
+
+.props-monitor-stand-mid {
+    border-top: 2px solid #7f787f;
+    border-left: 4px solid #fff8ff;
+    border-right: 4px solid #7f787f;
+    margin: 0 auto;
+    width: 70px;
+    height: 7px;
+    z-index: 1;
+}
+
+.props-monitor-stand-lower {
+    margin: 0 auto;
+    width: 110px;
+    height: 5px;
+}

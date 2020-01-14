@@ -1,5 +1,21 @@
 
 (function( $ ) {
+
+$.fn.desktop95 = function( action ) {
+switch( action.toLowerCase() ) {
+case 'propsmonitor':
+    var monitor = $('<div class="props-monitor-wrapper"></div>');
+    var monitorOuter = $('<div class="props-monitor props-monitor-outer"></div>');
+    monitor.append( monitorOuter );
+    var monitorInner = $('<div class="props-monitor props-monitor-inner"></div>');
+    monitorOuter.append( monitorInner );
+
+    monitor.append( '<div class="props-monitor props-monitor-stand-upper"></div>' );
+    monitor.append( '<div class="props-monitor props-monitor-stand-mid"></div>' );
+    monitor.append( '<div class="props-monitor props-monitor-stand-lower"></div>' );
+    return monitor;
+} };
+
 $.fn.startmenu95 = function( action, options ) {
 
 var settings = $.extend( {
