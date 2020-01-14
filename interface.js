@@ -1,42 +1,6 @@
 
 /* Internal Utility Functions */
 
-function _menuAddWindowMenu( winHandle, element, leftClick=false ) {
-    var popupHandler = function( e ) {
-        var menu = [
-            {'text': 'Restore', 'callback': function( m ) {
-
-            }},
-            {'text': 'Move', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Size', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Minimize', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Maximize', 'callback': function( m ) {
-                
-            }},
-            {'text': 'Close', 'callback': function( m ) {
-                $(winHandle).window95( 'close' );
-            }}
-        ];
-
-        menuClose( $(winHandle), null );
-        menuPopup( $(winHandle), menu,
-            e.pageX - $(winHandle).offset().left,
-            e.pageY - $(winHandle).offset().top );
-    };
-
-    if( leftClick ) {
-        $(element).click( popupHandler );
-    } else {
-        $(element).contextmenu( popupHandler );
-    }
-}
-
 // Again, a named function to isolate the closure scope, designed to be called
 // from a loop below.
 function _browserFavoritesMenuAdd( winHandle, menu, favorite ) {

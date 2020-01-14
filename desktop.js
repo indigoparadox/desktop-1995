@@ -23,6 +23,7 @@ case 'enable':
         // Build and show the menu.
         var menu = {
             'location': menu95Location.TOP,
+            'container': '#desktop',
             'caller': '.button-start',
             'classes': ['logo-menu'],
             'items': [

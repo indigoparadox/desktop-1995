@@ -13,12 +13,17 @@ var settings = $.extend( {
     'favorites': null,
     'x': 10,
     'y': 10,
-    'w': 640,
-    'h': 480,
+    'w': 600,
+    'h': 400,
     'waybackDate': '19981202230410',
     'history': true,
     'home': 'http://google.com'
 }, options );
+
+var newBrowserWindow = function( container, browserSettings ) {
+    browserSettings.id = browserSettings.id + '-n';
+    $(container).browser95( 'open', browserSettings );
+};
 
 switch( action.toLowerCase() ) {
 
@@ -52,6 +57,9 @@ case 'open':
     settings.menu = null;
     settings.show = false;
 
+    // Need this for the new window closure.
+    var container = this;
+
     var winHandle = this.window95( 'open', settings );
     
     menu = {
@@ -61,8 +69,7 @@ case 'open':
         'items': [
             {'caption': 'File', 'type': menu95Type.SUBMENU, 'items': [
                 {'caption': 'New Window', 'callback': function( m ) {
-                    settings.id = settings.id + 'n';
-                    this.browser95( 'open', settings );
+                    newBrowserWindow( container, settings );
                 }},
                 {'type': menu95Type.DIVIDER},
                 {'group': true, 'id': 'browser-recent'},

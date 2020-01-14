@@ -176,20 +176,54 @@ case 'open':
     var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + settings.caption + '</h1></div>');
     winHandle.prepend( titlebar );
 
-    _menuAddWindowMenu( winHandle, titlebar, false );
+    var windowMenu = {
+        'type': menu95Type.SUBMENU,
+        'caller': titlebar,
+        'container': winHandle,
+        'location': menu95Location.BOTTOM,
+        'items': [
+            {'caption': 'Restore', 'callback': function( m ) {
+                $(winHandle).window95( 'restore' );
+            }},
+            {'caption': 'Move', 'callback': function( m ) {
+                
+            }},
+            {'caption': 'Size', 'callback': function( m ) {
+                
+            }},
+            {'caption': 'Minimize', 'callback': function( m ) {
+                $(winHandle).window95( 'minimize' );
+            }},
+            {'caption': 'Maximize', 'callback': function( m ) {
+                $(winHandle).window95( 'maximize' );
+            }},
+            {'caption': 'Close', 'callback': function( m ) {
+                $(winHandle).window95( 'close' );
+            }}
+        ]
+    };
+
+    var windowMenuHandler = function( e ) {
+        winHandle.menu95( 'close' );
+        winHandle.menu95( 'open', windowMenu );
+    };
+
+    titlebar.contextmenu( windowMenuHandler );
+
     titlebar.children( '.titlebar-text' ).click( function( e ) {
         // Plain clicks on the titlebar close all menus.
         winHandle.menu95( 'close' );
     } );
 
-    /* Add the window icon. */
+    // Add the window icon.
     if( null != settings.icoImg ) {
         var icon = $('<div class="titlebar-icon"></div>');
         $(titlebar).prepend( icon );
         icon.css( 'background', 'url(' + staticPath + settings.icoImg + 
             ') right ' + settings.icoX.toString() + 'px bottom ' + settings.icoY.toString() + 'px' );
 
-        _menuAddWindowMenu( winHandle, icon, true );
+        icon.click( windowMenuHandler );
+        icon.contextmenu( windowMenuHandler );
     } else {
         titlebar.addClass( 'titlebar-no-icon' );
     }

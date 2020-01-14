@@ -20,11 +20,11 @@
 
 case 'open':
 
-    options.menu = null;
-    options.show = false;
-    options.resizable = true;
+    settings.menu = null;
+    settings.show = false;
+    settings.resizable = true;
 
-    var winHandle = this.window95( 'open', options );
+    var winHandle = this.window95( 'open', settings );
     
     winHandle.addClass( 'window-mpvideo' );
 

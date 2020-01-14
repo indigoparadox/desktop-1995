@@ -26,7 +26,7 @@ var menuSettings = $.extend( {
     'caller': null,
     'location': menu95Location.BOTTOM,
     'menubarRoot': null,
-    'container': '#desktop',
+    'container': null,
     'type': menu95Type.SUBMENU,
 }, options );
 
@@ -122,7 +122,7 @@ case 'close':
             }
             $(this).remove();
         } else {
-            /* Close all menus in this container. */
+            // Close all menus in this container.
             $(this).find( '.menu' ).each( function( idx, menuIter ) {
                 $(this).menu95( 'close' );
             } );

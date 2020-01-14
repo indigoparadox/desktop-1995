@@ -11,8 +11,8 @@ var settings = $.extend( {
     'icoY': 0,
     'x': 10,
     'y': 10,
-    'w': 480,
-    'h': 260,
+    'w': 304,
+    'h': 204,
     'playlist': []
 }, options );
     
@@ -26,12 +26,12 @@ case 'enable':
     }
 
 case 'openmixer':
-    options.w = 408;
-    options.h = 446;
-    options.menu = null;
-    options.show = false;
-    options.resizable = false;
-    var winHandle = $.window95( 'open', options );
+    settings.w = 408;
+    settings.h = 446;
+    settings.menu = null;
+    settings.show = false;
+    settings.resizable = false;
+    var winHandle = $.window95( 'open', settings );
     
     winHandle.addClass( 'window-mixer' );
 
@@ -43,11 +43,11 @@ case 'openmixer':
 case 'open':
     var winHandle = null;
 
-    options.menu = null;
-    options.show = false;
-    options.resizable = false;
+    settings.menu = null;
+    settings.show = false;
+    settings.resizable = false;
 
-    winHandle = this.window95( 'open', options );
+    winHandle = this.window95( 'open', settings );
 
     menu = {
         'type': menu95Type.MENUBAR,
