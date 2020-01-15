@@ -67,7 +67,7 @@ case 'activate':
             $(winHandle).data( 'taskbar-button' ).addClass( 'task-button-active' );
         }
 
-        return;
+        $(winHandle).trigger( 'activate' );
     } );
 
 case 'maximize':
@@ -94,7 +94,7 @@ case 'maximize':
         $(winHandle).find( '.titlebar-restore' ).css( 'display', 'inline-block' );
         $(winHandle).find( '.titlebar-maximize' ).css( 'display', 'none' );
 
-        return;
+        $(winHandle).trigger( 'maximize' );
     } );
 
 case 'minimize':
@@ -104,6 +104,8 @@ case 'minimize':
         }
 
         $(winHandle).addClass( 'window-minimized' );
+
+        $(winHandle).trigger( 'minimize' );
     } );
 
 case 'restore':
@@ -117,6 +119,8 @@ case 'restore':
         
         if( $(winHandle).hasClass( 'window-minimized' ) ) {
             $(winHandle).removeClass( 'window-minimized' );
+            $(winHandle).trigger( 'restore-up' );
+
         } else if( $(winHandle).hasClass( 'window-maximized' ) ) {
             $(winHandle).css( 'left', $(winHandle).data( 'restore-left' ) );
             $(winHandle).css( 'top', $(winHandle).data( 'restore-top' ) );
@@ -130,11 +134,19 @@ case 'restore':
 
             $(winHandle).find( '.titlebar-restore' ).css( 'display', 'none' );
             $(winHandle).find( '.titlebar-maximize' ).css( 'display', 'inline-block' );
+
+
+            $(winHandle).trigger( 'restore-down' );
         }
     } );
 
 case 'close':
     return this.each( function( idx, winHandle ) {
+        try {
+            $(winHandle).trigger( 'closing' );
+        } catch( e ) {
+            return;
+        }
         if( null != $(winHandle).data( 'taskbar-button' ) ) {
             $(winHandle).data( 'taskbar-button' ).remove();
         }

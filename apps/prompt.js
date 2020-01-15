@@ -53,7 +53,7 @@ case 'open':
     winHandle.children( '.window-form' ).append( cmd );
     winHandle.children( '.window-form' ).append( cmdInput );
 
-    $(cmd).click( function() {
+    winHandle.click( function() {
         $(cmdInput).focus();
     } );
 
@@ -102,6 +102,10 @@ case 'open':
                 .children( '.input-line' )
                 .text( $(this).val() );
         }
+    } );
+
+    winHandle.on( 'activate', function( e ) {
+        $(cmdInput).focus();
     } );
 
     winHandle.addClass( 'window-scroll-contents' );
