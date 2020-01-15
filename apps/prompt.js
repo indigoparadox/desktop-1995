@@ -30,6 +30,7 @@ case 'enter':
         cmd = cmd.children( '.input-prompt' );
         cmd.children( '.backbuffer' ).append( line );
         cmd.children( '.backbuffer' ).append( '<br />' );
+        cmd.scrollTop( cmd[0].scrollHeight );
     } );
 
 case 'open':
@@ -79,11 +80,12 @@ case 'open':
                 .children( '.input-line-caret' )
                 .children( '.input-line' )
                 .remove();
+            var lineText = line.text();
             winHandle.prompt95( 'enter', { 'text': prevPrompt.text() + line.text() } );
 
             /* Process line input. */
             if( null != settings.lineHandler ) {
-                settings.lineHandler( settings.lineHandlerData, winHandle );
+                settings.lineHandler( settings.lineHandlerData, lineText, winHandle );
             }
 
             /* Create a new input line. */
