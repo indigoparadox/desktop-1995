@@ -1,5 +1,4 @@
 
-
 (function( $ ) {
 $.fn.explorer95 = function( action, options ) {
 

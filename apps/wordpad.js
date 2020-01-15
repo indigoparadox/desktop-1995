@@ -64,6 +64,23 @@ var settings = $.extend( {
 
 switch( action.toLowerCase() ) {
 case 'readurl':
+    
+    // Add document to documents menu.
+    // TODO: Be a bit smarter about getting window ID, icons, etc.
+    var found = false;
+    for( var i = 0 ; documentsMenu95.length > i ; i++ ) {
+        console.log( documentsMenu95[i] );
+        if( documentsMenu95[i].caption == settings.url ) {
+            found = true;
+        }
+    }
+    if( !found ) {
+        documentsMenu95.push( { 'caption': settings.url, 'classes': ['rtf-16x16'], 'callback': function() {
+            var winText = $('#desktop').wordpad95( 'open', settings );
+            winText.wordpad95( 'readURL', { 'url': settings.url } );
+        } } );
+    }
+
     return this.each( function( idx, winHandle ) {
         $.get( settings.url, function( data ) {
             $(winHandle).find( '.input-rtf' ).html( _wordpadFormatText( data ) );
@@ -202,6 +219,10 @@ case 'open':
 
     winHandle.addClass( 'window-scroll-contents' );
     winHandle.removeClass( 'window-hidden' );
+
+    if( null != settings.url ) {
+        winHandle.wordpad95( 'readurl', settings );
+    }
 
     winHandle.window95( 'activate' );
 

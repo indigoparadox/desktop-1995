@@ -1,4 +1,6 @@
 
+var documentsMenu95 = [];
+
 (function( $ ) {
 
 $.fn.desktop95 = function( action ) {
@@ -95,9 +97,8 @@ case 'enable':
                 {'caption': 'Programs', 'callback': function( m ) {
 
                 }},
-                {'caption': 'Documents', 'callback': function( m ) {
-                    
-                }},
+                {'caption': 'Documents', 'type': menu95Type.SUBMENU,
+                    'items': documentsMenu95},
                 {'caption': 'Settings', 'callback': function( m ) {
                     
                 }},
