@@ -1,4 +1,8 @@
 
+const window95Exceptions = {
+    'WINDOW_EXISTS': 'window_exists'
+};
+
 (function( $ ) {
 $.fn.window95 = function( action, options ) {
 
@@ -143,7 +147,7 @@ case 'open':
     if( 0 < $('#' + settings.id).length ) {
         /* The requested window is already open. */
         $('#' + settings.id).window95( 'activate' );
-        return $('#' + settings.id);
+        throw { 'type': window95Exceptions.WINDOW_EXISTS, 'window': $('#' + settings.id) };
     }
 
     var winHandle = $('<div class="window"><form class="window-form"></form></div>');

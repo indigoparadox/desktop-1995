@@ -108,7 +108,13 @@ case 'open':
     settings.menu = null;
     settings.show = false;
 
-    var winHandle = this.window95( 'open', settings );
+    try {
+        var winHandle = this.window95( 'open', settings );
+    } catch( e ) {
+        if( window95Exceptions.WINDOW_EXISTS == e.type ) {
+            return;
+        }
+    }
     
     menu = {
         'type': menu95Type.MENUBAR,
