@@ -76,8 +76,12 @@ case 'readurl':
     }
     if( !found ) {
         documentsMenu95.push( { 'caption': settings.url, 'classes': ['rtf-16x16'], 'callback': function() {
-            var winText = $('#desktop').wordpad95( 'open', settings );
-            winText.wordpad95( 'readURL', { 'url': settings.url } );
+            try {
+                var winText = $('#desktop').wordpad95( 'open', settings );
+                winText.wordpad95( 'readURL', { 'url': settings.url } );
+            } catch( e ) {
+                console.log( 'existing wordpad instance found.' );
+            }
         } } );
     }
 
@@ -108,13 +112,9 @@ case 'open':
     settings.menu = null;
     settings.show = false;
 
-    try {
-        var winHandle = this.window95( 'open', settings );
-    } catch( e ) {
-        if( window95Exceptions.WINDOW_EXISTS == e.type ) {
-            return;
-        }
-    }
+    // We specifically do not catch the possible exceptions here.
+    // Let the caller handle them.
+    var winHandle = this.window95( 'open', settings );
     
     menu = {
         'type': menu95Type.MENUBAR,
