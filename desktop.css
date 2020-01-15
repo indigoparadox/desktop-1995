@@ -17,6 +17,13 @@ html, body {
     z-index: 1;
 }
 
+.desktop-icon-text,
+.titlebar-text,
+.button-task {
+    text-transform: capitalize;
+}
+
+
 /* Common Effects */
 
 .window:before,
