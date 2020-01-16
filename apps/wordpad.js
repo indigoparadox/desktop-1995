@@ -43,6 +43,31 @@ function _wordpadFormatText( text ) {
 (function( $ ) {
 $.fn.wordpad95 = function( action, options ) {
 
+var fontsList = [
+    'Arial',
+    'Times New Roman',
+    'Courier New'
+];
+
+var sizeList = [
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '14',
+    '16',
+    '18',
+    '20',
+    '22',
+    '24',
+    '26',
+    '28',
+    '36',
+    '48',
+    '72'
+];
+
 var settings = $.extend( {
     'caption': 'Wordpad',
     'id': null,
@@ -169,57 +194,100 @@ case 'open':
 
     winHandle.addClass( 'window-wordpad' );
 
+    var text = $('<div class="input-rtf"></textarea>');
+
     var sb = winHandle.control95( 'statusbar', 'create' );
     sb.children( '.statusbar' ).text( 'For Help, press F1' );
 
-    var tb = winHandle.control95( 'toolbar', 'create' );
-    var btnNew = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.new, 'callback':
+    var tbFile = winHandle.control95( 'toolbar', 'create', {'classes': ['toolbar-file']} );
+    var btnNew = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.new, 'callback':
         function( e ) { winHandle.wordpad95( 'newfile' ); } } );
 
-    var btnOpen = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.open, 'callback':
+    var btnOpen = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.open, 'callback':
     function( e ) {  } } );
 
-    var btnSave = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.save, 'callback':
+    var btnSave = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.save, 'callback':
     function( e ) {  } } );
 
-    winHandle.control95( 'toolbarDivider', 'create' );
+    tbFile.control95( 'toolbarDivider', 'create' );
 
-    var btnPrint = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.print, 'callback':
+    var btnPrint = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.print, 'callback':
     function( e ) {  } } );
 
-    var btnPreview = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.preview, 'callback':
+    var btnPreview = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.preview, 'callback':
     function( e ) {  } } );
 
-    winHandle.control95( 'toolbarDivider', 'create' );
+    tbFile.control95( 'toolbarDivider', 'create' );
     
-    var btnSearch = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.search, 'callback':
+    var btnSearch = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.search, 'callback':
     function( e ) {  } } );
 
-    winHandle.control95( 'toolbarDivider', 'create' );
+    tbFile.control95( 'toolbarDivider', 'create' );
 
-    var btnCut = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.cut, 'callback':
+    var btnCut = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.cut, 'callback':
     function( e ) {  } } );
 
-    var btnCopy = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.copy, 'callback':
+    var btnCopy = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.copy, 'callback':
     function( e ) {  } } );
 
-    var btnPaste = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.paste, 'callback':
+    var btnPaste = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.paste, 'callback':
     function( e ) {  } } );
 
-    var btnUndo = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.undo, 'callback':
+    var btnUndo = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.undo, 'callback':
     function( e ) {  } } );
 
-    winHandle.control95( 'toolbarDivider', 'create' );
+    tbFile.control95( 'toolbarDivider', 'create' );
 
-    var btnDateTime = winHandle.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.dateTime, 'callback':
-    function( e ) {  } } );
+    var btnDateTime = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.dateTime, 'callback':
+    function( e ) {
+        
+    } } );
+
+    var tbFormat = winHandle.control95( 'toolbar', 'create', {'classes': ['toolbar-format']} );
+    
+    var dropFontName = tbFormat.control95( 'toolbarDropdown', 'create', {'items': fontsList } );
+    dropFontName.change( function( e ) {
+        text.focus();
+        document.execCommand( 'fontname', false, dropFontName.children( 'option:selected' ).text() );
+    } );
+
+    tbFormat.control95( 'toolbarDivider', 'create' );
+
+    var dropFontSize = tbFormat.control95( 'toolbarDropdown', 'create', {'items': sizeList } );
+    dropFontSize.change( function( e ) {
+        text.focus();
+        document.execCommand( 'fontsize', false, parseInt( dropFontSize.children( 'option:selected' ).text() ) );
+    } );
+
+    tbFormat.control95( 'toolbarDivider', 'create' );
+
+    var btnBold = tbFormat.control95( 'toolbarButton', 'create', {'caption': 'B', 'classes':['button-bold'], 'callback':
+    function( e ) {
+        text.focus();
+        document.execCommand( 'bold' );
+    } } );
+
+    var btnItalic = tbFormat.control95( 'toolbarButton', 'create', {'caption': 'I', 'classes':['button-italic'], 'callback':
+    function( e ) {
+        text.focus();
+        document.execCommand( 'italic' );
+    } } );
+
+    var btnUnderline = tbFormat.control95( 'toolbarButton', 'create', {'caption': 'U', 'classes':['button-underline'], 'callback':
+    function( e ) {
+        text.focus();
+        document.execCommand( 'underline' );
+    } } );
+
+    tbFormat.control95( 'toolbarDivider', 'create' );
+
+    winHandle.append( '<div class="ruler inset"></div>' );
 
     // This window type still uses wrappers because the pseudo-elements are 
     // rather prone to yet-unexplainable misbehaviors.
     var wrapper = $('<div class="textarea-wrapper inset"></div>');
     winHandle.children( '.window-form' ).append( wrapper );
 
-    var text = $('<div class="input-rtf"></textarea>');
     text.attr( 'contenteditable', 'true' );
     wrapper.append( text );
 

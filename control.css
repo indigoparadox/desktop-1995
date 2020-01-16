@@ -34,6 +34,7 @@
     padding: 3px 6px;
 }
 
+/* .input-select:before, */
 .input-text:before,
 .input-textarea:before,
 .input-prompt:before,
@@ -66,6 +67,7 @@
     padding-bottom: 6px;
 }
 
+/* .input-select:before, */
 .input-text:before,
 .input-textarea:before,
 .input-prompt:before,
@@ -123,6 +125,16 @@
     padding: 1px 2px;
 }
 
+.select-wrapper {
+    display: inline-block;
+}
+
+.input-select {
+    background-color: white;
+    position: relative;
+}
+
+.input-select:focus,
 .input-rtf:focus,
 .input-text:focus,
 .input-textarea:focus,
@@ -149,6 +161,7 @@
     position: absolute;
     right: 2px;
     left: 2px;
+    height: 20px;
 }
 
 .window-toolbar:not( .window-menubar ) > .toolbar {
@@ -205,6 +218,41 @@
 }
 
 /* Window: Wordpad */
+
+.window-menubar.window-wordpad > .toolbar-format > .button-bold,
+.window-menubar.window-wordpad > .toolbar-format > .button-italic,
+.window-menubar.window-wordpad > .toolbar-format > .button-underline {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.window-menubar.window-wordpad > .toolbar-format > .button-bold {
+    font-weight: bold;
+}
+
+.window-menubar.window-wordpad > .toolbar-format > .button-italic {
+    font-style: italic;
+}
+
+.window-menubar.window-wordpad > .toolbar-format > .button-underline {
+    text-decoration: underline;
+}
+
+.window-menubar.window-wordpad > .toolbar-format {
+    top: 72px;
+}
+
+.window-menubar.window-wordpad > .window-form {
+    top: 126px;
+}
+
+.window-wordpad .ruler {
+    background-color: white;
+    position: absolute;
+    top: 106px;
+    left: 4px;
+    right: 4px;
+    height: 14px;
+}
 
 .window-wordpad .input-rtf {
     background: white;
