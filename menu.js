@@ -29,6 +29,9 @@ var settings = $.extend( {
     'container': this,
     'type': menu95Type.ITEM,
     'root': null,
+    'path': null != options && null != options.caption ? options.caption : '',
+    'callback': null,
+    'cbData': null,
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -116,7 +119,6 @@ case 'item':
 
             // Call the custom menu event for this menu.
             settings.type = menu95Type.SUBMENU;
-            console.log( settings.root );
             $(settings.root).trigger( 'menu', [menuElement, settings] );
         } );
         menuElement.click( function( e ) {
@@ -134,6 +136,7 @@ case 'item':
         menuElement.addClass( 'menu-item-' + _htmlStrToClass( settings.caption ) );
         
         menuElement.click( function( e ) {
+            settings.data = settings.cbData;
             settings.callback( settings );
             $(settings.container).menu95( 'close' );
             e.preventDefault();
@@ -172,6 +175,8 @@ case 'open':
     if( menu95Type.MENUBAR == settings.type ) {
         settings.menubarRoot = menu;
     }
+
+    var menuClassname = 'menu-menu-' + _htmlStrToClass( settings.caption );
     
     if( !settings.show ) {
         menu.hide();
@@ -204,6 +209,7 @@ case 'open':
         }
         settings.items[i].caller = settings.caller;
         settings.items[i].root = settings.root;
+        settings.items[i].path = settings.path + '/' + settings.items[i].caption;
         menuElement = menu.menu95( 'item', settings.items[i] );
     }
     
@@ -215,6 +221,7 @@ case 'open':
 
     } else {
         menu.addClass( 'menu' );
+        menu.addClass( menuClassname );
         $(settings.container).append( menu );
 
         var containerLeft = $(settings.container).offset().left;
