@@ -32,6 +32,9 @@ var settings = $.extend( {
     'path': null != options && null != options.caption ? options.caption : '',
     'callback': null,
     'cbData': null,
+    'iconImg16': null,
+    'iconX16': null,
+    'iconY16': null,
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -47,6 +50,14 @@ case 'item':
         }
     } );
 
+    var menuIcon = $('<span class="menu-icon"></span>');
+    console.log( settings );
+    if( null != settings.iconImg16 ) {
+        var bgURL = 'url(' + staticPath + settings.iconImg16 + 
+            ') right ' + settings.iconX16.toString() + 'px bottom ' + settings.iconY16.toString() + 'px';
+        menuIcon.css( 'background', bgURL );
+    }
+
     switch( settings.type ) {
     case menu95Type.DIVIDER:
         menuElement = $('<hr />');
@@ -57,10 +68,11 @@ case 'item':
         break;
 
     case menu95Type.SUBMENU:
-        menuElement = $('<a href="#" class="menu-item"><span class="menu-icon"></span>' +
+        menuElement = $('<a href="#" class="menu-item"></span>' +
             settings.caption + '</a>');
         menuElement.addClass( 'menu-item-' + _htmlStrToClass( settings.caption ) );
         menuElement.addClass( 'menu-parent' );
+        menuElement.prepend( menuIcon );
 
         menuElement.data( 'submenu-element', null );
 
@@ -95,10 +107,11 @@ case 'item':
         break;
 
     case menu95Type.EVENTMENU:
-        menuElement = $('<a href="#" class="menu-item"><span class="menu-icon"></span>' +
+        menuElement = $('<a href="#" class="menu-item"></span>' +
             settings.caption + '</a>');
         menuElement.addClass( 'menu-item-' + _htmlStrToClass( settings.caption ) );
         menuElement.addClass( 'menu-parent' );
+        menuElement.prepend( menuIcon );
 
         menuElement.data( 'submenu-element', null );
         settings.caller = menuElement;
@@ -131,9 +144,9 @@ case 'item':
         break;
         
     case menu95Type.ITEM:
-        menuElement = $('<a href="#" class="menu-item"><span class="menu-icon"></span>' +
-            settings.caption + '</a>');
+        menuElement = $('<a href="#" class="menu-item">' + settings.caption + '</a>');
         menuElement.addClass( 'menu-item-' + _htmlStrToClass( settings.caption ) );
+        menuElement.prepend( menuIcon );
         
         menuElement.click( function( e ) {
             settings.data = settings.cbData;
@@ -142,6 +155,10 @@ case 'item':
             e.preventDefault();
         } );
         break;
+    }
+
+    if( null != settings.icoImg ) {
+        menuElement.css( 'background', 'url (' + settings.icoImg + ')' );
     }
 
     if( null != settings.id ) {
@@ -230,7 +247,7 @@ case 'open':
         var callerTop = 0;
         if( null != settings.caller ) {
             callerLeft = $(settings.caller).offset().left;
-            callerTop = $(settings.caller).offset().top;
+            callerTop = $(settings.caller).offset().top - 2;
         }
         var callerWidth = $(settings.caller).outerWidth();
         var callerHeight = $(settings.caller).outerHeight();

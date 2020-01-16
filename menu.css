@@ -16,12 +16,22 @@
     color: black;
     font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
     font-size: 12px; /* Rare text sizing in pixels for accuracy. */
-    line-height: 14px;
+    line-height: 16px;
     text-decoration: none;
     display: block;
-    padding: 3px 18px;
+    padding: 1px 18px;
     margin: 0 1px;
     position: relative;
+}
+
+.menu-icon {
+    display: inline-block;
+    position: relative;
+    right: 4px;
+    bottom: 1px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
 }
 
 :not( .menubar ) > .menu-parent:after {
