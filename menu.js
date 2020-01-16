@@ -12,6 +12,7 @@ const menu95Type = {
     'GROUP': 'group',
     'SUBMENU': 'submenu',
     'MENUBAR': 'menubar',
+    'EVENTMENU': 'eventmenu',
 };
 
 (function( $ ) {
@@ -27,6 +28,7 @@ var settings = $.extend( {
     'location': menu95Location.RIGHT,
     'container': this,
     'type': menu95Type.ITEM,
+    'root': null,
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -58,6 +60,8 @@ case 'item':
         menuElement.addClass( 'menu-parent' );
 
         menuElement.data( 'submenu-element', null );
+
+        // The menu that we open below has this menu element as a caller.
         settings.caller = menuElement;
 
         // Setup submenu open handlers.
@@ -73,13 +77,54 @@ case 'item':
                     $($(this).data( 'submenu-element' )).menu95( 'close' );
                 }
             } );
+
+            // Open the new menu using the new settings.
             menuElement.menu95( 'open', settings );
         } );
         menuElement.click( function( e ) {
             if( menuElement.hasClass( 'menu-caller-active' ) ) {
                 return;
             }
+
+            // Open the new menu using the new settings.
             menuElement.menu95( 'open', settings );
+        } );
+        break;
+
+    case menu95Type.EVENTMENU:
+        menuElement = $('<a href="#" class="menu-item"><span class="menu-icon"></span>' +
+            settings.caption + '</a>');
+        menuElement.addClass( 'menu-item-' + _htmlStrToClass( settings.caption ) );
+        menuElement.addClass( 'menu-parent' );
+
+        menuElement.data( 'submenu-element', null );
+        settings.caller = menuElement;
+
+        // Setup submenu open handlers.
+        menuElement.mouseover( function( e ) {
+            if( 
+                menuElement.parent().hasClass( 'menubar' ) ||
+                menuElement.hasClass( 'menu-caller-active' )
+            ) {
+                return;
+            }
+            menuElement.parents( '.menubar' ).each( function() {
+                if( null != $(this).data( 'submenu-element' ) ) {
+                    $($(this).data( 'submenu-element' )).menu95( 'close' );
+                }
+            } );
+
+            // Call the custom menu event for this menu.
+            settings.type = menu95Type.SUBMENU;
+            console.log( settings.root );
+            $(settings.root).trigger( 'menu', [menuElement, settings] );
+        } );
+        menuElement.click( function( e ) {
+            if( menuElement.hasClass( 'menu-caller-active' ) ) {
+                return;
+            }
+            settings.type = menu95Type.SUBMENU;
+            $(settings.root).trigger( 'menu', [menuElement, settings] );
         } );
         break;
         
@@ -132,11 +177,18 @@ case 'open':
         menu.hide();
     }
 
+    // The caller is the menu item that triggered opening this menu box (parent).
     menu.data( 'caller', settings.caller );
     if( null != menu.data( 'caller' ) ) {
         $(menu.data( 'caller' )).addClass( 'menu-caller-active' );
         $(menu.data( 'caller' )).data( 'submenu-element', menu );
     }
+
+    // The root is the element that triggered opening all of this box's parents.
+    if( null == settings.root ) {
+        settings.root = settings.caller;
+    }
+    menu.data( 'root', settings.root );
 
     // Add classes.
     for( var i = 0 ; settings.classes.length > i ; i++ ) {
@@ -151,6 +203,7 @@ case 'open':
             settings.items[i].location = menu95Location.BOTTOM;
         }
         settings.items[i].caller = settings.caller;
+        settings.items[i].root = settings.root;
         menuElement = menu.menu95( 'item', settings.items[i] );
     }
     

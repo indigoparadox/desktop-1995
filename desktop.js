@@ -94,14 +94,12 @@ case 'enable':
             'caller': '.button-start',
             'classes': ['logo-menu'],
             'items': [
-                {'caption': 'Programs', 'callback': function( m ) {
-
-                }},
+                {'caption': 'Programs', 'type': menu95Type.EVENTMENU,
+                    'trigger': 'programs'},
                 {'caption': 'Documents', 'type': menu95Type.SUBMENU,
                     'items': documentsMenu95},
-                {'caption': 'Settings', 'callback': function( m ) {
-                    
-                }},
+                {'caption': 'Settings', 'type': menu95Type.EVENTMENU,
+                    'trigger': 'settings'},
                 {'caption': 'Find', 'callback': function( m ) {
                     
                 }},
