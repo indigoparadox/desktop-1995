@@ -178,6 +178,9 @@ case 'close':
     return this.each( function() {
         if( $(this).hasClass( 'menu' ) ) {
             // TODO: Close children, as well.
+            if( null != $(this).data( 'submenu-element' ) ) {
+                $($(this).data( 'submenu-element' )).menu95( 'close' );
+            }
             if( null != $(this).data( 'caller' ) ) {
                 $($(this).data( 'caller' )).data( 'submenu-element', null );
                 $($(this).data( 'caller' )).removeClass( 'menu-caller-active' );
@@ -209,6 +212,7 @@ case 'open':
     if( null != menu.data( 'caller' ) ) {
         $(menu.data( 'caller' )).addClass( 'menu-caller-active' );
         $(menu.data( 'caller' )).data( 'submenu-element', menu );
+        $(menu.data( 'caller' )).parent( '.menu' ).data( 'submenu-element', menu );
     }
 
     // The root is the element that triggered opening all of this box's parents.

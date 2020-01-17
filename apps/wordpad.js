@@ -97,7 +97,7 @@ case 'readurl':
         }
     }
     if( !found ) {
-        documentsMenu95.push( { 'caption': settings.url, 'classes': ['rtf-16x16'], 'callback': function() {
+        documentsMenu95.push( { 'caption': settings.url, 'icon': 'rtf', 'callback': function() {
             try {
                 var winText = $('#desktop').wordpad95( 'open', settings );
                 winText.wordpad95( 'readURL', { 'url': settings.url } );
