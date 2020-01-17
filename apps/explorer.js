@@ -25,30 +25,6 @@ case 'icon':
     var imgTag = $('<div class="desktop-icon-img icon-' + settings.icon + '-32"></div>');
     var iconWrapper = $('<div class="desktop-icon"><div class="desktop-icon-overlay"></div>');
     iconWrapper.append( imgTag );
-
-    /* Setup the icon image and save it for reuse later. */
-    //var bgURL = 'url(' + staticPath + settings.icoImg + 
-    //    ') ' + settings.icoX.toString() + 'px ' + settings.icoY.toString() + 'px';
-    //    imgTag.css( 'background', bgURL );
-    //iconWrapper.data( 'icon-bg', bgURL ); /* Save for later. */
-    //iconWrapper.hide(); /* Hide until loaded. */
-//
-    /* Setup a clipping mask to limit the highlight overlay. */
-    var spritesheetImg = new Image();
-    spritesheetImg.onload = function() {
-        /* We need to know the spritesheet dimensions for the math, so load
-         * the spritesheet temporarily to get them.
-         */
-        var spritesheetWidth = this.width;
-        var spritesheetHeight = this.height;
-        
-        /* imgTag.css( '-webkit-mask-image', 'url(' + staticPath + settings.icoImg + ')' );
-        imgTag.css( '-webkit-mask-position-x', settings.icoX.toString() + 'px' ); // (spritesheetWidth - (settings.icoX - settings.icoW)).toString() + 'px' );
-        imgTag.css( '-webkit-mask-position-y', settings.icoY.toString() + 'px' ); // (spritesheetHeight - (settings.icoY - settings.icoH)).toString() + 'px' );
-*/
-        iconWrapper.show();
-    };
-    spritesheetImg.src = staticPath + settings.icoImg;
     
     var iconText = $('<div class="desktop-icon-text-center"><div class="desktop-icon-text">' + settings.caption + '</div></div>');
     iconWrapper.append( iconText );
@@ -74,26 +50,11 @@ case 'select':
             // A specific icon was provided. Deselect all peer icons.
             $(element).parent().children('.desktop-icon').removeClass( 'desktop-icon-selected' );
 
-            // Reset sibling icons to unhighlighted image.
-            $(element).parent().children('.desktop-icon').each( function( idx, iterIcon ) {
-                $(iterIcon).children( '.desktop-icon-img' ).css(
-                    'background', $(iterIcon).data( 'icon-bg' ) );
-            } );
-
             // Select this icon.
             $(element).addClass( 'desktop-icon-selected' );
-            //$(element).children( '.desktop-icon-img' ).css(
-            //    'background', 'linear-gradient(to bottom, rgba(0, 0, 127, 0.3), rgba(0, 0, 127, 0.3)),' +
-             //   $(element).data( 'icon-bg' ) );
         } else {
             // A container was provided. Deselect all icons inside.
             $(element).children('.desktop-icon').removeClass( 'desktop-icon-selected' );
-
-            // Reset child icons to unhighlighted image.
-            $(element).children('.desktop-icon').each( function( idx, iterIcon ) {
-                $(iterIcon).children( '.desktop-icon-img' ).css(
-                    'background', $(iterIcon).data( 'icon-bg' ) );
-            } );
         }    
     } );
 
