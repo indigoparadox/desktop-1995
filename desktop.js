@@ -39,7 +39,7 @@ case 'enable':
             }},
             {'type': menu95Type.DIVIDER},
             {'caption': 'New', 'type': menu95Type.SUBMENU, 'items': [
-                {'caption': 'Folder', 'callback': function( m ) {
+                {'caption': 'Folder', 'icon': 'folder', 'callback': function( m ) {
                 }}
             ]},
             {'type': menu95Type.DIVIDER},
