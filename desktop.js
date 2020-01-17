@@ -94,23 +94,23 @@ case 'enable':
             'caller': '.button-start',
             'classes': ['logo-menu'],
             'items': [
-                {'caption': 'Programs', 'type': menu95Type.EVENTMENU,
+                {'caption': 'Programs', 'type': menu95Type.EVENTMENU, 'forceIcon': true,
                     'trigger': 'programs'},
-                {'caption': 'Documents', 'type': menu95Type.SUBMENU,
+                {'caption': 'Documents', 'type': menu95Type.SUBMENU, 'forceIcon': true,
                     'items': documentsMenu95},
-                {'caption': 'Settings', 'type': menu95Type.EVENTMENU,
+                {'caption': 'Settings', 'type': menu95Type.EVENTMENU, 'forceIcon': true,
                     'trigger': 'settings'},
-                {'caption': 'Find', 'callback': function( m ) {
+                {'caption': 'Find', 'forceIcon': true, 'callback': function( m ) {
                     
                 }},
-                {'caption': 'Help', 'callback': function( m ) {
+                {'caption': 'Help', 'forceIcon': true, 'callback': function( m ) {
                     
                 }},
-                {'caption': 'Run...', 'callback': function( m ) {
+                {'caption': 'Run...', 'forceIcon': true, 'callback': function( m ) {
                     
                 }},
                 {'type': menu95Type.DIVIDER},
-                {'caption': 'Shut Down...', 'callback': function( m ) {
+                {'caption': 'Shut Down...', 'forceIcon': true, 'callback': function( m ) {
                     
                 }}
             ]

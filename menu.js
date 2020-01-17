@@ -35,6 +35,7 @@ var settings = $.extend( {
     'iconImg16': null,
     'iconX16': null,
     'iconY16': null,
+    'forceIcon': false,
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -51,13 +52,13 @@ case 'item':
     } );
 
     var menuIcon = $('<span class="menu-icon"></span>');
-    console.log( settings );
     if( null != settings.iconImg16 ) {
         var bgURL = 'url(' + staticPath + settings.iconImg16 + 
             ') right ' + settings.iconX16.toString() + 'px bottom ' + settings.iconY16.toString() + 'px';
         menuIcon.css( 'background', bgURL );
     }
 
+    // Pass 1: Setup Elements
     switch( settings.type ) {
     case menu95Type.DIVIDER:
         menuElement = $('<hr />');
@@ -68,12 +69,32 @@ case 'item':
         break;
 
     case menu95Type.SUBMENU:
-        menuElement = $('<a href="#" class="menu-item"></span>' +
-            settings.caption + '</a>');
+    case menu95Type.EVENTMENU:
+    case menu95Type.ITEM:
+        menuElement = $('<a href="#" class="menu-item">' + settings.caption + '</a>');
         menuElement.addClass( 'menu-item-' + _htmlStrToClass( settings.caption ) );
-        menuElement.addClass( 'menu-parent' );
-        menuElement.prepend( menuIcon );
+        if( menu95Type.ITEM != settings.type ) {
+            // Must be a submenu.
+            menuElement.addClass( 'menu-parent' );
+        }
+        if( null != settings.iconImg16 || settings.forceIcon ) {
+            menuElement.addClass( 'menu-item-icon' );
+            menuElement.prepend( menuIcon );
+        }
+        break;
+    }
 
+    // Pass 2: Setup Callbacks
+    switch( settings.type ) {
+    case menu95Type.DIVIDER:
+        menuElement = $('<hr />');
+        break;
+
+    case menu95Type.GROUP:
+        menuElement = $('<div class="menu-group""></div>');
+        break;
+
+    case menu95Type.SUBMENU:
         menuElement.data( 'submenu-element', null );
 
         // The menu that we open below has this menu element as a caller.
@@ -107,12 +128,6 @@ case 'item':
         break;
 
     case menu95Type.EVENTMENU:
-        menuElement = $('<a href="#" class="menu-item"></span>' +
-            settings.caption + '</a>');
-        menuElement.addClass( 'menu-item-' + _htmlStrToClass( settings.caption ) );
-        menuElement.addClass( 'menu-parent' );
-        menuElement.prepend( menuIcon );
-
         menuElement.data( 'submenu-element', null );
         settings.caller = menuElement;
 
@@ -144,10 +159,6 @@ case 'item':
         break;
         
     case menu95Type.ITEM:
-        menuElement = $('<a href="#" class="menu-item">' + settings.caption + '</a>');
-        menuElement.addClass( 'menu-item-' + _htmlStrToClass( settings.caption ) );
-        menuElement.prepend( menuIcon );
-        
         menuElement.click( function( e ) {
             settings.data = settings.cbData;
             settings.callback( settings );

@@ -19,9 +19,13 @@
     line-height: 16px;
     text-decoration: none;
     display: block;
-    padding: 1px 18px;
+    padding: 1px 26px 1px 18px;
     margin: 0 1px;
     position: relative;
+}
+
+.menu-item-icon {
+    padding: 3px 14px;
 }
 
 .menu-icon {
@@ -55,11 +59,6 @@
 .menubar .menu-item {
     display: table;
     padding: 3px;
-}
-
-.menu-item-icon {
-    line-height: 20px;
-    padding: 3px 28px;
 }
 
 .menu-item:hover {
