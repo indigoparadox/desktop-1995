@@ -22,6 +22,14 @@ function _htmlEncode( input ) {
     } );
 }
 
+function _htmlEntities( text ) {
+    return String( text )
+        .replace( /&/g, '&amp;' )
+        .replace( /</g, '&lt;' )
+        .replace( />/g, '&gt;' )
+        .replace( /"/g, '&quot;' );
+}
+
 function _htmlCharSVG( u ) {
     var svg = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="header" viewBox="0 0 20 30">

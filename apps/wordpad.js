@@ -1,6 +1,8 @@
 
 function _wordpadFormatText( text ) {
 
+    text = _htmlEntities( text );
+
     var lines = text.split( /[\r\n]/g );
     var newText = '';
 
