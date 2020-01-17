@@ -229,10 +229,10 @@ case 'open':
     } );
 
     // Add the window icon.
-    if( null != settings.icoImg ) {
+    if( null != settings.icon ) {
         var icon = $('<div class="titlebar-icon icon-' + settings.icon + '-16"></div>');
         $(titlebar).prepend( icon );
-        
+
         icon.click( windowMenuHandler );
         icon.contextmenu( windowMenuHandler );
     } else {

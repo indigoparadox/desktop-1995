@@ -35,6 +35,7 @@ case 'open':
 
     settings.menu = null;
     settings.show = false;
+    settings.icon = 'txt';
 
     var winHandle = this.window95( 'open', settings );
     
