@@ -32,10 +32,8 @@ var settings = $.extend( {
     'path': null != options && null != options.caption ? options.caption : '',
     'callback': null,
     'cbData': null,
-    'iconImg16': null,
-    'iconX16': null,
-    'iconY16': null,
-    'forceIcon': false,
+    'icon': null,
+    'large': false,
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -52,11 +50,6 @@ case 'item':
     } );
 
     var menuIcon = $('<span class="menu-icon"></span>');
-    if( null != settings.iconImg16 ) {
-        var bgURL = 'url(' + staticPath + settings.iconImg16 + 
-            ') right ' + settings.iconX16.toString() + 'px bottom ' + settings.iconY16.toString() + 'px';
-        menuIcon.css( 'background', bgURL );
-    }
 
     // Pass 1: Setup Elements
     switch( settings.type ) {
@@ -77,8 +70,9 @@ case 'item':
             // Must be a submenu.
             menuElement.addClass( 'menu-parent' );
         }
-        if( null != settings.iconImg16 || settings.forceIcon ) {
+        if( null != settings.icon ) {
             menuElement.addClass( 'menu-item-icon' );
+            menuIcon.addClass( 'icon-' + settings.icon + (settings.large ? '-32' : '-16') );
             menuElement.prepend( menuIcon );
         }
         break;

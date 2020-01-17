@@ -6,9 +6,6 @@ var settings = $.extend( {
     'caption': 'Prompt',
     'id': null,
     'resizable': true,
-    'icoImg': null,
-    'icoX': 0,
-    'icoY': 0,
     'menu': null,
     'promptText': 'C:\\>',
     'x': 10,
@@ -34,6 +31,8 @@ case 'enter':
     } );
 
 case 'open':
+
+    settings.icon = 'prompt';
 
     var winHandle = this.window95( 'open', settings );
 

@@ -94,23 +94,23 @@ case 'enable':
             'caller': '.button-start',
             'classes': ['logo-menu'],
             'items': [
-                {'caption': 'Programs', 'type': menu95Type.EVENTMENU, 'forceIcon': true,
+                {'caption': 'Programs', 'type': menu95Type.EVENTMENU, 'icon': 'programs', 'large': true,
                     'trigger': 'programs'},
-                {'caption': 'Documents', 'type': menu95Type.SUBMENU, 'forceIcon': true,
+                {'caption': 'Documents', 'type': menu95Type.SUBMENU, 'icon': 'documents', 'large': true,
                     'items': documentsMenu95},
-                {'caption': 'Settings', 'type': menu95Type.EVENTMENU, 'forceIcon': true,
+                {'caption': 'Settings', 'type': menu95Type.EVENTMENU, 'icon': 'settings', 'large': true,
                     'trigger': 'settings'},
-                {'caption': 'Find', 'forceIcon': true, 'callback': function( m ) {
+                {'caption': 'Find', 'icon': 'find', 'large': true, 'callback': function( m ) {
                     
                 }},
-                {'caption': 'Help', 'forceIcon': true, 'callback': function( m ) {
+                {'caption': 'Help', 'icon': 'help', 'large': true, 'callback': function( m ) {
                     
                 }},
-                {'caption': 'Run...', 'forceIcon': true, 'callback': function( m ) {
+                {'caption': 'Run...', 'icon': 'run', 'large': true, 'callback': function( m ) {
                     
                 }},
                 {'type': menu95Type.DIVIDER},
-                {'caption': 'Shut Down...', 'forceIcon': true, 'callback': function( m ) {
+                {'caption': 'Shut Down...', 'icon': 'shutdown', 'large': true, 'callback': function( m ) {
                     
                 }}
             ]

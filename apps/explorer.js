@@ -112,6 +112,7 @@ case 'open':
     ]};
     settings.show = false;
     settings.resizable = true;
+    settings.icon = 'folder';
 
     var winHandle = $('#desktop').window95( 'open', settings );
 

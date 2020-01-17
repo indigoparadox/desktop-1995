@@ -6,9 +6,6 @@
         'caption': 'Video Player',
         'id': null,
         'resizable': true,
-        'icoImg': null,
-        'icoX': 0,
-        'icoY': 0,
         'x': 10,
         'y': 10,
         'w': 480,
@@ -23,6 +20,7 @@ case 'open':
     settings.menu = null;
     settings.show = false;
     settings.resizable = true;
+    settings.icon = 'avi';
 
     var winHandle = this.window95( 'open', settings );
     

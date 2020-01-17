@@ -6,9 +6,6 @@ var settings = $.extend( {
     'caption': 'CD Player',
     'id': null,
     'resizable': true,
-    'icoImg': null,
-    'icoX': 0,
-    'icoY': 0,
     'x': 10,
     'y': 10,
     'w': 304,
@@ -46,6 +43,7 @@ case 'open':
     settings.menu = null;
     settings.show = false;
     settings.resizable = false;
+    settings.icon = 'cdplayer';
 
     winHandle = this.window95( 'open', settings );
 

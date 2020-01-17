@@ -71,11 +71,6 @@ var sizeList = [
 var settings = $.extend( {
     'caption': 'Wordpad',
     'id': null,
-    'resizable': true,
-    'icoImg': null,
-    'icoX': 0,
-    'icoY': 0,
-    'menu': null,
     'x': 10,
     'y': 10,
     'w': 480,
@@ -136,6 +131,8 @@ case 'open':
 
     settings.menu = null;
     settings.show = false;
+    settings.icon = 'rtf';
+    settings.resizable = true;
 
     // We specifically do not catch the possible exceptions here.
     // Let the caller handle them.
@@ -200,45 +197,45 @@ case 'open':
     sb.children( '.statusbar' ).text( 'For Help, press F1' );
 
     var tbFile = winHandle.control95( 'toolbar', 'create', {'classes': ['toolbar-file']} );
-    var btnNew = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.new, 'callback':
+    var btnNew = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'new', 'callback':
         function( e ) { winHandle.wordpad95( 'newfile' ); } } );
 
-    var btnOpen = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.open, 'callback':
+    var btnOpen = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'open', 'callback':
     function( e ) {  } } );
 
-    var btnSave = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.save, 'callback':
+    var btnSave = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'save', 'callback':
     function( e ) {  } } );
 
     tbFile.control95( 'toolbarDivider', 'create' );
 
-    var btnPrint = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.print, 'callback':
+    var btnPrint = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'print', 'callback':
     function( e ) {  } } );
 
-    var btnPreview = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.preview, 'callback':
+    var btnPreview = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'preview', 'callback':
     function( e ) {  } } );
 
     tbFile.control95( 'toolbarDivider', 'create' );
     
-    var btnSearch = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.search, 'callback':
+    var btnSearch = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'search', 'callback':
     function( e ) {  } } );
 
     tbFile.control95( 'toolbarDivider', 'create' );
 
-    var btnCut = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.cut, 'callback':
+    var btnCut = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'cut', 'callback':
     function( e ) {  } } );
 
-    var btnCopy = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.copy, 'callback':
+    var btnCopy = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'copy', 'callback':
     function( e ) {  } } );
 
-    var btnPaste = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.paste, 'callback':
+    var btnPaste = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'paste', 'callback':
     function( e ) {  } } );
 
-    var btnUndo = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.undo, 'callback':
+    var btnUndo = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'undo', 'callback':
     function( e ) {  } } );
 
     tbFile.control95( 'toolbarDivider', 'create' );
 
-    var btnDateTime = tbFile.control95( 'toolbarButton', 'create', { 'icon': settings.buttonImgs.dateTime, 'callback':
+    var btnDateTime = tbFile.control95( 'toolbarButton', 'create', { 'icon': 'date-time', 'callback':
     function( e ) {
         
     } } );

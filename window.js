@@ -10,9 +10,6 @@ var settings = $.extend( {
     'caption': '',
     'id': null,
     'resizable': false,
-    'icoImg': null,
-    'icoX': 0,
-    'icoY': 0,
     'menu': null,
     'x': 10,
     'y': 10,
@@ -233,11 +230,9 @@ case 'open':
 
     // Add the window icon.
     if( null != settings.icoImg ) {
-        var icon = $('<div class="titlebar-icon"></div>');
+        var icon = $('<div class="titlebar-icon icon-' + settings.icon + '-16"></div>');
         $(titlebar).prepend( icon );
-        icon.css( 'background', 'url(' + staticPath + settings.icoImg + 
-            ') right ' + settings.icoX.toString() + 'px bottom ' + settings.icoY.toString() + 'px' );
-
+        
         icon.click( windowMenuHandler );
         icon.contextmenu( windowMenuHandler );
     } else {
@@ -279,9 +274,7 @@ case 'open':
     } );
 
     if( settings.taskBar ) {
-        var taskIcon = $('<span class="task-icon"></span>');
-        taskIcon.css( 'background', 'url(' + staticPath + settings.icoImg + 
-        ') right ' + settings.icoX.toString() + 'px bottom ' + settings.icoY.toString() + 'px' );
+        var taskIcon = $('<span class="task-icon icon-' + settings.icon + '-16"></span>');
 
         var taskButton = $('<button class="button-task" id="button-task-' + settings.id + '">' + settings.caption + '</button>' );
         taskButton.prepend( taskIcon );

@@ -56,6 +56,7 @@ case 'open':
 
     settings.menu = null;
     settings.show = false;
+    settings.icon = 'browser';
 
     // Need this for the new window closure.
     var container = this;
@@ -149,7 +150,7 @@ case 'open':
     winHandle.control95( 'toolbar', 'create' );
     
     var btnOpen = winHandle.control95( 'toolbarButton', 'create', {
-        'icon': settings.buttonImgs.open,
+        'icon': 'open',
         'classes': ['button-browser-open'],
         'callback': function( e ) {
             
@@ -157,7 +158,7 @@ case 'open':
     } );
     
     var btnHome = winHandle.control95( 'toolbarButton', 'create', {
-        'icon': settings.buttonImgs.home,
+        'icon': 'home',
         'classes': ['button-browser-home'],
         'callback': function( e ) {
             winHandle.browser95( 'go', {
@@ -201,7 +202,7 @@ case 'open':
     winHandle.control95( 'toolbarDivider', 'create' );
 
     var btnStop = winHandle.control95( 'toolbarButton', 'create', {
-        'icon': settings.buttonImgs.stop,
+        'icon': 'stop',
         'classes': ['button-browser-stop'],
         'callback': function( e ) {
             
@@ -210,7 +211,7 @@ case 'open':
     btnStop.attr( 'disabled', true );
 
     var btnRefresh = winHandle.control95( 'toolbarButton', 'create', {
-        'icon': settings.buttonImgs.refresh,
+        'icon': 'refresh',
         'classes': ['button-browser-refresh'],
         'callback': function( e ) {
             var history = browser.data( 'history' );
