@@ -40,6 +40,20 @@ case 'open':
     var container = $('<div class="window-folder-container container"></div>');
     winHandle.find( '.window-form' ).append( container );
 
+    // Mousedown/Mousemove are handled by desktop events.
+
+    container.mouseup( function( e ) {
+        $(e.target).desktop95( 'completerect' );
+    } );
+
+    container.mouseleave( function( e ) {
+        $(e.target).desktop95( 'completerect' );
+    } );
+
+    container.on( 'selectstart', function( e ) {
+        return false;
+    } );
+
     var trayObjects = $('<div class="tray tray-objects"></div>');
     winHandle.children( '.statusbar' ).append( trayObjects );
 

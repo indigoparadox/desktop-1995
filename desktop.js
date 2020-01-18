@@ -6,7 +6,6 @@ var documentsMenu95 = [];
 $.fn.desktop95 = function( action, options ) {
 
 var settings = $.extend( {
-    'caption': 'Explorer',
     'id': null,
     'x': 10,
     'y': 10,
@@ -48,6 +47,10 @@ case 'icon':
     } );
     iconWrapper.on( 'dblclick', settings.cbData, settings.callback );
 
+    iconWrapper.mousemove( function( e ) {
+        $(e.target).parents( '.container' ).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
+    } );
+
     return iconWrapper;
 
 case 'select':
@@ -65,15 +68,90 @@ case 'select':
         }    
     } );
 
+case 'rerect':
+    var leftXReal = Math.min( this.data( 'origin-x' ), settings.x );
+    var rightXReal = Math.max( this.data( 'origin-x' ), settings.x );
+    var topYReal = Math.min( this.data( 'origin-y' ), settings.y );
+    var bottomYReal = Math.max( this.data( 'origin-y' ), settings.y );
+    this.css( 'left', leftXReal.toString() + 'px' );
+    this.css( 'top', topYReal.toString() + 'px' );
+    this.css( 'width', (rightXReal - leftXReal).toString() + 'px' );
+    this.css( 'height', (bottomYReal - topYReal).toString() + 'px' );
+    return this;
+
+case 'completerect':
+    var selectRect = this.data( 'select-rect' );
+    if( null == selectRect && this.hasClass( 'select-rect' ) ) {
+        selectRect = this;
+    }
+    if( null != selectRect ) {
+        this.data( 'select-rect', null );
+        selectRect.remove();
+    }
+    return selectRect;
+
+case 'moverect':
+    // Grab the select-rect if the mouse is over the desktop.
+    var selectRect = this.data( 'select-rect' );
+    var x = settings.x - this.offset().left;
+    var y = settings.y - this.offset().top;
+    
+    if( null == selectRect && this.hasClass( 'select-rect' ) ) {
+        // Grab the select-rect if the mouse is over it proper.
+        selectRect = this;
+        x = settings.x - this.parent().offset().left;
+        y = settings.y - this.parent().offset().top;
+    }
+    
+    if( null != selectRect ) {
+        selectRect.desktop95( 'rerect', {'x': x, 'y': y} );
+    }
+    return selectRect;
+
+case 'selectrect':
+    if( this.hasClass( 'container' ) ) {
+        var selectRect = $('<div class="select-rect"></div>');
+        this.data( 'select-rect', selectRect );
+        this.append( selectRect );
+
+        var x = settings.x - this.offset().left;
+        var y = settings.y - this.offset().top;
+
+        selectRect.data( 'origin-x', x );
+        selectRect.data( 'origin-y', y );
+        selectRect.desktop95( 'rerect', { 'x': x, 'y': y } );
+    }
+    return selectRect;
+
 case 'enable':
 
     var desktopElement = this;
 
-    this.mousedown( function( e ) {
+    this.click( function( e ) {
         if( $(e.target).hasClass( 'container' ) ) {
-            $(e.target).desktop95( 'select' );
+            $(e.target).closest( '.container' ).desktop95( 'select' );
         }
         $(e.target).menu95( 'close' );
+    } );
+
+    this.mousedown( function( e ) {
+        $(e.target).desktop95( 'selectrect', { 'x': e.pageX, 'y': e.pageY } );
+    } );
+
+    this.mousemove( function( e ) {
+        $(e.target).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
+    } );
+
+    this.mouseup( function( e ) {
+        $(e.target).desktop95( 'completerect' );
+    } );
+
+    this.mouseleave( function( e ) {
+        $(e.target).desktop95( 'completerect' );
+    } );
+
+    this.on( 'selectstart', function( e ) {
+        return false;
     } );
 
     var desktopMenu = {

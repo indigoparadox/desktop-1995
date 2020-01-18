@@ -77,6 +77,11 @@ button.menu-caller-active,
     border-right: 1px solid #bfbfbf;
 }
 
+.select-rect {
+    border: 1px dotted red;
+    position: absolute;
+}
+
 /* Windows */
 
 .window {
