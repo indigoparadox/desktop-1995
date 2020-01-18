@@ -1,6 +1,6 @@
 
 (function( $ ) {
-$.fn.prompt95 = function( action, options ) {
+$.fn.command95 = function( action, options ) {
 
 var settings = $.extend( {
     'caption': 'Prompt',
@@ -80,7 +80,7 @@ case 'open':
                 .children( '.input-line' )
                 .remove();
             var lineText = line.text();
-            winHandle.prompt95( 'enter', { 'text': prevPrompt.text() + line.text() } );
+            winHandle.command95( 'enter', { 'text': prevPrompt.text() + line.text() } );
 
             /* Process line input. */
             if( null != settings.lineHandler ) {

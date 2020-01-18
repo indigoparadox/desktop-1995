@@ -32,7 +32,8 @@ case 'go':
         var newLoc = 'http://web.archive.org/web/' + settings.waybackDate + '/' + settings.url;
         $(winHandle).find( '.input-url' ).val( settings.url );
         $(winHandle).find( '.tray-status-text' ).text( 'Opening ' + settings.url + '...' );
-        
+        //$(winHandle).css( 'cursor', 'progress' );
+
         if( settings.history ) {
             if( null == $(winHandle).find( '.browser-pane' ).data( 'history' ) ) {
                 $(winHandle).find( '.browser-pane' ).data( 'history', [] );

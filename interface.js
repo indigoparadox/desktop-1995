@@ -13,7 +13,7 @@ function _browserFavoritesMenuAdd( winHandle, menu, favorite ) {
 }
 
 function _htmlStrToClass( input ) {
-    return input.replace( /[ "\'!@#:$%\^&\*\(\)\.,]/g, '' ).replace( / /g, '-' ).toLowerCase();
+    return input.replace( /[ "\'!@#:$%\^&\*\(\)\.,\/]/g, '-' ).replace( / /g, '-' ).toLowerCase();
 }
 
 function _htmlEncode( input ) {

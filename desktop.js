@@ -71,7 +71,7 @@ case 'enable':
 
     this.mousedown( function( e ) {
         if( $(e.target).hasClass( 'container' ) ) {
-            $(e.target).explorer95( 'select' );
+            $(e.target).desktop95( 'select' );
         }
         $(e.target).menu95( 'close' );
     } );
