@@ -3,7 +3,17 @@ var documentsMenu95 = [];
 
 (function( $ ) {
 
-$.fn.desktop95 = function( action ) {
+$.fn.desktop95 = function( action, options ) {
+
+var settings = $.extend( {
+    'caption': 'Explorer',
+    'id': null,
+    'x': 10,
+    'y': 10,
+    'callback': null,
+    'cbData': null
+}, options );
+
 switch( action.toLowerCase() ) {
 case 'propsmonitor':
     var monitor = $('<div class="props-monitor-wrapper"></div>');
@@ -16,6 +26,44 @@ case 'propsmonitor':
     monitor.append( '<div class="props-monitor props-monitor-stand-mid"></div>' );
     monitor.append( '<div class="props-monitor props-monitor-stand-lower"></div>' );
     return monitor;
+
+case 'icon':
+
+    var imgTag = $('<div class="desktop-icon-img icon-' + settings.icon + '-32"></div>');
+    var iconWrapper = $('<div class="desktop-icon"></div>');
+    iconWrapper.append( imgTag );
+    
+    var iconText = $('<div class="desktop-icon-text-center"><div class="desktop-icon-text">' + settings.caption + '</div></div>');
+    iconWrapper.append( iconText );
+
+    this.append( iconWrapper );
+    iconWrapper.draggable( {'handle': '.desktop-icon-img', 'containment': this } );
+
+    iconWrapper.css( 'left', settings.x.toString() + 'px' );
+    iconWrapper.css( 'top', settings.y.toString() + 'px' );
+
+    /* Setup action handlers. */
+    iconWrapper.mousedown( function() {
+        $(this).desktop95( 'select' );
+    } );
+    iconWrapper.on( 'dblclick', settings.cbData, settings.callback );
+
+    return iconWrapper;
+
+case 'select':
+
+    return this.each( function( idx, element ) {
+        if( $(element).hasClass( 'desktop-icon' ) ) {
+            // A specific icon was provided. Deselect all peer icons.
+            $(element).parent().children('.desktop-icon').removeClass( 'desktop-icon-selected' );
+
+            // Select this icon.
+            $(element).addClass( 'desktop-icon-selected' );
+        } else {
+            // A container was provided. Deselect all icons inside.
+            $(element).children('.desktop-icon').removeClass( 'desktop-icon-selected' );
+        }    
+    } );
 
 case 'enable':
 
