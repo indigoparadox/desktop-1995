@@ -151,7 +151,14 @@ case 'enable':
     } );
 
     this.on( 'selectstart', function( e ) {
-        return false;
+        if( 
+            $(e.target).hasClass( 'container' ) ||
+            $(e.target).hasClass( 'titlebar-text' ) ||
+            $(e.target).hasClass( 'menuitem' ) ||
+            $(e.target).hasClass( 'desktop-icon-text' )
+        ) {
+            return false;
+        }
     } );
 
     var desktopMenu = {
