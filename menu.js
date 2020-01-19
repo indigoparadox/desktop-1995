@@ -155,7 +155,7 @@ case 'item':
     case menu95Type.ITEM:
         menuElement.click( function( e ) {
             settings.data = settings.cbData;
-            settings.callback( settings );
+            settings.callback( settings.data );
             $(settings.container).menu95( 'close' );
             e.preventDefault();
         } );

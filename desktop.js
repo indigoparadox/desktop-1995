@@ -48,7 +48,9 @@ case 'icon':
     iconWrapper.mousedown( function() {
         $(this).desktop95( 'select' );
     } );
-    iconWrapper.on( 'dblclick', settings.cbData, settings.callback );
+    iconWrapper.on( 'dblclick', function() {
+        settings.callback( settings.cbData )
+    } );
 
     iconWrapper.mousemove( function( e ) {
         $(e.target).parents( '.container' ).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
