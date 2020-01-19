@@ -1,6 +1,10 @@
 
 const window95Exceptions = {
-    'WINDOW_EXISTS': 'window_exists'
+    'WINDOW_EXISTS': 'window_exists',
+};
+
+const window95Buttons = {
+    'OK': 'ok',
 };
 
 (function( $ ) {
@@ -11,14 +15,16 @@ var settings = $.extend( {
     'id': null,
     'resizable': false,
     'menu': null,
+    'message': '',
     'x': 10,
     'y': 10,
-    'w': 300,
-    'h': 200,
+    'w': null,
+    'h': null,
     'show': true,
     'taskBar': true,
     'min': true,
-    'max': true
+    'max': true,
+    'buttons': {'OK': window95Buttons.OK},
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -137,6 +143,48 @@ case 'restore':
         }
     } );
 
+case 'dialog':
+
+    settings.menu = null;
+    settings.show = false;
+    settings.resizable = false;
+    settings.x = null;
+    settings.y = null;
+
+    // We specifically do not catch the possible exceptions here.
+    // Let the caller handle them.
+    var dlgHandle = this.window95( 'open', settings );
+
+    dlgHandle.addClass( 'window-dialog' );
+
+    var dlgDisplay = $('<div class="dialog-display"></div>');
+    dlgHandle.children( '.window-form' ).append( dlgDisplay );
+
+    var dlgIcon = $('<div class="dialog-icon"></div>');
+    dlgIcon.addClass( 'icon-' + settings.icon + '-32' );
+    dlgDisplay.append( dlgIcon );
+
+    var dlgMessage = $('<div class="dialog-message">' + settings.message + '</div>');
+    dlgDisplay.append( dlgMessage );
+
+    var dlgButtons = $('<div class="dialog-buttons"></div>');
+    dlgHandle.children( '.window-form' ).append( dlgButtons );
+
+    for( var btn in settings.buttons ) {
+        var btnElement = $('<button class="button-' + settings.buttons[btn] + '">' + btn + '</button>');
+        dlgButtons.append( btnElement );
+
+        btnElement.click( function( e ) {
+            e.preventDefault();
+
+            dlgHandle.trigger( 'button-' + settings.buttons[btn] );
+        } );
+    }
+
+    dlgHandle.removeClass( 'window-hidden' );
+
+    return dlgHandle;
+
 case 'close':
     return this.each( function( idx, winHandle ) {
         try {
@@ -176,8 +224,12 @@ case 'open':
         winHandle.addClass( 'window-resizable' );
     }
 
-    winHandle.css( 'width', settings.w.toString() + 'px' );
-    winHandle.css( 'height', settings.h.toString() + 'px' );
+    if( null != settings.w ) {
+        winHandle.css( 'width', settings.w.toString() + 'px' );
+    }
+    if( null != settings.h ) {
+        winHandle.css( 'height', settings.h.toString() + 'px' );
+    }
 
     if( null != settings.menu ) {
         settings.menu.type = menu95Type.MENUBAR;

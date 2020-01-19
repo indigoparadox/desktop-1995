@@ -207,6 +207,34 @@
     height: 100%;
 }
 
+.window-dialog .window-form {
+    margin: 24px;
+    position: relative;
+}
+
+.dialog-display {
+    display: flex;
+}
+
+.dialog-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.dialog-message {
+    flex-grow: 1;
+    margin: 8px 16px;
+}
+
+.dialog-buttons {
+    display: table;
+    margin: 8px auto;
+}
+
+.dialog-buttons button {
+    padding: 4px 16px;
+}
+
 /* Window: Notepad */
 
 .window-notepad .input-textarea {
