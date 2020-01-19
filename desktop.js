@@ -207,6 +207,7 @@ case 'enable':
             {'type': menu95Type.DIVIDER},
             {'caption': 'New', 'type': menu95Type.SUBMENU, 'items': [
                 {'caption': 'Folder', 'icon': 'folder', 'callback': function( m ) {
+                    desktopElement.trigger( 'new-folder' );
                 }}
             ]},
             {'type': menu95Type.DIVIDER},
