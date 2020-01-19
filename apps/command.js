@@ -19,6 +19,14 @@ var settings = $.extend( {
 
 switch( action.toLowerCase() ) {
 
+case 'setprompt':
+    this
+        .children( '.window-form' )
+        .children( '.input-prompt' )
+        .children( '.input-line-caret' )
+        .data( 'prompt-text', settings.promptText );
+    return this;
+
 case 'enter':
     return this.each( function( idx, winHandle ) {
         // Put the old line in the backbuffer.
