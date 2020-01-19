@@ -102,6 +102,12 @@ case 'open':
     winHandle.addClass( 'window-scroll-contents' );
     winHandle.removeClass( 'window-hidden' );
 
+    if( null != settings.url ) {
+        winHandle.notepad95( 'readurl', settings );
+    } else if( null != settings.contents ) {
+        winHandle.notepad95( 'readcontents', settings );
+    }
+
     winHandle.window95( 'activate' );
 
     return winHandle;

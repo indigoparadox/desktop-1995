@@ -295,6 +295,8 @@ case 'open':
 
     if( null != settings.url ) {
         winHandle.wordpad95( 'readurl', settings );
+    } else if( null != settings.contents ) {
+        winHandle.wordpad95( 'readcontents', settings );
     }
 
     winHandle.window95( 'activate' );
