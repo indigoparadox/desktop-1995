@@ -1,5 +1,6 @@
 
 var documentsMenu95 = [];
+var desktopMouseDown95 = false;
 
 (function( $ ) {
 
@@ -9,8 +10,10 @@ var settings = $.extend( {
     'id': null,
     'x': 10,
     'y': 10,
+    'region': {'start': {'x': 0, 'y': 0}, 'end': {'x': 0, 'y': 0}},
     'callback': null,
-    'cbData': null
+    'cbData': null,
+    'deselect': true, // Deselect items not being selected.
 }, options );
 
 switch( action.toLowerCase() ) {
@@ -57,14 +60,30 @@ case 'select':
 
     return this.each( function( idx, element ) {
         if( $(element).hasClass( 'desktop-icon' ) ) {
-            // A specific icon was provided. Deselect all peer icons.
-            $(element).parent().children('.desktop-icon').removeClass( 'desktop-icon-selected' );
+            if( settings.deselect ) {
+                // A specific icon was provided. Deselect all peer icons.
+                $(element).parent().children('.desktop-icon').removeClass( 'desktop-icon-selected' );
+            }
 
             // Select this icon.
             $(element).addClass( 'desktop-icon-selected' );
         } else {
-            // A container was provided. Deselect all icons inside.
-            $(element).children('.desktop-icon').removeClass( 'desktop-icon-selected' );
+            if( settings.deselect ) {
+                // A container was provided. Deselect all icons inside.
+                $(element).children('.desktop-icon').removeClass( 'desktop-icon-selected' );
+            }
+
+            // Select icons in the provided region.
+            $(element).children( '.desktop-icon' ).each( function() {
+                if( 
+                    parseInt( $(this).css( 'left' ) ) > settings.region.start.x &&
+                    parseInt( $(this).css( 'left' ) ) + parseInt( $(this).css( 'width' ) ) < settings.region.end.x &&
+                    parseInt( $(this).css( 'top' ) ) > settings.region.start.y &&
+                    parseInt( $(this).css( 'top' ) ) + parseInt( $(this).css( 'height' ) ) < settings.region.end.y
+                ) {
+                    $(this).desktop95( 'select', {'deselect': false} );
+                }
+            } );
         }    
     } );
 
@@ -102,8 +121,17 @@ case 'moverect':
         x = settings.x - this.parent().offset().left;
         y = settings.y - this.parent().offset().top;
     }
-    
+
     if( null != selectRect ) {
+        // Select icons in the selected region.
+        this.desktop95( 'select', {'region': {
+            'start': {'x': parseInt( selectRect.css( 'left' ) ),
+                'y': parseInt( selectRect.css( 'top' ) )},
+            'end': {'x': parseInt( selectRect.css( 'left' ) ) + parseInt( selectRect.css( 'width' ) ),
+                'y': parseInt( selectRect.css( 'top' ) ) + parseInt( selectRect.css( 'height' ) )},
+        } } );
+    
+        // Redraw select-rect.
         selectRect.desktop95( 'rerect', {'x': x, 'y': y} );
     }
     return selectRect;
@@ -127,15 +155,17 @@ case 'enable':
 
     var desktopElement = this;
 
-    this.click( function( e ) {
+    this.mousedown( function( e ) {
+        desktopMouseDown95 = true;
         if( $(e.target).hasClass( 'container' ) ) {
             $(e.target).closest( '.container' ).desktop95( 'select' );
         }
         $(e.target).menu95( 'close' );
-    } );
-
-    this.mousedown( function( e ) {
-        $(e.target).desktop95( 'selectrect', { 'x': e.pageX, 'y': e.pageY } );
+        setTimeout( function() {
+            if( desktopMouseDown95 ) {
+                $(e.target).desktop95( 'selectrect', { 'x': e.pageX, 'y': e.pageY } );
+            }
+        }, 250 );
     } );
 
     this.mousemove( function( e ) {
@@ -143,19 +173,21 @@ case 'enable':
     } );
 
     this.mouseup( function( e ) {
+        desktopMouseDown95 = false;
         $(e.target).desktop95( 'completerect' );
     } );
 
     this.mouseleave( function( e ) {
+        desktopMouseDown95 = false;
         $(e.target).desktop95( 'completerect' );
     } );
 
+    // Only allow text selects in text elements.
     this.on( 'selectstart', function( e ) {
         if( 
-            $(e.target).hasClass( 'container' ) ||
-            $(e.target).hasClass( 'titlebar-text' ) ||
-            $(e.target).hasClass( 'menuitem' ) ||
-            $(e.target).hasClass( 'desktop-icon-text' )
+            !$(e.target).hasClass( 'input-rtf' ) &&
+            !$(e.target).hasClass( 'input-text' ) &&
+            !$(e.target).hasClass( 'input-textarea' )
         ) {
             return false;
         }
