@@ -251,9 +251,23 @@ button.menu-caller-active,
 .taskbar .tasks button {
     text-align: left;
 }
+
 .taskbar .tasks .task-icon {
     display: inline-block;
     margin-right: 4px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.taskbar .notification-area {
+    line-height: 16px;
+    display: inline-block;
+}
+
+.taskbar .tray-icon {
+    display: inline-block;
+    margin-right: 2px;
     width: 16px;
     height: 16px;
     vertical-align: middle;

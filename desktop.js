@@ -28,7 +28,7 @@ case 'icon':
     iconWrapper.append( iconText );
 
     this.append( iconWrapper );
-    iconWrapper.draggable( {'handle': '.desktop-icon-img', 'containment': this } );
+    //iconWrapper.draggable( {'handle': '.desktop-icon-img', 'containment': this } );
 
     iconWrapper.css( 'left', settings.x.toString() + 'px' );
     iconWrapper.css( 'top', settings.y.toString() + 'px' );
@@ -316,13 +316,17 @@ switch( action.toLowerCase() ) {
 
 case 'enable':
     return this.each( function() {
-        $(this).systray95( 'update' );
+        if( 0 < $(this).children( '.systray-clock' ).length ) {
+            return;
+        }
+        $(this).append( '<span class="systray-clock"></span>' );
+        $(this).children( '.systray-clock' ).systray95( 'updateClock' );
         setInterval( function() { 
-            $(this).systray95( 'update' );
+            $(this).children( 'systray-clock' ).systray95( 'updateClock' );
         }, 1000 );
     } );
 
-case 'update':
+case 'updateclock':
     var now = new Date();
     
     var minuteString = now.getMinutes();
