@@ -12,6 +12,7 @@ var settings = $.extend( {
     'y': 10,
     'region': {'start': {'x': 0, 'y': 0}, 'end': {'x': 0, 'y': 0}},
     'callback': null,
+    'context': null,
     'cbData': null,
     'deselect': true, // Deselect items not being selected.
 }, options );
@@ -55,6 +56,25 @@ case 'icon':
     iconWrapper.mousemove( function( e ) {
         $(e.target).parents( '.container' ).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
     } );
+
+    if( null == settings.context ) {
+        settings.context = {
+            'items': [
+                {'caption': 'Properties', 'callback': function( m, d ) {
+                    console.log( m );
+                    console.log( d );
+                }}
+            ]
+        };
+    }
+
+    if( !('cbData' in settings.context) ) {
+        settings.context.cbData = iconWrapper;
+    }
+
+    imgTag.menu95( 'context', {
+        'menu': settings.context,
+        'context': _htmlStrToClass( settings.target )} );
 
     return iconWrapper;
 
@@ -238,20 +258,8 @@ case 'enable':
         ]
     };
 
-    this.contextmenu( function( e ) {
-        e.preventDefault();
-
-        if( 
-            $(e.target).parents().hasClass( 'menu' ) ||
-            $(e.target).parents().hasClass( 'window' )
-        ) {
-            // Don't call menus on menus.
-            return;
-        }
-
-        desktopMenu.location = {'x': e.pageX, 'y': e.pageY};
-        $(this).menu95( 'open', desktopMenu );
-    } );
+    
+    this.menu95( 'context', {'menu': desktopMenu, 'context': 'desktop'} );
 
     return this;
 } };

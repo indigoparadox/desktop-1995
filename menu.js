@@ -19,6 +19,8 @@ const menu95Type = {
 $.fn.menu95 = function( action, options ) {
 
 var settings = $.extend( {
+    // We don't list the 'context' parm here because we want to fail fast if we
+    // forget to specify it in a call.
     'caption': '',
     'id': null,
     'items': [],
@@ -26,7 +28,7 @@ var settings = $.extend( {
     'show': true,
     'caller': null,
     'location': menu95Location.RIGHT,
-    'container': this,
+    'container': $('#desktop'),
     'type': menu95Type.ITEM,
     'root': null,
     'path': null != options && null != options.caption ? options.caption : '',
@@ -173,6 +175,28 @@ case 'item':
 
     return menuElement;
 
+case 'context':
+    this.addClass( 'context-id-' + settings.context );
+    this.click( function( e ) {
+        if( 0 <= $(e.target).parents( '.menu' ).length ) {
+            // Don't close all menus if this is a menu, or else this might get
+            // closed too depending on the ordering.
+            return;
+        }
+        settings.container.menu95( 'close' );
+    } );
+    return this.contextmenu( function( e ) {
+        e.preventDefault();
+
+        if( !$(e.target).hasClass( 'context-id-' + settings.context ) ) {
+            // Only call the menu on its specified context ID.
+            return;
+        }
+
+        settings.menu.location = {'x': e.pageX, 'y': e.pageY};
+        $(this).menu95( 'open', settings.menu );
+    } );
+
 case 'close':
     return this.each( function() {
         if( $(this).hasClass( 'menu' ) ) {
@@ -194,6 +218,11 @@ case 'close':
     } );
 
 case 'open':
+
+    // If this is a root of the menu tree, close all other menus.
+    if( null == settings.caller ) {
+        settings.container.menu95( 'close' );
+    }
 
     var menu = $('<div></div>');
     if( menu95Type.MENUBAR == settings.type ) {
@@ -235,6 +264,9 @@ case 'open':
         settings.items[i].caller = settings.caller;
         settings.items[i].root = settings.root;
         settings.items[i].path = settings.path + '/' + settings.items[i].caption;
+        if( null == settings.items[i].cbData ) {
+            settings.items[i].cbData = settings.cbData;
+        }
         menuElement = menu.menu95( 'item', settings.items[i] );
     }
     
