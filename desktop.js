@@ -18,18 +18,6 @@ var settings = $.extend( {
 }, options );
 
 switch( action.toLowerCase() ) {
-case 'propsmonitor':
-    var monitor = $('<div class="props-monitor-wrapper"></div>');
-    var monitorOuter = $('<div class="props-monitor props-monitor-outer"></div>');
-    monitor.append( monitorOuter );
-    var monitorInner = $('<div class="props-monitor props-monitor-inner"></div>');
-    monitorOuter.append( monitorInner );
-
-    monitor.append( '<div class="props-monitor props-monitor-stand-upper"></div>' );
-    monitor.append( '<div class="props-monitor props-monitor-stand-mid"></div>' );
-    monitor.append( '<div class="props-monitor props-monitor-stand-lower"></div>' );
-    return monitor;
-
 case 'icon':
 
     var imgTag = $('<div class="desktop-icon-img icon-' + settings.icon + '-32"></div>');
@@ -61,8 +49,7 @@ case 'icon':
         settings.context = {
             'items': [
                 {'caption': 'Properties', 'callback': function( m, d ) {
-                    console.log( m );
-                    console.log( d );
+                    iconWrapper.trigger( 'properties' );
                 }}
             ]
         };
@@ -253,7 +240,7 @@ case 'enable':
             ]},
             {'type': menu95Type.DIVIDER},
             {'caption': 'Properties', 'callback': function( m ) {
-                desktopElement.props95( props95Panel.DISPLAY );
+                desktopElement.properties95( props95Panel.DISPLAY );
             }}
         ]
     };

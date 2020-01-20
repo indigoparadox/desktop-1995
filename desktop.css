@@ -82,6 +82,33 @@ button.menu-caller-active,
     position: absolute;
 }
 
+/* Properties */
+
+.props-file-icon div {
+    margin-left: 10px;
+    width: 32px;
+    height: 32px;
+}
+
+.properties-row {
+    display: table-row;
+    margin: 10px 15px 0 15px;
+}
+
+.properties-row {
+    display: table-cell;
+}
+
+.properties-label, .properties-field {
+    display: table-cell;
+    min-width: 100px;
+}
+
+.props-file-name {
+    line-height: 32px;
+    vertical-align: middle;
+}
+
 /* Windows */
 
 .window {
