@@ -231,6 +231,13 @@ case 'open':
         winHandle.css( 'height', settings.h.toString() + 'px' );
     }
 
+    if( null != settings.x ) {
+        $(winHandle).css( 'left', settings.x.toString() + 'px' );
+    }
+    if( null != settings.y ) {
+        $(winHandle).css( 'top', settings.y.toString() + 'px' );
+    }
+
     if( null != settings.menu ) {
         settings.menu.type = menu95Type.MENUBAR;
         settings.menu.caller = winHandle;

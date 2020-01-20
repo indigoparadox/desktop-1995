@@ -198,11 +198,32 @@ case 'enable':
     var desktopMenu = {
         'items': [
             {'caption': 'Arrange Icons', 'type': menu95Type.SUBMENU, 'items': [
-                {'caption': 'By name', 'callback': function( m ) {
+                {'caption': 'By Name', 'callback': function( m ) {
+                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'name'}] );
+                }},
+                {'caption': 'By Type', 'callback': function( m ) {
+                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'type'}] );
+                }},
+                {'caption': 'By Size', 'callback': function( m ) {
+                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'size'}] );
+                }},
+                {'caption': 'By Date', 'callback': function( m ) {
+                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'date'}] );
+                }},
+                {'type': menu95Type.DIVIDER},
+                {'caption': 'Auto Arrange', 'callback': function( m ) {
+                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'auto'}] );
                 }}
             ]},
+            {'caption': 'Line up Icons', 'callback': function( m ) {
+                desktopElement.trigger( 'line-up-icons' );
+            }},
             {'type': menu95Type.DIVIDER},
             {'caption': 'Paste', 'callback': function( m ) {
+                desktopElement.trigger( 'paste', [{'reference': 'shortcut'}] );
+            }},
+            {'caption': 'Paste Shortcut', 'callback': function( m ) {
+                desktopElement.trigger( 'paste', [{'reference': 'shortcut'}] );
             }},
             {'type': menu95Type.DIVIDER},
             {'caption': 'New', 'type': menu95Type.SUBMENU, 'items': [
