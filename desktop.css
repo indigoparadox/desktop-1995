@@ -23,9 +23,6 @@ html, body {
     text-transform: capitalize;
 }
 
-.icon-dragging {
-    z-index: 100;
-}
 
 /* Common Effects */
 
