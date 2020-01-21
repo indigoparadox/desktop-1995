@@ -63,27 +63,6 @@ case 'icon':
         'menu': settings.context,
         'context': _htmlStrToClass( settings.target )} );
 
-    iconWrapper.mousedown( function( e ) {
-        if( 0 == e.button ) {
-            iconWrapper.attr( 'data-dragging', 'true' );
-            iconWrapper.css( 'z-index', 100 );
-        }
-    } );
-
-    iconWrapper.mousemove( function( e ) {
-        if( 'true' == iconWrapper.attr( 'data-dragging' ) ) {
-            iconWrapper.css( 'left', e.pageX - (iconWrapper.width() / 2) );
-            iconWrapper.css( 'top', e.pageY -(iconWrapper.height() / 2) );
-        }
-    } );
-
-    iconWrapper.mouseup( function( e ) {
-        if( 'true' == iconWrapper.attr( 'data-dragging' ) ) {
-            //iconWrapper.attr( 'data-dragging', 'false' );
-        }
-        //iconWrapper.css( 'z-index', 1 );
-    } );
-
     return iconWrapper;
 
 case 'select':
@@ -204,23 +183,11 @@ case 'enable':
 
     this.mouseup( function( e ) {
         desktopMouseDown95 = false;
-        
-        // Handle icon drag and drop.
-        dragIcon = $('.desktop-icon[data-dragging="true"]');
-        dragIcon.attr( 'data-dragging', 'false' );
-        dragIcon.css( 'z-index', 1 );
-
         $(e.target).desktop95( 'completerect' );
     } );
 
     this.mouseleave( function( e ) {
         desktopMouseDown95 = false;
-
-        // Handle icon drag and drop.
-        dragIcon = $('.desktop-icon[data-dragging="true"]');
-        dragIcon.attr( 'data-dragging', 'false' );
-        dragIcon.css( 'z-index', 1 );
-
         $(e.target).desktop95( 'completerect' );
     } );
 
