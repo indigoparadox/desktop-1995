@@ -28,7 +28,11 @@ case 'icon':
     iconWrapper.append( iconText );
 
     this.append( iconWrapper );
-    //iconWrapper.draggable( {'handle': '.desktop-icon-img', 'containment': this } );
+    iconWrapper.draggable( {
+        'handle': '.desktop-icon-img',
+        'helper': 'clone',
+        'appendTo': 'body',
+    } );
 
     iconWrapper.css( 'left', settings.x.toString() + 'px' );
     iconWrapper.css( 'top', settings.y.toString() + 'px' );
@@ -162,7 +166,13 @@ case 'selectrect':
 
 case 'enable':
 
+    var containerElement = this;
     var desktopElement = this;
+    this.data( 'desktop', true );
+    if( 0 < $(this).parents( '.container' ).length ) {
+        desktopElement = $(this.parents( '.container' ).last() );
+        this.data( 'desktop', false );
+    }
 
     this.mousedown( function( e ) {
         desktopMouseDown95 = true;
@@ -191,6 +201,13 @@ case 'enable':
         $(e.target).desktop95( 'completerect' );
     } );
 
+    this.droppable( {
+        'greedy': true,
+        'drop': function( e, ui ) {
+            //console.log( $(e.target) );
+        }
+    } );
+
     // Only allow text selects in text elements.
     this.on( 'selectstart', function( e ) {
         if( 
@@ -206,41 +223,43 @@ case 'enable':
         'items': [
             {'caption': 'Arrange Icons', 'type': menu95Type.SUBMENU, 'items': [
                 {'caption': 'By Name', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'name'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'name'}] );
                 }},
                 {'caption': 'By Type', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'type'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'type'}] );
                 }},
                 {'caption': 'By Size', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'size'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'size'}] );
                 }},
                 {'caption': 'By Date', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'date'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'date'}] );
                 }},
                 {'type': menu95Type.DIVIDER},
                 {'caption': 'Auto Arrange', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'auto'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'auto'}] );
                 }}
             ]},
             {'caption': 'Line up Icons', 'callback': function( m ) {
-                desktopElement.trigger( 'line-up-icons' );
+                containerElement.trigger( 'line-up-icons' );
             }},
             {'type': menu95Type.DIVIDER},
             {'caption': 'Paste', 'callback': function( m ) {
-                desktopElement.trigger( 'paste', [{'reference': 'shortcut'}] );
+                containerElement.trigger( 'paste', [{'reference': 'shortcut'}] );
             }},
             {'caption': 'Paste Shortcut', 'callback': function( m ) {
-                desktopElement.trigger( 'paste', [{'reference': 'shortcut'}] );
+                containerElement.trigger( 'paste', [{'reference': 'shortcut'}] );
             }},
             {'type': menu95Type.DIVIDER},
             {'caption': 'New', 'type': menu95Type.SUBMENU, 'items': [
                 {'caption': 'Folder', 'icon': 'folder', 'callback': function( m ) {
-                    desktopElement.trigger( 'new-folder' );
+                    containerElement.trigger( 'new-folder' );
                 }}
             ]},
             {'type': menu95Type.DIVIDER},
             {'caption': 'Properties', 'callback': function( m ) {
-                desktopElement.properties95( props95Panel.DISPLAY );
+                if( this == desktopElement ) {
+                    containerElement.properties95( props95Panel.DISPLAY );
+                }
             }}
         ]
     };

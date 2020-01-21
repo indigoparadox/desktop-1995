@@ -23,6 +23,10 @@ html, body {
     text-transform: capitalize;
 }
 
+.desktop-icon.ui-draggable-dragging {
+    z-index: 100;
+}
+
 
 /* Common Effects */
 

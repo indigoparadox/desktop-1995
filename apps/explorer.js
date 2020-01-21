@@ -43,6 +43,7 @@ case 'open':
 
     // Mousedown/Mousemove are handled by desktop events.
 
+    /*
     container.mouseup( function( e ) {
         $(e.target).desktop95( 'completerect' );
     } );
@@ -54,6 +55,9 @@ case 'open':
     container.on( 'selectstart', function( e ) {
         return false;
     } );
+    */
+
+    container.desktop95( 'enable' );
 
     var trayObjects = $('<div class="tray tray-objects"></div>');
     winHandle.children( '.statusbar' ).append( trayObjects );
@@ -70,6 +74,7 @@ case 'open':
         winHandle.addClass( 'explore-' + _htmlStrToClass( settings.target ) );
     }
 
+    /*
     var folderMenu = {
         'items': [
             {'caption': 'Arrange Icons', 'type': menu95Type.SUBMENU, 'items': [
@@ -114,6 +119,12 @@ case 'open':
     };
 
     container.menu95( 'context', {'menu': folderMenu, 'context': _htmlStrToClass( settings.target )} );
+    */
+
+    container.on( 'drop', function( e, ui ) {
+        console.log( ui );
+        console.log( $(e.target) );
+    } );
 
     winHandle.removeClass( 'window-hidden' );
 
