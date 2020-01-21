@@ -41,6 +41,7 @@ case 'open':
     var container = $('<div class="window-folder-container container"></div>');
     winHandle.find( '.window-form' ).append( container );
 
+    /*
     // Mousedown/Mousemove are handled by desktop events.
 
     container.mouseup( function( e ) {
@@ -53,7 +54,9 @@ case 'open':
 
     container.on( 'selectstart', function( e ) {
         return false;
-    } );
+    } ); */
+
+    container.desktop95( 'enable' );
 
     var trayObjects = $('<div class="tray tray-objects"></div>');
     winHandle.children( '.statusbar' ).append( trayObjects );

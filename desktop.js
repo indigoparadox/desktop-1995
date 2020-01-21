@@ -1,6 +1,8 @@
 
 var documentsMenu95 = [];
 var desktopMouseDown95 = false;
+var desktopMouseClicks95 = 0;
+var desktopMouseClickSpan95 = 400;
 
 (function( $ ) {
 
@@ -14,6 +16,7 @@ var settings = $.extend( {
     'callback': null,
     'context': null,
     'cbData': null,
+    'drag-delay': 250,
     'deselect': true, // Deselect items not being selected.
 }, options );
 
@@ -34,17 +37,6 @@ case 'icon':
     iconWrapper.css( 'top', settings.y.toString() + 'px' );
 
     /* Setup action handlers. */
-    iconWrapper.mousedown( function() {
-        $(this).desktop95( 'select' );
-    } );
-    iconWrapper.on( 'dblclick', function() {
-        settings.callback( settings.cbData )
-    } );
-
-    iconWrapper.mousemove( function( e ) {
-        $(e.target).parents( '.container' ).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
-    } );
-
     if( null == settings.context ) {
         settings.context = {
             'items': [
@@ -62,27 +54,6 @@ case 'icon':
     imgTag.menu95( 'context', {
         'menu': settings.context,
         'context': _htmlStrToClass( settings.target )} );
-
-    iconWrapper.mousedown( function( e ) {
-        if( 0 == e.button ) {
-            iconWrapper.attr( 'data-dragging', 'true' );
-            iconWrapper.css( 'z-index', 100 );
-        }
-    } );
-
-    iconWrapper.mousemove( function( e ) {
-        if( 'true' == iconWrapper.attr( 'data-dragging' ) ) {
-            iconWrapper.css( 'left', e.pageX - (iconWrapper.width() / 2) );
-            iconWrapper.css( 'top', e.pageY -(iconWrapper.height() / 2) );
-        }
-    } );
-
-    iconWrapper.mouseup( function( e ) {
-        if( 'true' == iconWrapper.attr( 'data-dragging' ) ) {
-            //iconWrapper.attr( 'data-dragging', 'false' );
-        }
-        //iconWrapper.css( 'z-index', 1 );
-    } );
 
     return iconWrapper;
 
@@ -183,32 +154,85 @@ case 'selectrect':
 
 case 'enable':
 
-    var desktopElement = this;
+    var containerElement = this;
 
-    this.mousedown( function( e ) {
-        desktopMouseDown95 = true;
-        if( $(e.target).hasClass( 'container' ) ) {
-            $(e.target).closest( '.container' ).desktop95( 'select' );
-        }
-        $(e.target).menu95( 'close' );
-        setTimeout( function() {
-            if( desktopMouseDown95 ) {
-                $(e.target).desktop95( 'selectrect', { 'x': e.pageX, 'y': e.pageY } );
+    var thisIsRoot = false;
+    if( 0 >= this.parents( '.container' ).length ) {
+        thisIsRoot = true;
+    }
+
+    if( thisIsRoot ) {
+        this.mousedown( function( e ) {
+            e.preventDefault();
+
+            // Track mouse state for interface behavior.
+            desktopMouseDown95 = true;
+            desktopMouseClicks95++;
+
+            // Clear any existing selections and close any open menus.
+            if( $(e.target).hasClass( 'container' ) ) {
+                $(e.target).closest( '.container' ).desktop95( 'select' );
             }
-        }, 250 );
-    } );
+            $(e.target).menu95( 'close' );
+
+            // Reset number of clicks within short succession (for tracking double-clicks).
+            setTimeout( function() {
+                desktopMouseClicks95 = 0;
+            }, desktopMouseClickSpan95 );
+
+            if( 2 === desktopMouseClicks95 ) {
+                desktopMouseClicks95 = 0;
+                $(e.target).trigger( 'desktop-double-click' );
+            } else if( 1 === desktopMouseClicks95 ) {
+                setTimeout( function() {
+                    if( desktopMouseDown95 ) {
+                        // Mouse button still being held down; it's a drag.
+                        desktopMouseClicks95 = 0;
+                        if( $(e.target).hasClass( 'container' ) ) {
+                            $(e.target).desktop95( 'selectrect', { 'x': e.pageX, 'y': e.pageY } );
+                            $(e.target).trigger( 'desktop-drag-start' );
+                        } else if( $(e.target).parent().hasClass( 'desktop-icon' ) ) {
+                            let rootContainer = $(e.target).parents( '.container' ).last();
+                            let parentContainer = $(this).parent( '.container' );
+                            $(e.target).parent().trigger( 'icon-drag-start' );
+
+                            // Create a "ghost" copy to follow the cursor.
+                            let dragIcon = $(e.target).parent().clone();
+                            parentContainer.addClass( 'icon-dragging-source' );
+                            dragIcon.addClass( 'icon-dragging' );
+                            rootContainer.append( dragIcon );
+                        }
+                    } else if( 1 == desktopMouseClicks95 ) {
+                        // Mouse button released; it's a click.
+                        $(e.target).trigger( 'desktop-single-click' );
+                    }
+                // Wait juuust under the click reset delay to check if this is a drag.
+                }, desktopMouseClickSpan95 - 10 );
+            }
+        } );
+    }
 
     this.mousemove( function( e ) {
         $(e.target).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
+        let iconWrapper = containerElement.children( '.icon-dragging' );
+        if( 0 < iconWrapper.length ) {
+            iconWrapper.css( 'left', e.pageX - (iconWrapper.width() / 2) );
+            iconWrapper.css( 'top', e.pageY -(iconWrapper.height() / 2) );
+        }
     } );
 
     this.mouseup( function( e ) {
         desktopMouseDown95 = false;
         
         // Handle icon drag and drop.
-        dragIcon = $('.desktop-icon[data-dragging="true"]');
-        dragIcon.attr( 'data-dragging', 'false' );
-        dragIcon.css( 'z-index', 1 );
+        //dragIcon = $('.desktop-icon[data-dragging="true"]');
+        //dragIcon.attr( 'data-dragging', 'false' );
+        //dragIcon.css( 'z-index', 1 );
+        //}
+
+        var iconWrapper = containerElement.children( '.icon-dragging' ).each( function( e ) {
+            $(this).remove();
+        } );
 
         $(e.target).desktop95( 'completerect' );
     } );
@@ -222,6 +246,10 @@ case 'enable':
         dragIcon.css( 'z-index', 1 );
 
         $(e.target).desktop95( 'completerect' );
+    } );
+
+    this.on( 'drop', function( e ) {
+        console.log( $(e.target) );
     } );
 
     // Only allow text selects in text elements.
@@ -239,41 +267,41 @@ case 'enable':
         'items': [
             {'caption': 'Arrange Icons', 'type': menu95Type.SUBMENU, 'items': [
                 {'caption': 'By Name', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'name'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'name'}] );
                 }},
                 {'caption': 'By Type', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'type'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'type'}] );
                 }},
                 {'caption': 'By Size', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'size'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'size'}] );
                 }},
                 {'caption': 'By Date', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'date'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'date'}] );
                 }},
                 {'type': menu95Type.DIVIDER},
                 {'caption': 'Auto Arrange', 'callback': function( m ) {
-                    desktopElement.trigger( 'arrange-icons', [{'criteria': 'auto'}] );
+                    containerElement.trigger( 'arrange-icons', [{'criteria': 'auto'}] );
                 }}
             ]},
             {'caption': 'Line up Icons', 'callback': function( m ) {
-                desktopElement.trigger( 'line-up-icons' );
+                containerElement.trigger( 'line-up-icons' );
             }},
             {'type': menu95Type.DIVIDER},
             {'caption': 'Paste', 'callback': function( m ) {
-                desktopElement.trigger( 'paste', [{'reference': 'shortcut'}] );
+                containerElement.trigger( 'paste', [{'reference': 'shortcut'}] );
             }},
             {'caption': 'Paste Shortcut', 'callback': function( m ) {
-                desktopElement.trigger( 'paste', [{'reference': 'shortcut'}] );
+                containerElement.trigger( 'paste', [{'reference': 'shortcut'}] );
             }},
             {'type': menu95Type.DIVIDER},
             {'caption': 'New', 'type': menu95Type.SUBMENU, 'items': [
                 {'caption': 'Folder', 'icon': 'folder', 'callback': function( m ) {
-                    desktopElement.trigger( 'new-folder' );
+                    containerElement.trigger( 'new-folder' );
                 }}
             ]},
             {'type': menu95Type.DIVIDER},
             {'caption': 'Properties', 'callback': function( m ) {
-                desktopElement.properties95( props95Panel.DISPLAY );
+                containerElement.properties95( props95Panel.DISPLAY );
             }}
         ]
     };
