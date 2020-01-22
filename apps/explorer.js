@@ -121,11 +121,6 @@ case 'open':
     container.menu95( 'context', {'menu': folderMenu, 'context': _htmlStrToClass( settings.target )} );
     */
 
-    container.on( 'drop', function( e, ui ) {
-        console.log( ui );
-        console.log( $(e.target) );
-    } );
-
     winHandle.removeClass( 'window-hidden' );
 
     console.assert( 1 == winHandle.length );

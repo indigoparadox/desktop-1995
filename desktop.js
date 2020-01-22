@@ -1,8 +1,29 @@
 
 var documentsMenu95 = [];
 var desktopMouseDown95 = false;
+var desktop95Desktop = null;
 
 (function( $ ) {
+
+$.fn.origAppendDesktop95 = $.fn.append;
+$.fn.append = function( element ) {
+    this.origAppendDesktop95( element );
+    if( this.hasClass( 'container' ) && $(element).hasClass( 'desktop-icon' ) ) {
+        // (Re-)Enable dragging.
+        $(element).draggable( {
+            'handle': '.desktop-icon-img',
+            'helper': function() {
+                let clone = $(this).clone();
+                desktop95Desktop.data( 'drag-icon-original', $(this) );
+
+                clone.css( 'opacity', 0.5 );
+
+                return clone;
+            },
+            'appendTo': 'body',
+        } );
+    }
+};
 
 $.fn.desktop95 = function( action, options ) {
 
@@ -28,17 +49,12 @@ case 'icon':
     iconWrapper.append( iconText );
 
     this.append( iconWrapper );
-    iconWrapper.draggable( {
-        'handle': '.desktop-icon-img',
-        'helper': 'clone',
-        'appendTo': 'body',
-    } );
 
     iconWrapper.css( 'left', settings.x.toString() + 'px' );
     iconWrapper.css( 'top', settings.y.toString() + 'px' );
 
     /* Setup action handlers. */
-    iconWrapper.mousedown( function() {
+    /* iconWrapper.mousedown( function() {
         $(this).desktop95( 'select' );
     } );
     iconWrapper.on( 'dblclick', function() {
@@ -48,6 +64,10 @@ case 'icon':
     iconWrapper.mousemove( function( e ) {
         $(e.target).parents( '.container' ).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
     } );
+
+    iconWrapper.children( '.desktop-icon-img' ).on( 'dragenter', function( e, ui ) {
+        console.log( $(e.target) );
+    } ); */
 
     if( null == settings.context ) {
         settings.context = {
@@ -167,11 +187,11 @@ case 'selectrect':
 case 'enable':
 
     var containerElement = this;
-    var desktopElement = this;
-    this.data( 'desktop', true );
     if( 0 < $(this).parents( '.container' ).length ) {
-        desktopElement = $(this.parents( '.container' ).last() );
-        this.data( 'desktop', false );
+        desktop95Desktop = $(this.parents( '.container' ).last() );
+    } else {
+        desktop95Desktop = this;
+        this.addClass( 'desktop' );
     }
 
     this.mousedown( function( e ) {
@@ -180,11 +200,16 @@ case 'enable':
             $(e.target).closest( '.container' ).desktop95( 'select' );
         }
         $(e.target).menu95( 'close' );
-        setTimeout( function() {
-            if( desktopMouseDown95 ) {
-                $(e.target).desktop95( 'selectrect', { 'x': e.pageX, 'y': e.pageY } );
-            }
-        }, 250 );
+        if( $(e.target).hasClass( 'container' ) ) {
+            setTimeout( function() {
+                if( desktopMouseDown95 ) {
+                    $(e.target).desktop95( 'selectrect', { 'x': e.pageX, 'y': e.pageY } );
+                }
+            }, 250 );
+
+            // Don't propagate up to the desktop.
+            e.stopPropagation();
+        }
     } );
 
     this.mousemove( function( e ) {
@@ -201,10 +226,56 @@ case 'enable':
         $(e.target).desktop95( 'completerect' );
     } );
 
+    this.delegate( '.desktop-icon', 'mousedown', function( e ) {
+        $(e.target).closest( '.desktop-icon' ).desktop95( 'select' );
+    } );
+
+    this.delegate( '.desktop-icon', 'dblclick', function( e ) {
+        $(e.target).trigger( 'desktop-double-click' );
+    } );
+
+
+    this.delegate( '.desktop-icon', 'mousemove', function( e ) {
+        $(e.target).closest( '.container' ).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
+    } );
+
     this.droppable( {
         'greedy': true,
+        'accept': '.desktop-icon',
         'drop': function( e, ui ) {
-            //console.log( $(e.target) );
+            let incomingClone = $(ui.draggable);
+
+            /* if( null == desktop95Desktop.data( 'drag-icon-original' ) ) {
+                return;
+            } */
+
+            // We only care about the topost window.
+            // TODO: Ignore minimized windows and non-overlapping windows.
+            var dropTargetZ = parseInt( $(this).closest( '.window' ).css( 'z-index' ) );
+            var cancel = false;
+            desktop95Desktop.children( '.window' ).each( function() {
+                if( parseInt( $(this).css( 'z-index') ) > dropTargetZ ) {
+                    cancel = true;
+                }
+            } );
+            if( cancel ) {
+                return;
+            }
+
+            let data = {
+                'incoming': desktop95Desktop.data( 'drag-icon-original' ),
+                'target': $(this),
+                'source': desktop95Desktop.data( 'drag-icon-original' ).parent( '.container' )
+            };
+
+            // Reset the drag icon to be safe.
+            desktop95Desktop.data( 'drag-icon-original', null );
+
+            data['incoming'].trigger( 'icon-drag', data );
+            data['target'].trigger( 'icon-drop', data );
+            data['source'].trigger( 'icon-drag', data );
+
+            e.stopPropagation();
         }
     } );
 
