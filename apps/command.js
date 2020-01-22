@@ -12,6 +12,7 @@ var settings = $.extend( {
     'y': 10,
     'w': 480,
     'h': 260,
+    'data': {},
     'lineHandler': null,
     'lineHandlerData': null,
     'text': ''
@@ -92,7 +93,7 @@ case 'open':
 
             /* Process line input. */
             if( null != settings.lineHandler ) {
-                settings.lineHandler( settings.lineHandlerData, lineText, winHandle );
+                window[settings.lineHandler]( settings.lineHandlerData, lineText, winHandle );
             }
 
             /* Create a new input line. */
@@ -114,6 +115,10 @@ case 'open':
     winHandle.on( 'activate', function( e ) {
         $(cmdInput).focus();
     } );
+
+    for( var datum in settings.data ) {
+        winHandle.data( datum, settings.data[datum] );
+    }
 
     winHandle.addClass( 'window-scroll-contents' );
     winHandle.addClass( 'window-command' );

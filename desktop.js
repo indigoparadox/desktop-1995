@@ -22,6 +22,8 @@ $.fn.append = function( element ) {
             },
             'appendTo': 'body',
         } );
+    } else if( this.hasClass( 'desktop' ) && $(element).hasClass( 'window' ) ) {
+        $(element).trigger( 'window-attach' );
     }
 };
 
@@ -34,6 +36,7 @@ var settings = $.extend( {
     'region': {'start': {'x': 0, 'y': 0}, 'end': {'x': 0, 'y': 0}},
     'callback': null,
     'context': null,
+    'data': {},
     'cbData': null,
     'deselect': true, // Deselect items not being selected.
 }, options );
@@ -226,16 +229,17 @@ case 'enable':
         $(e.target).desktop95( 'completerect' );
     } );
 
-    this.delegate( '.desktop-icon', 'mousedown', function( e ) {
+    // Delegated devents for icon handling:
+
+    this.on( 'mousedown', '.desktop-icon', function( e ) {
         $(e.target).closest( '.desktop-icon' ).desktop95( 'select' );
     } );
 
-    this.delegate( '.desktop-icon', 'dblclick', function( e ) {
+    this.on( 'dblclick', '.desktop-icon', function( e ) {
         $(e.target).trigger( 'desktop-double-click' );
     } );
 
-
-    this.delegate( '.desktop-icon', 'mousemove', function( e ) {
+    this.on( 'mousemove', '.desktop-icon', function( e ) {
         $(e.target).closest( '.container' ).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
     } );
 
@@ -274,6 +278,9 @@ case 'enable':
             data['incoming'].trigger( 'icon-drag', data );
             data['target'].trigger( 'icon-drop', data );
             data['source'].trigger( 'icon-drag', data );
+
+            data['source'].trigger( 'desktop-populate' );
+            data['target'].trigger( 'desktop-populate' );
 
             e.stopPropagation();
         }
@@ -334,9 +341,15 @@ case 'enable':
             }}
         ]
     };
-
     
     this.menu95( 'context', {'menu': desktopMenu, 'context': 'desktop'} );
+
+    for( var datum in settings.data ) {
+        this.data( datum, settings.data[datum] );
+    }
+
+    // No point in calling this before implementation hooks.
+    //this.trigger( 'desktop-populate' );
 
     return this;
 } };

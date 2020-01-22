@@ -171,13 +171,13 @@ case 'dialog':
     dlgHandle.children( '.window-form' ).append( dlgButtons );
 
     for( var btn in settings.buttons ) {
-        var btnElement = $('<button class="button-' + settings.buttons[btn] + '">' + btn + '</button>');
+        var btnElement = $('<button data-trigger="' + settings.buttons[btn] + '" class="button-' + settings.buttons[btn] + '">' + btn + '</button>');
         dlgButtons.append( btnElement );
 
         btnElement.click( function( e ) {
             e.preventDefault();
 
-            dlgHandle.trigger( 'button-' + settings.buttons[btn] );
+            dlgHandle.trigger( 'button-' + $(e.target).data( 'trigger' ) );
         } );
     }
 
