@@ -456,6 +456,11 @@
     z-index: 5;
 }
 
+/* Window: Paint */
+
+.paint-canvas {
+}
+
 /* Window: Properties */
 
 /* Tab panes have a slightly different chiseled pattern. */
