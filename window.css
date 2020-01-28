@@ -23,7 +23,6 @@
 }
 
 .titlebar {
-    background-color: #7f787f;
     /* Flex so that title text can grow. */
     display: flex;
     position: absolute;

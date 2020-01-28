@@ -21,6 +21,10 @@ html, body {
     background-color: #bfbfbf;
 }
 
+.titlebar {
+    background-color: #7f787f;
+}
+
 .menu-item:hover,
 .window-active .titlebar {
     background-color: #00007f;
