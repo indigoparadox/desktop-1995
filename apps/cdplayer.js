@@ -1,5 +1,6 @@
 
 (function( $ ) {
+
 $.fn.cdplayer95 = function( action, options ) {
 
 var settings = $.extend( {

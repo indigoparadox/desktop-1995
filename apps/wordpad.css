@@ -1,0 +1,49 @@
+
+.window-menubar.window-wordpad > .toolbar-format > .button-bold,
+.window-menubar.window-wordpad > .toolbar-format > .button-italic,
+.window-menubar.window-wordpad > .toolbar-format > .button-underline {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.window-menubar.window-wordpad > .toolbar-format > .button-bold {
+    font-weight: bold;
+}
+
+.window-menubar.window-wordpad > .toolbar-format > .button-italic {
+    font-style: italic;
+}
+
+.window-menubar.window-wordpad > .toolbar-format > .button-underline {
+    text-decoration: underline;
+}
+
+.window-menubar.window-wordpad > .toolbar-format {
+    top: 72px;
+}
+
+.window-menubar.window-wordpad > .window-form {
+    top: 126px;
+}
+
+.window-wordpad .ruler {
+    position: absolute;
+    top: 106px;
+    left: 4px;
+    right: 4px;
+    height: 14px;
+}
+
+.window-wordpad .input-rtf {
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    resize: none;
+    overflow: scroll;
+}
+
+.window-wordpad .input-rtf p {
+    margin: 0 0 10px 0;
+}

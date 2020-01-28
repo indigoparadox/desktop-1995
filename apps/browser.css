@@ -1,0 +1,73 @@
+
+.browser-toolbar {
+    position: relative;
+}
+
+.browser-toolbar-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 66px;
+    bottom: 0;
+}
+
+.window-browser .window-form hr {
+    margin: 0;
+}
+
+.window-browser .pane-wrapper {
+    top: 25px;
+}
+
+.window-browser .browser-pane {
+    width: 100%;
+    height: 100%;
+}
+
+.window-browser .url-bar {
+    font-size: 12px;
+    line-height: 22px;
+    display: flex;
+    padding: 2px 2px 0 5px;
+    position: relative;
+    height: 20px;
+}
+
+.window-browser .input-url-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-left: 4px;
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.window-browser .input-url {
+    position: relative;
+    height: 14px;
+}
+
+.window-browser .statusbar .tray-status-text {
+    flex-grow: 5;
+}
+
+.window-browser .statusbar .tray-misc {
+    flex-grow: 2;
+}
+
+.window-browser .statusbar .tray-status-icon {
+    flex-grow: 1;
+}
+
+.browser-logo-box {
+    background-color: #bfbfbf;
+    position: absolute;
+    right: 2px;
+    top: 42px;
+    width: 53px;
+    height: 53px;
+    z-index: 5;
+}
