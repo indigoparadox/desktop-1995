@@ -7,6 +7,14 @@ const window95Buttons = {
     'OK': 'ok',
 };
 
+const window95Decorations = {
+    'CLOSE': 'close',
+    'MIN': 'min',
+    'MAX': 'max',
+    'ICON': 'icon',
+    'TITLE': 'title',
+};
+
 (function( $ ) {
 $.fn.window95 = function( action, options ) {
 
@@ -24,24 +32,20 @@ var settings = $.extend( {
     'taskBar': true,
     'min': true,
     'max': true,
+    'decorations': [
+        window95Decorations.ICON,
+        window95Decorations.TITLE,
+        window95Decorations.MIN,
+        window95Decorations.MAX,
+        window95Decorations.CLOSE
+    ],
     'buttons': {'OK': window95Buttons.OK},
 }, options );
 
 switch( action.toLowerCase() ) {
 
-case 'nextfreeid':
-    var idIter = 0;
-    while( $( '#' + settings.id + '-' + idIter.toString()).length > 0 ) {
-        idIter += 1;
-    }
-    return settings.id + '-' + idIter.toString();
-
 case 'activate':
     return this.each( function( idx, winHandle ) {
-
-        /* if( $(winHandle).hasClass( 'window-active' ) ) {
-            return;
-        } */
 
         // Re-sort inactive siblings on z-index from 50 up.
         var lastZ = 50;
@@ -79,18 +83,23 @@ case 'maximize':
             return;
         }
 
+        // Save the window's current size for restoring later.
         $(winHandle).data( 'restore-left', $(winHandle).css( 'left' ) );
         $(winHandle).data( 'restore-top', $(winHandle).css( 'top' ) );
         $(winHandle).data( 'restore-width', $(winHandle).css( 'width' ) );
         $(winHandle).data( 'restore-height', $(winHandle).css( 'height' ) );
 
+        // Turn off dragging/resizing.
         $(winHandle).resizable( 'disable' );
         $(winHandle).draggable( 'disable' );
-        $(winHandle).css( 'left', '-1px' );
-        $(winHandle).css( 'top', '-1px' );
-        $(winHandle).css( 'width', '100%' );
-        $(winHandle).css( 'height', '100%' );
 
+        // Get rid of manual sizing so CSS class takes effect.
+        $(winHandle).css( 'left', '' );
+        $(winHandle).css( 'top', '' );
+        $(winHandle).css( 'width', '' );
+        $(winHandle).css( 'height', '' );
+
+        // Make sure we're using the right class.
         $(winHandle).removeClass( 'window-minimized' );
         $(winHandle).addClass( 'window-maximized' );
 
