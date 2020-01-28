@@ -1,16 +1,12 @@
 
-const props95Panel = {
-    'DISPLAY': 'display',
-    'FILE': 'file',
-};
-
 (function( $ ) {
 
-$.fn.properties95 = function( panel, options ) {
+$.fn.props95 = function( action, options ) {
 
 var settings = $.extend( {
     'caption': null,
     'id': null,
+    'panel': null,
     'fileIcon': 'generic',
     'fileName': 'Some File',
     'fileType': 'Generic File',
@@ -27,9 +23,11 @@ var settings = $.extend( {
     }
 }, options );
 
-switch( panel ) {
+$('head').append( '<link rel="stylesheet" href="src/static/desktop-1995/apps/props.css" />'  )
 
-case props95Panel.DISPLAY: // Display Settings
+switch( settings.panel ) {
+
+case 'display': // Display Settings
     if( null == settings.caption ) {
         settings.caption = 'Display Properties';
     }
@@ -62,9 +60,13 @@ case props95Panel.DISPLAY: // Display Settings
 
     // Create monitor.
     tabBG.append( _furnitureMonitor() );
+
+    props.removeClass( 'window-hidden' );
+    props.window95( 'activate' );
+
     return props;
 
-case props95Panel.FILE:
+case 'file':
 
     var props = this.window95( 'properties', { 'caption': settings.caption,
         'id': settings.id } );
@@ -113,6 +115,9 @@ case props95Panel.FILE:
     row.append( '<div class="properties-label">Accessed:</div>' );
     row.append( '<div class="properties-field props-file-accessed">' + settings.fileAccessed + '</div>' );
     tabGeneral.append( row );
+
+    props.removeClass( 'window-hidden' );
+    props.window95( 'activate' );
 
     return props;
     

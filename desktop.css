@@ -1,7 +1,6 @@
 
 html, body {
     font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
-    background-color: #00787f;
     font-smooth: never;
     -webkit-font-smoothing : none;
     margin: 0;
@@ -39,21 +38,11 @@ html, body {
     right: -2px;
     bottom: -2px;
     left: -2px;
-    border-top: 1px solid #bfbfbf;
-    border-left: 1px solid #bfbfbf;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
     z-index: -1;
 }
 
 .window,
 .menu {
-    /* Use border and positioning to simulate shadow effect. */
-    border-top: 1px solid #fff8ff;
-    border-left: 1px solid #fff8ff;
-    border-right: 1px solid #7f787f;
-    border-bottom: 1px solid #7f787f;
-    background-color: #bfbfbf;
     position: relative;
     padding: 1px;
 }
@@ -62,28 +51,7 @@ button:focus {
     outline: none;
 }
 
-button:active:before,
-button.menu-caller-active:before,
-.task-button-active:before,
-.scrubber-controlbar:before {
-    border-top: 1px solid #7f787f;
-    border-left: 1px solid #7f787f;
-    border-bottom: 1px solid #fff8ff;
-    border-right: 1px solid #fff8ff;
-}
-
-button:active,
-button.menu-caller-active,
-.task-button-active,
-.scrubber-controlbar {
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-bottom: 1px solid #bfbfbf;
-    border-right: 1px solid #bfbfbf;
-}
-
 .select-rect {
-    border: 1px dotted red;
     position: absolute;
 }
 
@@ -118,7 +86,6 @@ button.menu-caller-active,
 
 .taskbar:before {
     content: " ";
-    border-top: 1px solid #bfbfbf;
     position: absolute;
     top: -2px;
     right: 0;
@@ -128,8 +95,6 @@ button.menu-caller-active,
 }
 
 .taskbar {
-    background-color: #bfbfbf;
-    border-top: 1px solid #fff8ff;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -174,83 +139,4 @@ button.menu-caller-active,
 
 .window-hidden {
     display: none !important;
-}
-
-.props-monitor {
-    border: 1px solid black;
-    display: block;
-    position: relative;
-}
-
-.props-outer:before {
-    content: " ";
-    border-top: 2px solid #bfbfbf;
-    border-left: 2px solid #bfbfbf;
-    border-right: 2px solid black;
-    border-bottom: 2px solid black;
-    position: absolute;
-    top: -3px;
-    right: -3px;
-    bottom: -3px;
-    left: -3px;
-    z-index: -1;
-}
-
-.props-monitor-outer {
-    border-top: 2px solid #fff8ff;
-    border-left: 2px solid #fff8ff;
-    border-right: 2px solid #7f787f;
-    border-bottom: 2px solid #7f787f;
-    margin: 10px auto 0 auto;
-    width: 180px;
-    height: 150px;
-    z-index: 10;
-}
-
-.props-monitor-inner {
-    margin: 15px auto;
-    width: 160px;
-    height: 120px;
-}
-
-.props-monitor-stand-upper:before {
-    content: " ";
-    border-radius: 0 0 10px 10px;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    position: absolute;
-    top: -3px;
-    right: -3px;
-    bottom: -3px;
-    left: -3px;
-    z-index: -1;
-}
-
-.props-monitor-stand-upper {
-    border-radius:  0 0 10px 10px;
-    border-top: 2px solid #7f787f;
-    border-left: 2px solid #7f787f;
-    border-right: 2px solid #7f787f;
-    border-bottom: 2px solid #7f787f;
-    margin: 0 auto;
-    width: 90px;
-    height: 5px;
-    z-index: 5;
-}
-
-.props-monitor-stand-mid {
-    border-top: 2px solid #7f787f;
-    border-left: 4px solid #fff8ff;
-    border-right: 4px solid #7f787f;
-    margin: 0 auto;
-    width: 70px;
-    height: 7px;
-    z-index: 1;
-}
-
-.props-monitor-stand-lower {
-    margin: 0 auto;
-    width: 110px;
-    height: 5px;
 }

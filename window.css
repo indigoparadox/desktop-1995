@@ -62,11 +62,6 @@
     flex-grow: 1;
 }
 
-.window-active .titlebar {
-    background-color: #00007f;
-    color: white;
-}
-
 .titlebar button {
     font-weight: bold;
     line-height: 8px;

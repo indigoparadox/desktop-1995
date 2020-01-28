@@ -17,6 +17,11 @@ const window95Decorations = {
 };
 
 (function( $ ) {
+
+$(document).ready( function() {
+    $('head').append( '<link rel="stylesheet" href="src/static/desktop-1995/window.css" />' );
+} );
+
 $.fn.window95 = function( action, options ) {
 
 var settings = $.extend( {

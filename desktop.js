@@ -335,9 +335,7 @@ case 'enable':
             ]},
             {'type': menu95Type.DIVIDER},
             {'caption': 'Properties', 'callback': function( m ) {
-                if( this == desktopElement ) {
-                    containerElement.properties95( props95Panel.DISPLAY );
-                }
+                containerElement.trigger( 'properties' );
             }}
         ]
     };

@@ -13,10 +13,6 @@
 .tray {
     font-size: 12px;
     line-height: 16px;
-    border-top: 1px solid #7f7f7f;
-    border-right: 1px solid white;
-    border-bottom: 1px solid white;
-    border-left: 1px solid #7f7f7f;
     display: inline-flex;
     flex-direction: column;
     margin: 3px 2px 2px 0;
@@ -32,23 +28,6 @@
     font-size: 13px;
     margin: 2px 2px 0 6px;
     padding: 3px 6px;
-}
-
-/* .input-select:before, */
-.input-text:before,
-.input-textarea:before,
-.input-prompt:before,
-.window-scroll-contents .window-form:after,
-.pane-wrapper,
-.textarea-wrapper,
-.select-wrapper,
-.input-url-wrapper,
-.inset:before,
-.scrubber-timeline:before {
-    border-top: 1px solid #7f787f;
-    border-left: 1px solid #7f787f;
-    border-bottom: 1px solid #fff8ff;
-    border-right: 1px solid #fff8ff;
 }
 
 .pane-wrapper,
@@ -105,22 +84,6 @@
     padding: 0 4px;
 }
 
-.input-text,
-.input-url,
-.input-textarea,
-.input-select,
-.input-prompt,
-.window-folder-container,
-.inset,
-.inset-iframe,
-.scrubber-timeline {
-    /* Use border and positioning to simulate shadow effect. */
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-bottom: 1px solid #bfbfbf;
-    border-right: 1px solid #bfbfbf;
-}
-
 .input-text {
     padding: 1px 2px;
 }
@@ -130,7 +93,6 @@
 }
 
 .input-select {
-    background-color: white;
     position: relative;
 }
 
@@ -145,8 +107,6 @@
 
 .window > .toolbar:before {
     content: " ";
-    border-top: 1px solid #7f787f;
-    border-bottom: 1px solid white;
     position: absolute;
     right: 0;
     left: 0;
@@ -155,8 +115,6 @@
 }
 
 .window > .toolbar {
-    border-top: 1px solid white;
-    border-bottom: 1px solid #7f787f;
     padding: 4px;
     position: absolute;
     right: 2px;
@@ -189,7 +147,6 @@
 }
 
 .scrubber-wrapper .scrubber-timeline {
-    background: white;
     vertical-align: middle;
     display: inline-block;
     margin: 0 auto;
@@ -200,7 +157,6 @@
 }
 
 .scrubber-wrapper .scrubber-controlbar {
-    background-color: #bfbfbf;
     position: absolute;
     top: 0;
     width: 10px;
@@ -246,7 +202,6 @@
 }
 
 .window-wordpad .ruler {
-    background-color: white;
     position: absolute;
     top: 106px;
     left: 4px;
@@ -255,7 +210,6 @@
 }
 
 .window-wordpad .input-rtf {
-    background: white;
     padding: 10px;
     position: absolute;
     top: 0;
@@ -273,8 +227,6 @@
 /* Window: Command Prompt */
 
 .window-command .input-prompt {
-    background-color: black;
-    color: #a0a0a0;
     font-family: fixedsys, 'Courier New', Courier, monospace;
     font-size: 12px;
     font-weight: bold;
@@ -307,7 +259,6 @@
 }
 
 .window-command .input-caret {
-    background-color: white;    
     margin-top: 10px;
     width: 5px;
     height: 1px;
@@ -332,7 +283,6 @@
 }
 
 .window-folder-container {
-    background-color: white;
     position: absolute;
     top: 2px;
     right: 2px;
@@ -416,190 +366,6 @@
     z-index: 5;
 }
 
-/* Window: Paint */
-
-.paint-canvas {
-}
-
-/* Window: Properties */
-
-/* Tab panes have a slightly different chiseled pattern. */
-button:before,
-.window-properties-tabs-pane:before,
-.window-properties-tabs-tab a:before {
-    content: " ";
-    position: absolute;
-    left: -2px;
-    top: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-top: 1px solid #fff8ff;
-    border-left: 1px solid #fff8ff;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    z-index: -1;
-}
-
-button,
-.window-properties-tabs-pane,
-.window-properties-tabs-tab a {
-    /* Use border and positioning to simulate shadow effect. */
-    border-top: 1px solid #dfd8df;
-    border-left: 1px solid #dfd8df;
-    border-right: 1px solid #7f787f;
-    border-bottom: 1px solid #7f787f;
-    background-color: #bfbfbf;
-    position: relative;
-    padding: 1px;
-}
-
-.window-properties-tabs {
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
-    margin: 8px;
-    width: 390px;
-    height: 380px;
-}
-
-.window-properties-tabs ul {
-    position: relative;
-    margin: 0 0 0 0;
-    padding: 0;
-    z-index: 20;
-}
-
-.window-properties-tabs-tab {
-    display: inline-block;
-    position: relative;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
-.window-properties-tabs-tab a:before {
-    border-bottom: none;
-    border-radius: 3px 3px 0 0;
-}
-
-.window-properties-tabs-tab a {
-    color: black;
-    line-height: 10px;
-    text-decoration: none;
-    border-bottom: 1px solid white;
-    border-radius: 3px 3px 0 0;
-    display: block;
-    margin: 0 1px 0 2px;
-    padding: 3px 7px;
-}
-
-.window-properties-tabs > ul > li.ui-tabs-active a:before {
-    border-bottom: 2px solid #bfbfbf;
-}
-
-.window-properties-tabs > ul > li.ui-tabs-active a {
-    line-height: 14px;
-    border-bottom: none;
-    margin: 0 0 -1px 0;
-    padding: 3px 9px;
-}
-
-.window-properties-tabs-pane {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    position: relative;
-    z-index: 10;
-}
-
-.window-properties-buttons {
-    width: 100%;
-}
-
-.window-properties-buttons button {
-    margin-right: 8px;
-    width: 70px;
-    height: 20px;
-    float: right;
-}
-
-/* Window: CD Player */
-
-.window-cdplayer-controls-row {
-    display: flex;
-    position: relative;
-    margin-top: 8px;
-    width: 100%;
-}
-
-.window-cdplayer-display {
-    background: black;
-    color: #808000;
-    font-size: 24px;
-    line-height: 47px;
-    display: inline-block;
-    position: relative;
-    margin-left: 8px;
-    padding-left: 25px;
-    width: 129px; /* -25 for padding. */
-    height: 47px;
-}
-
-.window-cdplayer-controls {
-    display: inline-block;
-    margin-left: 8px;
-    width: 120px;
-    height: 50px;
-}
-
-.window-cdplayer-controls div {
-    display: flex;
-}
-
-.window-cdplayer-controls-play-pause-stop {
-    font-family: serif;
-}
-
-.window-cdplayer-controls-tracks-eject {
-    margin-top: 12px;
-}
-
-.window-cdplayer-controls button {
-    line-height: 14px;
-    text-align: center;
-    flex-grow: 1;
-    height: 18px;
-}
-
-.window-cdplayer-controls .button-play {
-    flex-grow: 4;
-}
-
-.window-cdplayer-drops {
-    font-size: 12px;
-    line-height: 18px;
-    position: relative;
-    margin: 4px 8px;
-}
-
-.window-cdplayer-drops .wrapper {
-    display: flex;
-    position: relative;
-    margin-bottom: 4px;
-}
-
-.window-cdplayer-drops label {
-    text-align: right;
-    margin-right: 5px;
-    width: 35px;
-}
-
-.window-cdplayer-drops .select-wrapper,
-.window-cdplayer-drops .inset {
-    flex-grow: 5;
-    position: relative;
-}
-
 /* Window MPvideo */
 
 .window-mpvideo .mpvideo-wrapper {
@@ -636,4 +402,34 @@ button,
     bottom: 4px;
     left: 50px;
     height: 20px;
+}
+
+/* Tab panes have a slightly different chiseled pattern. */
+button:before,
+.ui-tabs-pane:before,
+.ui-tabs-tab a:before {
+    content: " ";
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-top: 1px solid #fff8ff;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid #fff8ff;
+    z-index: -1;
+}
+
+button,
+.ui-tabs-pane,
+.ui-tabs-tab a {
+    /* Use border and positioning to simulate shadow effect. */
+    border-top: 1px solid #dfd8df;
+    border-left: 1px solid #dfd8df;
+    border-right: 1px solid #7f787f;
+    border-bottom: 1px solid #7f787f;
+    /* background-color: #bfbfbf; */
+    position: relative;
+    padding: 1px;
 }

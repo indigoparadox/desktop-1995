@@ -61,14 +61,8 @@
     padding: 3px;
 }
 
-.menu-item:hover {
-    background-color: #00007f;
-    color: white;
-}
-
 :not( .menubar ) > .menu-parent:hover:after {
     content: "";
-    border-left-color: white;
     z-index: 1;
 }
 

@@ -1,0 +1,195 @@
+
+html, body {
+    background-color: #00787f;
+}
+
+.window:before,
+.menu:before {
+    border-top: 1px solid #bfbfbf;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid #bfbfbf;
+}
+
+.window,
+.menu {
+    /* Use border and positioning to simulate shadow effect. */
+    border-top: 1px solid #fff8ff;
+    border-right: 1px solid #7f787f;
+    border-bottom: 1px solid #7f787f;
+    border-left: 1px solid #fff8ff;
+    background-color: #bfbfbf;
+}
+
+.menu-item:hover,
+.window-active .titlebar {
+    background-color: #00007f;
+    color: white;
+}
+
+:not( .menubar ) > .menu-parent:hover:after {
+    border-left-color: white;
+}
+
+.tray {
+    border-top: 1px solid #7f7f7f;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+    border-left: 1px solid #7f7f7f;
+}
+
+.input-text:before,
+.input-textarea:before,
+.input-prompt:before,
+.window-scroll-contents .window-form:after,
+.pane-wrapper,
+.textarea-wrapper,
+.select-wrapper,
+.input-url-wrapper,
+.inset:before,
+.scrubber-timeline:before,
+button:active:before,
+button.menu-caller-active:before,
+.task-button-active:before,
+.scrubber-controlbar:before {
+    border-top: 1px solid #7f787f;
+    border-bottom: 1px solid #fff8ff;
+    border-right: 1px solid #fff8ff;
+    border-left: 1px solid #7f787f;
+}
+
+.input-text,
+.input-url,
+.input-textarea,
+.input-select,
+.input-prompt,
+.window-folder-container,
+.inset,
+.inset-iframe,
+button:active,
+button.menu-caller-active,
+.task-button-active,
+.scrubber-controlbar,
+.scrubber-timeline {
+    /* Use border and positioning to simulate shadow effect. */
+    border-top: 1px solid black;
+    border-right: 1px solid #bfbfbf;
+    border-bottom: 1px solid #bfbfbf;
+    border-left: 1px solid black;
+}
+
+.input-select {
+    background-color: white;
+}
+
+.window > .toolbar:before {
+    border-top: 1px solid #7f787f;
+    border-bottom: 1px solid white;
+}
+
+.window > .toolbar {
+    border-top: 1px solid white;
+    border-bottom: 1px solid #7f787f;
+}
+
+.scrubber-wrapper .scrubber-timeline {
+    background: white;
+}
+
+.scrubber-wrapper .scrubber-controlbar {
+    background-color: #bfbfbf;
+}
+
+.window-wordpad .ruler {
+    background-color: white;
+}
+
+.window-wordpad .input-rtf {
+    background: white;
+}
+
+.window-command .input-prompt {
+    background-color: black;
+    color: #a0a0a0;
+}
+
+.window-command .input-caret {
+    background-color: white;    
+}
+
+.window-folder-container {
+    background-color: white;
+}
+
+.browser-logo-box {
+    background-color: #bfbfbf;
+}
+
+/* Tab panes have a slightly different chiseled pattern. */
+button:before,
+.window-properties-tabs-pane:before,
+.window-properties-tabs-tab a:before {
+    content: " ";
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-top: 1px solid #fff8ff;
+    border-left: 1px solid #fff8ff;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+button,
+.window-properties-tabs-pane,
+.window-properties-tabs-tab a {
+    /* Use border and positioning to simulate shadow effect. */
+    border-top: 1px solid #dfd8df;
+    border-right: 1px solid #7f787f;
+    border-bottom: 1px solid #7f787f;
+    border-left: 1px solid #dfd8df;
+    background-color: #bfbfbf;
+}
+
+.window-properties-tabs-tab a {
+    color: black;
+    border-bottom: 1px solid white;
+}
+
+.window-properties-tabs > ul > li.ui-tabs-active a:before {
+    border-bottom: 2px solid #bfbfbf;
+}
+
+.taskbar:before {
+    border-top: 1px solid #bfbfbf;
+}
+
+.taskbar {
+    background-color: #bfbfbf;
+    border-top: 1px solid #fff8ff;
+}
+
+.select-rect {
+    border: 1px dotted red;
+}
+
+/* Tab panes have a slightly different chiseled pattern. */
+button:before,
+.ui-tabs-pane:before,
+.ui-tabs-tab a:before {
+    border-top: 1px solid #fff8ff;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid #fff8ff;
+}
+
+button,
+.ui-tabs-pane,
+.ui-tabs-tab a {
+    /* Use border and positioning to simulate shadow effect. */
+    border-top: 1px solid #dfd8df;
+    border-left: 1px solid #dfd8df;
+    border-right: 1px solid #7f787f;
+    border-bottom: 1px solid #7f787f;
+}
