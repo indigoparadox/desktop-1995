@@ -13,6 +13,7 @@ const window95Decorations = {
     'MAX': 'max',
     'ICON': 'icon',
     'TITLE': 'title',
+    'RESTORE': 'restore',
 };
 
 (function( $ ) {
@@ -30,13 +31,12 @@ var settings = $.extend( {
     'h': null,
     'show': true,
     'taskBar': true,
-    'min': true,
-    'max': true,
     'decorations': [
         window95Decorations.ICON,
         window95Decorations.TITLE,
         window95Decorations.MIN,
         window95Decorations.MAX,
+        window95Decorations.RESTORE,
         window95Decorations.CLOSE
     ],
     'buttons': {'OK': window95Buttons.OK},
@@ -216,6 +216,7 @@ case 'open':
         throw { 'type': window95Exceptions.WINDOW_EXISTS, 'window': $('#' + settings.id) };
     }
 
+    // Create the bare window and append it to the container.
     var winHandle = $('<div class="window"><form class="window-form"></form></div>');
     if( null != settings.id ) {
         winHandle.attr( 'id', settings.id );
@@ -227,10 +228,15 @@ case 'open':
     }
     this.append( winHandle );
 
-    winHandle.draggable( {'handle': '.titlebar', 'containment': '#desktop'} );
-    if( settings.resizable ) {
-        winHandle.resizable();
-        winHandle.addClass( 'window-resizable' );
+    // Only use dragging/resizing if they're available.
+    if( typeof( winHandle.draggable ) === 'function' ) {
+        winHandle.draggable( {'handle': '.titlebar', 'containment': this} );
+    }
+    if( typeof( winHandle.resizable ) === 'function' ) {
+        if( settings.resizable ) {
+            winHandle.resizable();
+            winHandle.addClass( 'window-resizable' );
+        }
     }
 
     if( null != settings.w ) {
@@ -254,88 +260,58 @@ case 'open':
         winHandle.menu95( 'open', settings.menu );
     }
 
-    var titlebar = $('<div class="titlebar"><h1 class="titlebar-text">' + settings.caption + '</h1></div>');
+    var titlebar = $('<div class="titlebar titlebar-no-icon"></div>');
     winHandle.prepend( titlebar );
 
-    var windowMenu = {
-        'type': menu95Type.SUBMENU,
-        'caller': titlebar,
-        'container': winHandle,
-        'location': menu95Location.BOTTOM,
-        'items': [
-            {'caption': 'Restore', 'callback': function( m ) {
-                $(winHandle).window95( 'restore' );
-            }},
-            {'caption': 'Move', 'callback': function( m ) {
-                
-            }},
-            {'caption': 'Size', 'callback': function( m ) {
-                
-            }},
-            {'caption': 'Minimize', 'callback': function( m ) {
-                $(winHandle).window95( 'minimize' );
-            }},
-            {'caption': 'Maximize', 'callback': function( m ) {
-                $(winHandle).window95( 'maximize' );
-            }},
-            {'caption': 'Close', 'callback': function( m ) {
-                $(winHandle).window95( 'close' );
-            }}
-        ]
-    };
+    // Add the window titlebar decorations/furniture/etc.
+    for( var decoIter in settings.decorations ) {
+        switch( settings.decorations[decoIter] ) {
 
-    var windowMenuHandler = function( e ) {
-        winHandle.menu95( 'close' );
-        winHandle.menu95( 'open', windowMenu );
-    };
+        case window95Decorations.TITLE:
+            var titleText = $('<h1 class="titlebar-text">' + settings.caption + '</h1>');
+            $(titlebar).append( titleText );
+            break;
 
-    titlebar.contextmenu( windowMenuHandler );
+        case window95Decorations.ICON:
+            var icon = $('<div class="titlebar-icon icon-' + settings.icon + '-16"></div>');
+            $(titlebar).append( icon );
+            titlebar.removeClass( 'titlebar-no-icon' );
+            break;
 
-    titlebar.children( '.titlebar-text' ).click( function( e ) {
-        // Plain clicks on the titlebar close all menus.
-        winHandle.menu95( 'close' );
-    } );
+        case window95Decorations.MIN:
+            var btnMin = $('<button class="titlebar-minimize">_</button>');
+            $(titlebar).append( btnMin );
+            $(btnMin).click( function() {
+                winHandle.window95( 'minimize' );
+            } );
+            break;
+        
+        case window95Decorations.MAX:
+            var btnMax = $('<button class="titlebar-maximize">&#x25a1;</button>');
+            $(titlebar).append( btnMax );
+            $(btnMax).click( function() {
+                winHandle.window95( 'maximize' );
+            } );
+            break;
 
-    // Add the window icon.
-    if( null != settings.icon ) {
-        var icon = $('<div class="titlebar-icon icon-' + settings.icon + '-16"></div>');
-        $(titlebar).prepend( icon );
+        case window95Decorations.RESTORE:
+            var btnRestore = $('<button class="titlebar-restore">&#x29C9;</button>');
+            $(titlebar).append( btnRestore );
+            btnRestore.css( 'display', 'none' );
+            $(btnRestore).click( function() {
+                winHandle.window95( 'restore' );
+            } );
+            break;
 
-        icon.click( windowMenuHandler );
-        icon.contextmenu( windowMenuHandler );
-    } else {
-        titlebar.addClass( 'titlebar-no-icon' );
+        case window95Decorations.CLOSE:
+            var btnClose = $('<button class="titlebar-close">x</button>');
+            $(titlebar).append( btnClose );
+            $(btnClose).click( function() {
+                winHandle.window95( 'close' );
+            } );
+            break;
+        }
     }
-
-    // Add the window control buttons.
-    if( settings.min ) {
-        var btnMin = $('<button class="titlebar-minimize">_</button>');
-        $(titlebar).append( btnMin );
-        $(btnMin).click( function() {
-            winHandle.window95( 'minimize' );
-        } );
-    }
-
-    if( settings.max ) {
-        var btnMax = $('<button class="titlebar-maximize">&#x25a1;</button>');
-        $(titlebar).append( btnMax );
-        $(btnMax).click( function() {
-            winHandle.window95( 'maximize' );
-        } );
-    }
-
-    var btnRestore = $('<button class="titlebar-restore">&#x29C9;</button>');
-    $(titlebar).append( btnRestore );
-    btnRestore.css( 'display', 'none' );
-    $(btnRestore).click( function() {
-        winHandle.window95( 'restore' );
-    } );
-
-    var btnClose = $('<button class="titlebar-close">x</button>');
-    $(titlebar).append( btnClose );
-    $(btnClose).click( function() {
-        winHandle.window95( 'close' );
-    } );
 
     $(winHandle).mousedown( function( e ) {
         $(e.target).parents( '.window' ).window95( 'activate' );
@@ -372,7 +348,7 @@ case 'properties':
     settings.menu = null;
     settings.w = 408;
     settings.h = 446;
-    settings.min = false;
+    settings.decorations = [window95Decorations.TITLE, window95Decorations.CLOSE];
     settings.max = false;
     var winHandle = this.window95( 'open', settings );
 

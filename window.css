@@ -1,7 +1,147 @@
 
+.window {
+    position: absolute;
+    display: inline-block;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    min-width: 200px;
+    min-height: 121px;
+    z-index: 20;
+}
+
+.window-active {
+    z-index: 30;
+}
+
+.window .ui-resizable-se {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.titlebar {
+    background-color: #7f787f;
+    /* Flex so that title text can grow. */
+    display: flex;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    left: 1px;
+    margin: 0;
+    padding: 0;
+    height: 18px;
+}
+
+.window-resizable .titlebar {
+    /* Resizable windows have a thicker border. */
+    top: 2px;
+    right: 2px;
+    left: 2px;
+}
+
+.titlebar-icon {
+    display: inline-block;
+    position: relative;
+    margin: 1px 1px 1px 3px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.titlebar-text {
+    font-size: 12px; /* Rare text sizing in pixels for accuracy. */
+    line-height: 18px;
+    display: inline-block;
+    position: relative;
+    margin: 0 3px;
+    padding: 0;
+    height: 18px;
+    flex-grow: 1;
+}
+
+.window-active .titlebar {
+    background-color: #00007f;
+    color: white;
+}
+
+.titlebar button {
+    font-weight: bold;
+    line-height: 8px;
+    width: 14px;
+    height: 14px;
+    margin: 2px;
+    padding: 0;
+}
+
+.window-form {
+    position: absolute;
+    top: 21px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+}
+
+.window-notepad .window-form {
+    padding: 1px 7px 7px 0;
+}
+
+.window-command .window-form {
+    padding: 1px 7px 7px 0;
+}
+
+.window-menubar .window-form {
+    top: 41px;
+}
+
+.window-toolbar .window-form {
+    top: 31px;
+}
+
+.window-toolbar.window-menubar .window-form {
+    top: 76px; /* Sum of both, above. */
+}
+
+
+.window-statusbar .window-form {
+    bottom: 21px;
+}
+
 .window-maximized {
     left: -1px;
     top: -1px;
     width: 100%;
     height: 100%;
+}
+
+/* Dialog Boxes */
+
+.window-dialog .window-form {
+    margin: 24px;
+    position: relative;
+}
+
+.dialog-display {
+    display: flex;
+}
+
+.dialog-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.dialog-message {
+    flex-grow: 1;
+    margin: 8px 16px;
+}
+
+.dialog-buttons {
+    display: table;
+    margin: 8px auto;
+}
+
+.dialog-buttons button {
+    padding: 4px 16px;
 }

@@ -207,34 +207,6 @@
     height: 100%;
 }
 
-.window-dialog .window-form {
-    margin: 24px;
-    position: relative;
-}
-
-.dialog-display {
-    display: flex;
-}
-
-.dialog-icon {
-    width: 32px;
-    height: 32px;
-}
-
-.dialog-message {
-    flex-grow: 1;
-    margin: 8px 16px;
-}
-
-.dialog-buttons {
-    display: table;
-    margin: 8px auto;
-}
-
-.dialog-buttons button {
-    padding: 4px 16px;
-}
-
 /* Window: Notepad */
 
 .window-notepad .input-textarea {
@@ -386,18 +358,6 @@
 .window-browser .window-form hr {
     margin: 0;
 }
-
-/*
-.window-browser .browser-buttons {
-    margin: 0;
-    padding: 3px 2px 0 7px;
-}
-
-.window-browser .browser-buttons button {
-    width: 18px;
-    height: 18px;
-}
-*/
 
 .window-browser .pane-wrapper {
     top: 25px;
