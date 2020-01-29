@@ -156,7 +156,11 @@ case 'item':
         
     case menu95Type.ITEM:
         menuElement.click( function( e ) {
-            settings.callback( settings.cbData );
+            if( typeof( settings.callback ) === 'string' ) {
+                window[settings.callback]( settings.cbData );
+            } else {
+                settings.callback( settings.cbData );
+            }
             $(settings.container).menu95( 'close' );
             e.preventDefault();
         } );
