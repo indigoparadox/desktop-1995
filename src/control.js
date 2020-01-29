@@ -123,10 +123,6 @@ case 'button':
         if( null != settings.icon ) {
             var icoSpan = $('<span class="toolbar-button-icon"></span>');
             icoSpan.addClass( 'icon-' + settings.icon + '-16' /* Hardcode for now. */ );
-            /* icoSpan.css(
-                'background', 'url(' + staticPath + settings.icon.icoImg + 
-                ') right ' + settings.icon.icoX.toString() + 'px bottom ' +
-                settings.icon.icoY.toString() + 'px' ); */
             btn.append( icoSpan );
         }
         if( null != settings.id ) {
