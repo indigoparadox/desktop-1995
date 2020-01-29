@@ -95,3 +95,11 @@
     flex-grow: 1;
     max-width: 150px;
 }
+
+#desktop > .menubar {
+    background-color: white;
+    border-bottom: 1px solid black;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}

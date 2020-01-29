@@ -17,6 +17,7 @@ const menu95Type = {
 
 (function( $ ) {
 $.fn.menu95 = function( action, options ) {
+    'use strict';
 
 var settings = $.extend( {
     // We don't list the 'context' parm here because we want to fail fast if we
