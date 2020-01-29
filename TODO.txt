@@ -1,0 +1,3 @@
+- Move modules into src directory and setup grunt to compile them.
+- Extract apps to specific implementations.
+- Combine folder and startmenu into explorer app.
