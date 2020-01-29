@@ -157,9 +157,16 @@ case 'item':
         
     case menu95Type.ITEM:
         menuElement.click( function( e ) {
-            if( typeof( settings.callback ) === 'string' ) {
+            if( null == settings.callback && null != $(e.target).parent().data( 'caller' ) ) {
+                var masterCaller = $(e.target).parent().data( 'caller' );
+                while( null != masterCaller.data( 'caller' ) && null != masterCaller.data( 'caller' ).data( 'caller' ) ) {
+                    masterCaller = masterCaller.data( 'caller' );
+                }
+                console.log( masterCaller );
+                $(e.target).parent().data( 'caller' ).trigger( _htmlStrToClass( $(e.target).text() ) );
+            } else if( typeof( settings.callback ) === 'string' ) {
                 window[settings.callback]( settings.cbData );
-            } else {
+            } else if( null != settings.callback ) {
                 settings.callback( settings.cbData );
             }
             $(settings.container).menu95( 'close' );
@@ -180,27 +187,33 @@ case 'item':
 
     return menuElement;
 
+/*
 case 'context':
-    this.addClass( 'context-id-' + settings.context );
-    this.click( function( e ) {
-        if( 0 <= $(e.target).parents( '.menu' ).length ) {
-            // Don't close all menus if this is a menu, or else this might get
-            // closed too depending on the ordering.
-            return;
-        }
-        settings.container.menu95( 'close' );
-    } );
-    return this.contextmenu( function( e ) {
-        e.preventDefault();
+    if( this.hasClass( 'container' ) ) {
+        this.addClass( 'context-id-' + settings.context );
+        this.click( function( e ) {
+            if( 0 <= $(e.target).parents( '.menu' ).length ) {
+                // Don't close all menus if this is a menu, or else this might get
+                // closed too depending on the ordering.
+                return;
+            }
+            settings.container.menu95( 'close' );
+        } );
+        var _ctxHandler = function( e ) {
+            e.preventDefault();
 
-        if( !$(e.target).hasClass( 'context-id-' + settings.context ) ) {
-            // Only call the menu on its specified context ID.
-            return;
-        }
+            if( !$(e.target).hasClass( 'context-id-' + settings.context ) ) {
+                // Only call the menu on its specified context ID.
+                return;
+            }
 
-        settings.menu.location = {'x': e.pageX, 'y': e.pageY};
-        $(this).menu95( 'open', settings.menu );
-    } );
+            settings.menu.location = {'x': e.pageX, 'y': e.pageY};
+            $(this).menu95( 'open', settings.menu );
+        };
+        //$(this).on( 'context', '');
+    }
+    return $(this);
+*/
 
 case 'close':
     return this.each( function() {
@@ -226,7 +239,7 @@ case 'open':
 
     // If this is a root of the menu tree, close all other menus.
     if( null == settings.caller ) {
-        settings.container.menu95( 'close' );
+        $(settings.container).menu95( 'close' );
     }
 
     var menu = $('<div></div>');

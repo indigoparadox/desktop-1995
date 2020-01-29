@@ -28,6 +28,7 @@ $.fn.append = function( element ) {
 };
 
 $.fn.desktop95 = function( action, options ) {
+    'use strict';
 
 var settings = $.extend( {
     'id': null,
@@ -36,6 +37,7 @@ var settings = $.extend( {
     'region': {'start': {'x': 0, 'y': 0}, 'end': {'x': 0, 'y': 0}},
     'callback': null,
     'context': null,
+    'classes': [],
     'data': {},
     'cbData': null,
     'deselect': true, // Deselect items not being selected.
@@ -56,22 +58,13 @@ case 'icon':
     iconWrapper.css( 'left', settings.x.toString() + 'px' );
     iconWrapper.css( 'top', settings.y.toString() + 'px' );
 
-    /* Setup action handlers. */
-    /* iconWrapper.mousedown( function() {
-        $(this).desktop95( 'select' );
-    } );
-    iconWrapper.on( 'dblclick', function() {
-        settings.callback( settings.cbData )
-    } );
+    for( var classIter in settings.classes ) {
+        console.log( settings.classes[classIter] );
+        iconWrapper.addClass( settings.classes[classIter] );
+    }
 
-    iconWrapper.mousemove( function( e ) {
-        $(e.target).parents( '.container' ).desktop95( 'moverect', { 'x': e.pageX, 'y': e.pageY } );
-    } );
-
-    iconWrapper.children( '.desktop-icon-img' ).on( 'dragenter', function( e, ui ) {
-        console.log( $(e.target) );
-    } ); */
-
+    // Setup action handlers.
+    /*
     if( null == settings.context ) {
         settings.context = {
             'items': [
@@ -82,13 +75,17 @@ case 'icon':
         };
     }
 
+    if( null == settings.context ) {
+        settings.context = {};
+    }
+
     if( !('cbData' in settings.context) ) {
         settings.context.cbData = iconWrapper;
     }
 
     imgTag.menu95( 'context', {
         'menu': settings.context,
-        'context': _htmlStrToClass( settings.target )} );
+        'context': _htmlStrToClass( settings.target )} ); */
 
     return iconWrapper;
 
@@ -189,6 +186,8 @@ case 'selectrect':
 
 case 'enable':
 
+    // Root container becomes the desktop.
+
     var containerElement = this;
     if( 0 < $(this).parents( '.container' ).length ) {
         desktop95Desktop = $(this.parents( '.container' ).last() );
@@ -196,6 +195,8 @@ case 'enable':
         desktop95Desktop = this;
         this.addClass( 'desktop' );
     }
+
+    // Events for mouse handling:
 
     this.mousedown( function( e ) {
         desktopMouseDown95 = true;
@@ -249,10 +250,6 @@ case 'enable':
         'drop': function( e, ui ) {
             let incomingClone = $(ui.draggable);
 
-            /* if( null == desktop95Desktop.data( 'drag-icon-original' ) ) {
-                return;
-            } */
-
             // We only care about the topost window.
             // TODO: Ignore minimized windows and non-overlapping windows.
             var dropTargetZ = parseInt( $(this).closest( '.window' ).css( 'z-index' ) );
@@ -296,51 +293,6 @@ case 'enable':
             return false;
         }
     } );
-
-    var desktopMenu = {
-        'items': [
-            {'caption': 'Arrange Icons', 'type': menu95Type.SUBMENU, 'items': [
-                {'caption': 'By Name', 'callback': function( m ) {
-                    containerElement.trigger( 'arrange-icons', [{'criteria': 'name'}] );
-                }},
-                {'caption': 'By Type', 'callback': function( m ) {
-                    containerElement.trigger( 'arrange-icons', [{'criteria': 'type'}] );
-                }},
-                {'caption': 'By Size', 'callback': function( m ) {
-                    containerElement.trigger( 'arrange-icons', [{'criteria': 'size'}] );
-                }},
-                {'caption': 'By Date', 'callback': function( m ) {
-                    containerElement.trigger( 'arrange-icons', [{'criteria': 'date'}] );
-                }},
-                {'type': menu95Type.DIVIDER},
-                {'caption': 'Auto Arrange', 'callback': function( m ) {
-                    containerElement.trigger( 'arrange-icons', [{'criteria': 'auto'}] );
-                }}
-            ]},
-            {'caption': 'Line up Icons', 'callback': function( m ) {
-                containerElement.trigger( 'line-up-icons' );
-            }},
-            {'type': menu95Type.DIVIDER},
-            {'caption': 'Paste', 'callback': function( m ) {
-                containerElement.trigger( 'paste', [{'reference': 'shortcut'}] );
-            }},
-            {'caption': 'Paste Shortcut', 'callback': function( m ) {
-                containerElement.trigger( 'paste', [{'reference': 'shortcut'}] );
-            }},
-            {'type': menu95Type.DIVIDER},
-            {'caption': 'New', 'type': menu95Type.SUBMENU, 'items': [
-                {'caption': 'Folder', 'icon': 'folder', 'callback': function( m ) {
-                    containerElement.trigger( 'new-folder' );
-                }}
-            ]},
-            {'type': menu95Type.DIVIDER},
-            {'caption': 'Properties', 'callback': function( m ) {
-                containerElement.trigger( 'properties' );
-            }}
-        ]
-    };
-    
-    this.menu95( 'context', {'menu': desktopMenu, 'context': 'desktop'} );
 
     for( var datum in settings.data ) {
         this.data( datum, settings.data[datum] );
