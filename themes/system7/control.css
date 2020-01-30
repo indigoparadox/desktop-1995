@@ -25,9 +25,14 @@
 }
 
 .tray.notification-area {
-    font-size: 13px;
-    margin: 2px 2px 0 6px;
-    padding: 3px 6px;
+    font-size: 12px;
+    margin: 0 1px;
+    padding: 3px;
+    float: right;
+}
+
+.menu-spacer {
+    flex-grow: 1;
 }
 
 .pane-wrapper,
