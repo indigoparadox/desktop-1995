@@ -59,8 +59,11 @@ case 'icon':
     iconWrapper.css( 'top', settings.y.toString() + 'px' );
 
     for( var classIter in settings.classes ) {
-        console.log( settings.classes[classIter] );
         iconWrapper.addClass( settings.classes[classIter] );
+    }
+
+    for( var dataIter in settings.data ) {
+        iconWrapper.attr( 'data-' + dataIter, settings.data[dataIter] );
     }
 
     return iconWrapper;
@@ -213,7 +216,7 @@ case 'enable':
     } );
 
     this.on( 'dblclick', '.desktop-icon', function( e ) {
-        $(e.target).trigger( 'desktop-double-click' );
+        $(e.target).trigger( 'desktop-run-icon' );
     } );
 
     this.on( 'mousemove', '.desktop-icon', function( e ) {
