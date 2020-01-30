@@ -1,5 +1,9 @@
 
 html, body {
+    background-color: black;
+}
+
+#desktop {
     background-image: radial-gradient(#000000 1px, transparent 1px), radial-gradient(#000000 1px, transparent 1px);
     background-position: 0 0, 2px 2px;
     background-size: 4px 4px;

@@ -1,5 +1,9 @@
 
 html, body {
+    background-color: black;
+}
+
+#desktop {
     background-color: #00787f;
 }
 
