@@ -1,0 +1,142 @@
+
+html, body {
+    font-family: Microsoft Sans Serif, MS Sans Serif, sans-serif;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#desktop {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.desktop-icon-text,
+.titlebar-text,
+.button-task {
+    text-transform: capitalize;
+}
+
+.desktop-icon.ui-draggable-dragging {
+    z-index: 100;
+}
+
+
+/* Common Effects */
+
+.window:before,
+.menu:before {
+    content: " ";
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    left: -2px;
+    z-index: -1;
+}
+
+.window,
+.menu {
+    position: relative;
+    padding: 1px;
+}
+
+button:focus {
+    outline: none;
+}
+
+.select-rect {
+    position: absolute;
+}
+
+/* Properties */
+
+.props-file-icon div {
+    margin-left: 10px;
+    width: 32px;
+    height: 32px;
+}
+
+.properties-row {
+    display: table-row;
+    margin: 10px 15px 0 15px;
+}
+
+.properties-row {
+    display: table-cell;
+}
+
+.properties-label, .properties-field {
+    display: table-cell;
+    min-width: 100px;
+}
+
+.props-file-name {
+    line-height: 32px;
+    vertical-align: middle;
+}
+
+/* Windows */
+
+.taskbar:before {
+    content: " ";
+    position: absolute;
+    top: -2px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.taskbar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    height: 28px;
+    z-index: 100;
+}
+
+.taskbar .tasks {
+    flex-grow: 1;
+}
+
+.taskbar .tasks button {
+    text-align: left;
+}
+
+.taskbar .tasks .task-icon {
+    display: inline-block;
+    margin-right: 4px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.taskbar .notification-area {
+    line-height: 16px;
+    display: inline-block;
+}
+
+.taskbar .tray-icon {
+    display: inline-block;
+    margin-right: 2px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.window-minimized {
+    visibility: hidden;
+}
+
+.window-hidden {
+    display: none !important;
+}

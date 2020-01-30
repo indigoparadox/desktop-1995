@@ -63,30 +63,6 @@ case 'icon':
         iconWrapper.addClass( settings.classes[classIter] );
     }
 
-    // Setup action handlers.
-    /*
-    if( null == settings.context ) {
-        settings.context = {
-            'items': [
-                {'caption': 'Properties', 'callback': function( m, d ) {
-                    iconWrapper.trigger( 'properties' );
-                }}
-            ]
-        };
-    }
-
-    if( null == settings.context ) {
-        settings.context = {};
-    }
-
-    if( !('cbData' in settings.context) ) {
-        settings.context.cbData = iconWrapper;
-    }
-
-    imgTag.menu95( 'context', {
-        'menu': settings.context,
-        'context': _htmlStrToClass( settings.target )} ); */
-
     return iconWrapper;
 
 case 'select':

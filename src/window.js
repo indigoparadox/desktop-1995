@@ -20,7 +20,7 @@ const window95Decorations = {
 
 $(document).ready( function() {
     var windowJsPath = $('script[src$="/window.js"]' ).attr( 'src' );
-    $('head').append( '<link rel="stylesheet" href="' + windowJsPath.replace( '.js', '.css' ) + '" />' );
+    $('head').append( '<link rel="stylesheet" href="' + windowJsPath.replace( '\/src\/', '\/themes\/' + platform_name + '\/' ).replace( '.js', '.css' ) + '" />' );
 } );
 
 $.fn.window95 = function( action, options ) {

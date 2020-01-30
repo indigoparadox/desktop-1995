@@ -1,0 +1,223 @@
+
+.statusbar {
+    font-size: 12px;
+    line-height: 24px;
+    display: flex;
+    position: absolute;
+    height: 22px;
+    right: 1px;
+    bottom: 1px;
+    left: 2px;
+}
+
+.tray {
+    font-size: 12px;
+    line-height: 16px;
+    display: inline-flex;
+    flex-direction: column;
+    margin: 3px 2px 2px 0;
+    padding: 1px;
+    height: 15px;
+}
+
+.statusbar .tray {
+    flex-grow: 1;
+}
+
+.tray.notification-area {
+    font-size: 13px;
+    margin: 2px 2px 0 6px;
+    padding: 3px 6px;
+}
+
+.pane-wrapper,
+.textarea-wrapper {
+    padding-right: 2px;
+    padding-bottom: 2px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+}
+
+.textarea-wrapper {
+    padding-right: 6px;
+    padding-bottom: 6px;
+}
+
+/* .input-select:before, */
+.input-text:before,
+.input-textarea:before,
+.input-prompt:before,
+.window-scroll-contents .window-form:after,
+.inset:before,
+.scrubber-timeline:before,
+.scrubber-controlbar:before {
+    /* Use border and positioning to simulate shadow effect. */
+    content: " ";
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+}
+
+/* This is a workaround so that the shadow is outside the scrollable area.
+ * This will only work for windows where a single control takes up the whole
+ * window form (e.g. notepad, folder, prompt).
+ */
+.window-scroll-contents .window-form:after {
+    left: 1px;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+}
+
+.select-wrapper .input-select {
+    width: 100%;
+}
+
+.inset {
+    margin: 0 1px;
+    padding: 0 4px;
+}
+
+.input-text {
+    padding: 1px 2px;
+}
+
+.select-wrapper {
+    display: inline-block;
+}
+
+.input-select {
+    position: relative;
+}
+
+.input-select:focus,
+.input-rtf:focus,
+.input-text:focus,
+.input-textarea:focus,
+.input-url:focus,
+.window-properties-tabs-tab a:focus {
+    outline: none;
+}
+
+.window > .toolbar:before {
+    content: " ";
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: -2px;
+    bottom: -2px;
+}
+
+.window > .toolbar {
+    padding: 4px;
+    position: absolute;
+    right: 2px;
+    left: 2px;
+    height: 20px;
+}
+
+.window-toolbar:not( .window-menubar ) > .toolbar {
+    top: 22px;
+}
+
+.window-menubar.window-toolbar > .toolbar {
+    top: 42px;
+}
+
+.toolbar .input-button {
+    vertical-align: middle;
+}
+
+.toolbar .toolbar-divider {
+    display: inline-block;
+    width: 8px;
+}
+
+.toolbar-button-icon {
+    display: inline-block;
+    position: relative;
+    width: 16px;
+    height: 16px;
+}
+
+.scrubber-wrapper .scrubber-timeline {
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    top: 2px;
+    width: 95%;
+    height: 55%;
+}
+
+.scrubber-wrapper .scrubber-controlbar {
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 100%;
+}
+
+/* Window: Notepad */
+
+.window-notepad .input-textarea {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    overflow: scroll;
+}
+
+/* Window: Folder */
+
+.window-folder-container .statusbar .tray-objects {
+    flex-grow: 2;
+}
+
+.window-folder-container .statusbar .tray-bytes {
+    flex-grow: 1;
+}
+
+.window-folder-container {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    bottom: 2px;
+    left: 2px;
+    overflow: scroll;
+}
+
+/* Tab panes have a slightly different chiseled pattern. */
+button:before,
+.ui-tabs-pane:before,
+.ui-tabs-tab a:before {
+    content: " ";
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-top: 1px solid #fff8ff;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid #fff8ff;
+    z-index: -1;
+}
+
+button,
+.ui-tabs-pane,
+.ui-tabs-tab a {
+    /* Use border and positioning to simulate shadow effect. */
+    border-top: 1px solid #dfd8df;
+    border-left: 1px solid #dfd8df;
+    border-right: 1px solid #7f787f;
+    border-bottom: 1px solid #7f787f;
+    /* background-color: #bfbfbf; */
+    position: relative;
+    padding: 1px;
+}
