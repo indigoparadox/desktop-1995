@@ -48,7 +48,7 @@ html, body {
 
 .input-text:before,
 .input-textarea:before,
-.input-prompt:before,
+.input-prompt tbody,
 .window-scroll-contents .window-form:after,
 .pane-wrapper,
 .textarea-wrapper,

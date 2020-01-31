@@ -12,9 +12,16 @@ var settings = $.extend( {
     'items': [],
     'w': 16,
     'h': 16,
+    'pane': null,
 }, options );
 
 switch( control.toLowerCase() ) {
+
+case 'scrollable':
+    this.addClass( 'window-scroll-contents' );
+    console.log( settings.pane );
+    $(settings.pane).addClass( 'scrollable-pane' );
+    return this;
 
 case 'tab':
     if( 'create' == action ) {

@@ -2,7 +2,7 @@
 .menu {
     position: absolute;
     display: inline-block;
-    margin: 0;
+    margin: 3px 0 0 0;
     padding: 1px;
     z-index: 200;
 }
@@ -50,15 +50,18 @@
 }
 
 .menubar {
+    background-color: white;
+    border-bottom: 1px solid black;
     display: flex;
     position: absolute;
     left: 1px;
-    top: 21px;
+    top: 0;
+    width: 100%;
 }
 
 .menubar .menu-item {
     display: table;
-    padding: 3px;
+    padding: 2px;
 }
 
 :not( .menubar ) > .menu-parent:hover:after {
@@ -69,37 +72,4 @@
 .taskbar .tasks {
     display: flex;
     margin: 0;
-}
-
-.button-start,
-.button-task {
-    margin: 3px 2px;
-    padding: 2px 4px;
-}
-
-.button-start .icon-start,
-.button-task .icon {
-    vertical-align: middle;
-    display: inline-block;
-    margin-right: 2px;
-    position: relative;
-    width: 16px;
-    height: 16px;
-}
-
-.button-start {
-    font-weight: bold;
-}
-
-.button-task {
-    flex-grow: 1;
-    max-width: 150px;
-}
-
-#desktop > .menubar {
-    background-color: white;
-    border-bottom: 1px solid black;
-    position: absolute;
-    top: 0;
-    width: 100%;
 }
