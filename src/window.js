@@ -205,6 +205,7 @@ case 'close':
         try {
             $(winHandle).trigger( 'closing' );
         } catch( e ) {
+            console.warn( e );
             return;
         }
         if( null != $(winHandle).data( 'taskbar-button' ) ) {
