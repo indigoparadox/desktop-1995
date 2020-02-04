@@ -175,25 +175,6 @@
     resize: none;
 }
 
-/* Window: Folder */
-
-.window-folder-container .statusbar .tray-objects {
-    flex-grow: 2;
-}
-
-.window-folder-container .statusbar .tray-bytes {
-    flex-grow: 1;
-}
-
-.window-folder-container {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    bottom: 2px;
-    left: 2px;
-    overflow: scroll;
-}
-
 /* Tab panes have a slightly different chiseled pattern. */
 button:before,
 .ui-tabs-pane:before,

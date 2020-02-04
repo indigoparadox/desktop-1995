@@ -46,6 +46,7 @@ html, body {
     border-left: 1px solid #7f7f7f;
 }
 
+.container-wrapper,
 .input-text:before,
 .input-textarea:before,
 .input-prompt tbody,
