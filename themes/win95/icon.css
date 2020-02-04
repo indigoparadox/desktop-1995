@@ -7,6 +7,9 @@
     display: inline-block;
     position: absolute;
     padding: 0;
+}
+
+.desktop-icon-32 {
     width: 60px;
 }
 
@@ -22,10 +25,20 @@
 
 .desktop-icon-img {
     display: block;
-    margin: 0 auto;
     position: relative;
+}
+
+.desktop-icon-img-32 {
+    display: block;
+    margin: 0 auto;
     width: 32px;
     height: 32px;
+}
+
+.desktop-icon-img-16 {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
 }
 
 .desktop-icon-text-center {

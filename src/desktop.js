@@ -41,17 +41,27 @@ var settings = $.extend( {
     'data': {},
     'cbData': null,
     'deselect': true, // Deselect items not being selected.
+    'iconSize': 32,
+    'iconTextPosition': 'bottom',
 }, options );
 
 switch( action.toLowerCase() ) {
 case 'icon':
 
-    var imgTag = $('<div class="desktop-icon-img icon-' + settings.icon + '-32"></div>');
-    var iconWrapper = $('<div class="desktop-icon"></div>');
+    var imgTag = $('<div class="desktop-icon-img desktop-icon-img-' + settings.iconSize + ' icon-' + settings.icon + '-' + settings.iconSize + '"></div>');
+    var iconWrapper = $('<div class="desktop-icon desktop-icon-' + settings.iconSize + '"></div>');
     iconWrapper.append( imgTag );
+
+    var iconText = $('<div class="desktop-icon-text desktop-icon-text-' + settings.iconTextPosition + 
+        '">' + settings.caption + '</div>');
     
-    var iconText = $('<div class="desktop-icon-text-center"><div class="desktop-icon-text">' + settings.caption + '</div></div>');
-    iconWrapper.append( iconText );
+    if( 'bottom' == settings.iconTextPosition ) {
+        var iconTextCenter = $('<div class="desktop-icon-text-center"></div>');
+        iconTextCenter.append( iconText );
+        iconWrapper.append( iconTextCenter );
+    } else {
+        iconWrapper.append( iconText );
+    }
 
     this.append( iconWrapper );
 
